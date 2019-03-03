@@ -1,18 +1,20 @@
 import React, { Component } from "react";
 import AppProvider from "./context/appProvider";
-import FooComponent from "./components/FooComponent";
-import Signin from "./components/auth/Signin";
+import { BrowserRouter } from "react-router-dom";
+import Router from "./components/router";
+import { MuiThemeProvider } from "@material-ui/core/styles";
+import theme from "./themes/theme";
 
-class App extends Component {
-  render() {
-    return (
+const App = props => {
+  return (
+    <MuiThemeProvider theme={theme}>
       <AppProvider>
-        <h1>App</h1>
-        <FooComponent />
-        <Signin />
+        <BrowserRouter>
+          <Router />
+        </BrowserRouter>
       </AppProvider>
-    );
-  }
-}
+    </MuiThemeProvider>
+  );
+};
 
 export default App;
