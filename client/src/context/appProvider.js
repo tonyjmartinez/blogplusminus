@@ -1,20 +1,36 @@
 import React, { useState } from "react";
 import { signin } from "./fetchAuth";
+import { tokenSignin } from "./fetchAuth";
 import AppContext from "./appContext";
 
 const appProvider = props => {
-  const [auth, setAuth] = useState(false);
+  const initialUser = {
+    email: ""
+  };
 
-  const attemptAuth = (email, password) => {
+  const [auth, setAuth] = useState("");
+  const [user, setUser] = useState(initialUser);
+
+  const attemptSignin = (email, password) => {
     const authorized = status => {
       console.log(status);
       if (status) {
-        setAuth(true);
+        setAuth("authorized");
+        setUser({ email: email });
       } else {
-        setAuth(false);
+        setAuth("error");
       }
     };
     signin(email, password, authorized);
+  };
+
+  const attemptAuth = () => {
+    tokenSignin((status, user) => {
+      console.log(status);
+      console.log(user);
+      setAuth(status);
+      setUser({ email: user });
+    });
   };
 
   console.log("app provider");
@@ -23,7 +39,10 @@ const appProvider = props => {
       value={{
         auth: auth,
         setAuth: setAuth,
-        signin: attemptAuth
+        signin: attemptSignin,
+        setUser: setUser,
+        attemptAuth: attemptAuth,
+        user: user
       }}
     >
       {props.children}

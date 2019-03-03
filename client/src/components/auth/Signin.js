@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import withAppContext from "../../context/withAppContext";
 const signin = props => {
   const [inputValidators, setInputValidators] = useState({
@@ -29,7 +29,6 @@ const signin = props => {
     });
 
     setInputValues({ ...inputValues, password: password });
-    console.log(inputValidators);
   };
 
   const emailValidator = email => {
@@ -40,8 +39,6 @@ const signin = props => {
   const passwordValidator = password => {
     return password.trim().length > 5;
   };
-
-  console.log(props);
 
   return (
     <React.Fragment>
