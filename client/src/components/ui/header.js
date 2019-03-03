@@ -4,6 +4,7 @@ import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
+import withAppContext from "../../context/withAppContext.js";
 
 const useStyles = makeStyles({
   root: {
@@ -20,19 +21,21 @@ const useStyles = makeStyles({
 
 const header = props => {
   const classes = useStyles();
-
+  console.log("header", props);
   return (
     <div className={classes.root}>
-      <AppBar color="secondary" position="static">
+      <AppBar color="primary" position="static">
         <Toolbar>
           <Typography variant="h6" color="inherit" className={classes.grow}>
             Blog Plus Minus
           </Typography>
-          <Button color="inherit">Login</Button>
+          <Button color="inherit">
+            {props.context.auth ? "Login" : "Sign Up"}
+          </Button>
         </Toolbar>
       </AppBar>
     </div>
   );
 };
 
-export default header;
+export default withAppContext(header);
