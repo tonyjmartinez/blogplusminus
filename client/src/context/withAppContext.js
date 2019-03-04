@@ -5,7 +5,7 @@ const withAppContext = Component => {
   const WrapperComponent = props => {
     return (
       <AppContext.Consumer>
-        {context => <Component context={context} />}
+        {context => <Component {...props} context={context} />}
       </AppContext.Consumer>
     );
   };

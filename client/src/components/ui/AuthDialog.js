@@ -11,13 +11,9 @@ import LogIn from "../auth/Login";
 const AuthDialog = props => {
   return (
     <div>
-      <Dialog
-        open={props.open}
-        onClose={props.onClickClose}
-        aria-labelledby="form-dialog-title"
-      >
+      <Dialog open={props.open} aria-labelledby="form-dialog-title">
         <DialogTitle id="form-dialog-title">{props.type}</DialogTitle>
-        <LogIn />
+        <LogIn close={props.onClickClose} />
       </Dialog>
     </div>
   );

@@ -15,8 +15,9 @@ const appProvider = props => {
   const attemptSignin = (email, password) => {
     const authorized = (status, user) => {
       if (status) {
+        console.log("authed", status);
         setAuth("authorized");
-        setUser({ email: email, username: user.username });
+        setUser({ username: user.username });
       } else {
         setAuth("unauthorized");
       }
@@ -31,6 +32,11 @@ const appProvider = props => {
     });
   };
 
+  const signOut = () => {
+    localStorage.removeItem("token");
+    setAuth("unauthorized");
+  };
+
   return (
     <AppContext.Provider
       value={{
@@ -39,7 +45,8 @@ const appProvider = props => {
         signin: attemptSignin,
         setUser: setUser,
         attemptAuth: attemptAuth,
-        user: user
+        user: user,
+        signOut: signOut
       }}
     >
       {props.children}

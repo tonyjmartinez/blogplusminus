@@ -34,14 +34,23 @@ const header = props => {
     setDialogOpen(false);
   };
 
+  const handleSignOut = event => {
+    props.context.signOut();
+    closeDialog();
+  };
+
   let authButtons = null;
   if (auth === "authorized") {
     if (user !== undefined) {
       authButtons = (
         <div>
-          <Button color="inherit">{user}</Button>
+          <Button onClick={() => console.log(props)} color="inherit">
+            {user}
+          </Button>
 
-          <Button color="inherit">Sign Out</Button>
+          <Button onClick={handleSignOut} color="inherit">
+            Sign Out
+          </Button>
         </div>
       );
     }

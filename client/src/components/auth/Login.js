@@ -12,10 +12,6 @@ const logIn = props => {
 
   const [inputValues, setInputValues] = useState({ email: "", password: "" });
 
-  const handleSubmit = () => {
-    props.context.signin(inputValues.email, inputValues.password);
-  };
-
   const emailHandler = event => {
     const email = event.target.value;
     setInputValidators({
@@ -44,13 +40,17 @@ const logIn = props => {
     return password.trim().length > 5;
   };
 
+  const handleSubmit = () => {
+    props.context.signin(inputValues.email, inputValues.password);
+  };
+
   return (
     <React.Fragment>
       <DialogContent>
         <TextField
           autoFocus
           margin="dense"
-          id="name"
+          id="email"
           label="Email Address"
           type="email"
           onChange={emailHandler}
@@ -60,7 +60,7 @@ const logIn = props => {
         />
         <TextField
           margin="dense"
-          id="name"
+          id="password"
           label="Password"
           type="password"
           onChange={passwordHandler}
@@ -71,7 +71,7 @@ const logIn = props => {
       </DialogContent>
 
       <DialogActions>
-        <Button onClick={props.onClickClose} color="primary">
+        <Button onClick={props.close} color="primary">
           Cancel
         </Button>
         <Button onClick={handleSubmit} color="primary">
