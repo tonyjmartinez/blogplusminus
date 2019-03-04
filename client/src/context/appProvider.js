@@ -5,6 +5,7 @@ import AppContext from "./appContext";
 
 const appProvider = props => {
   const initialUser = {
+    username: "",
     email: ""
   };
 
@@ -12,13 +13,12 @@ const appProvider = props => {
   const [user, setUser] = useState(initialUser);
 
   const attemptSignin = (email, password) => {
-    const authorized = status => {
-      console.log(status);
+    const authorized = (status, user) => {
       if (status) {
         setAuth("authorized");
-        setUser({ email: email });
+        setUser({ email: email, username: user.username });
       } else {
-        setAuth("error");
+        setAuth("unauthorized");
       }
     };
     signin(email, password, authorized);
@@ -26,14 +26,11 @@ const appProvider = props => {
 
   const attemptAuth = () => {
     tokenSignin((status, user) => {
-      console.log(status);
-      console.log(user);
       setAuth(status);
-      setUser({ email: user });
+      setUser({ username: user });
     });
   };
 
-  console.log("app provider");
   return (
     <AppContext.Provider
       value={{

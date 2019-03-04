@@ -1,18 +1,21 @@
 import React, { useEffect } from "react";
 import Header from "./ui/header";
-import Signin from "./auth/Signin";
 import withAppContext from "../context/withAppContext";
 import { BrowserRouter, Route, Link } from "react-router-dom";
 
 const router = props => {
   useEffect(() => {
-    props.context.attemptAuth();
+    console.log(localStorage.getItem("token"));
+    if (localStorage.getItem("token") !== null) {
+      props.context.attemptAuth();
+    } else {
+      props.context.setAuth("unauthorized");
+    }
   }, []);
 
   return (
     <React.Fragment>
       <Header />
-      <Signin />
     </React.Fragment>
   );
 };

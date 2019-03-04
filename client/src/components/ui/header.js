@@ -21,9 +21,8 @@ const useStyles = makeStyles({
 });
 
 const header = props => {
-  console.log(props.context);
   const auth = props.context.auth;
-  const user = props.context.user.email;
+  const user = props.context.user.username;
 
   const [dialogOpen, setDialogOpen] = useState(false);
 
@@ -34,11 +33,17 @@ const header = props => {
   const closeDialog = () => {
     setDialogOpen(false);
   };
-  let authButtons = null;
 
+  let authButtons = null;
   if (auth === "authorized") {
     if (user !== undefined) {
-      authButtons = <Button color="inherit">{user}</Button>;
+      authButtons = (
+        <div>
+          <Button color="inherit">{user}</Button>
+
+          <Button color="inherit">Sign Out</Button>
+        </div>
+      );
     }
   } else if (auth === "unauthorized") {
     authButtons = (
@@ -47,6 +52,7 @@ const header = props => {
           open={dialogOpen}
           onClickOpen={openDialog}
           onClickClose={closeDialog}
+          type="Log In"
         />
         <Button onClick={openDialog} color="inherit">
           Log In
@@ -57,13 +63,12 @@ const header = props => {
   }
 
   const classes = useStyles();
-  console.log("header", props);
   return (
     <div className={classes.root}>
       <AppBar color="primary" position="static">
         <Toolbar>
           <Typography variant="h6" color="inherit" className={classes.grow}>
-            Blog Plus Minus
+            Blog Plus{"/"}Minus
           </Typography>
           {authButtons}
         </Toolbar>

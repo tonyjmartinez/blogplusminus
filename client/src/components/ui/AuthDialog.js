@@ -6,6 +6,7 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
+import LogIn from "../auth/Login";
 
 const AuthDialog = props => {
   return (
@@ -15,29 +16,8 @@ const AuthDialog = props => {
         onClose={props.onClickClose}
         aria-labelledby="form-dialog-title"
       >
-        <DialogTitle id="form-dialog-title">Subscribe</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            To subscribe to this website, please enter your email address here.
-            We will send updates occasionally.
-          </DialogContentText>
-          <TextField
-            autoFocus
-            margin="dense"
-            id="name"
-            label="Email Address"
-            type="email"
-            fullWidth
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={props.onClickClose} color="primary">
-            Cancel
-          </Button>
-          <Button onClick={props.onClickClose} color="primary">
-            Subscribe
-          </Button>
-        </DialogActions>
+        <DialogTitle id="form-dialog-title">{props.type}</DialogTitle>
+        <LogIn />
       </Dialog>
     </div>
   );

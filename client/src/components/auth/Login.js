@@ -1,9 +1,13 @@
 import React, { useState, useEffect } from "react";
+import TextField from "@material-ui/core/TextField";
 import withAppContext from "../../context/withAppContext";
-const signin = props => {
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogActions from "@material-ui/core/DialogActions";
+import Button from "@material-ui/core/Button";
+const logIn = props => {
   const [inputValidators, setInputValidators] = useState({
-    email: false,
-    password: false
+    email: true,
+    password: true
   });
 
   const [inputValues, setInputValues] = useState({ email: "", password: "" });
@@ -42,15 +46,40 @@ const signin = props => {
 
   return (
     <React.Fragment>
-      <input type="email" onChange={emailHandler} value={inputValues.email} />
-      <input
-        type="password"
-        onChange={passwordHandler}
-        value={inputValues.password}
-      />
-      <button onClick={handleSubmit}>Submit</button>
+      <DialogContent>
+        <TextField
+          autoFocus
+          margin="dense"
+          id="name"
+          label="Email Address"
+          type="email"
+          onChange={emailHandler}
+          value={inputValues.email}
+          fullWidth
+          error={inputValidators.email ? false : true}
+        />
+        <TextField
+          margin="dense"
+          id="name"
+          label="Password"
+          type="password"
+          onChange={passwordHandler}
+          value={inputValues.password}
+          fullWidth
+          error={inputValidators.password ? false : true}
+        />
+      </DialogContent>
+
+      <DialogActions>
+        <Button onClick={props.onClickClose} color="primary">
+          Cancel
+        </Button>
+        <Button onClick={handleSubmit} color="primary">
+          Log In
+        </Button>
+      </DialogActions>
     </React.Fragment>
   );
 };
 
-export default withAppContext(signin);
+export default withAppContext(logIn);

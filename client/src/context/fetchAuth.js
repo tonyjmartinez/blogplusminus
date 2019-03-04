@@ -4,26 +4,21 @@ export const signin = async (email, password, authorized) => {
   try {
     const creds = { email: email, password: password };
     const response = await axios.post("/signin", creds);
-    console.log(response.data);
     if (response.data.token !== undefined) {
       localStorage.setItem("token", response.data.token);
-      authorized(true);
+      authorized(true, response.data.user);
     } else {
-      console.log("not authorized");
-      authorized(false);
+      authorized(false, "");
     }
   } catch (err) {
-    console.log(err);
-    authorized(false);
+    authorized(false, "");
   }
 };
 
 export const tokenSignin = async cb => {
   try {
     const response = await axios.get("/");
-    const email = response.data.user.email;
-
-    cb("authorized", email);
+    cb("authorized", response.data.user.username);
   } catch (err) {
     cb("unauthorized", "");
   }
