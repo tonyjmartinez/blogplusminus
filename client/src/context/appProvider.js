@@ -12,12 +12,13 @@ const appProvider = props => {
   const [auth, setAuth] = useState("");
   const [user, setUser] = useState(initialUser);
 
+  const attemptSignup = (email, password) => {};
+
   const attemptSignin = (email, password) => {
     const authorized = (status, user) => {
       if (status) {
-        console.log("authed", status);
-        setAuth("authorized");
         setUser({ username: user.username });
+        setAuth("authorized");
       } else {
         setAuth("unauthorized");
       }
@@ -26,9 +27,11 @@ const appProvider = props => {
   };
 
   const attemptAuth = () => {
+    console.log("attemptauth");
     tokenSignin((status, user) => {
+      console.log(status, user);
       setAuth(status);
-      setUser({ username: user });
+      setUser({ username: user.username });
     });
   };
 

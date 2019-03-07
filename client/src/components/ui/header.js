@@ -22,11 +22,14 @@ const useStyles = makeStyles({
 
 const header = props => {
   const auth = props.context.auth;
-  const user = props.context.user.username;
+  const user = props.context.user;
+  console.log(user);
 
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [authType, setAuthType] = useState("login");
 
-  const openDialog = () => {
+  const openDialog = type => {
+    setAuthType(type);
     setDialogOpen(true);
   };
 
@@ -45,7 +48,7 @@ const header = props => {
       authButtons = (
         <div>
           <Button onClick={() => console.log(props)} color="inherit">
-            {user}
+            {user.username}
           </Button>
 
           <Button onClick={handleSignOut} color="inherit">
@@ -61,12 +64,14 @@ const header = props => {
           open={dialogOpen}
           onClickOpen={openDialog}
           onClickClose={closeDialog}
-          type="Log In"
+          type={authType}
         />
-        <Button onClick={openDialog} color="inherit">
+        <Button onClick={() => openDialog("login")} color="inherit">
           Log In
         </Button>
-        <Button color="inherit">Sign Up</Button>
+        <Button onClick={() => openDialog("signup")} color="inherit">
+          Sign Up
+        </Button>
       </div>
     );
   }

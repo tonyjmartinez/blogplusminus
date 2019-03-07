@@ -15,10 +15,16 @@ export const signin = async (email, password, authorized) => {
   }
 };
 
+export const signup = async (email, password, success) => {
+  const creds = { email: email, password: password };
+  const response = await axios.post("/signup", creds);
+  console.log(response.data);
+};
+
 export const tokenSignin = async cb => {
   try {
-    const response = await axios.get("/");
-    cb("authorized", response.data.user.username);
+    const response = await axios.get("/tokenSignin");
+    cb("authorized", response.data.user);
   } catch (err) {
     cb("unauthorized", "");
   }
