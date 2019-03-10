@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { signin } from "./fetchAuth";
+import { signin, signup } from "./fetchAuth";
 import { tokenSignin } from "./fetchAuth";
 import AppContext from "./appContext";
 
@@ -12,7 +12,17 @@ const appProvider = props => {
   const [auth, setAuth] = useState("");
   const [user, setUser] = useState(initialUser);
 
-  const attemptSignup = (email, password) => {};
+  const attemptSignup = (email, password, username) => {
+    const success = (status, user) => {
+      if (status) {
+        setUser({username: user.username});
+        setAuth("authorized");
+      } else {
+        setAuth("unauthorized");
+      }
+    };
+    signup(email,password, username, success);
+  };
 
   const attemptSignin = (email, password) => {
     const authorized = (status, user) => {
@@ -49,7 +59,8 @@ const appProvider = props => {
         setUser: setUser,
         attemptAuth: attemptAuth,
         user: user,
-        signOut: signOut
+        signOut: signOut,
+        signup : attemptSignup,
       }}
     >
       {props.children}

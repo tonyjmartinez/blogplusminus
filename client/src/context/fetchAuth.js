@@ -15,10 +15,21 @@ export const signin = async (email, password, authorized) => {
   }
 };
 
-export const signup = async (email, password, success) => {
-  const creds = { email: email, password: password };
-  const response = await axios.post("/signup", creds);
-  console.log(response.data);
+export const signup = async (email, password, username, success) => {
+  const creds = { email: email, password: password, username: username};
+  try {
+    const response = await axios.post("/signup", creds);
+    console.log(response.data);
+    if (response.data.token !== undefined) {
+      localStorage.setItem("token", response.data.token)
+      success(true, response.data.user)
+    } else {
+      success(false,"");
+    }
+  } catch(err) {
+    success(false,"");
+  }
+
 };
 
 export const tokenSignin = async cb => {

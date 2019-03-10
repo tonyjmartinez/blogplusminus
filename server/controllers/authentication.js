@@ -63,7 +63,10 @@ exports.signup = function(req, res, next) {
       }
 
       // Repond to request indicating the user was created
-      res.json({ token: tokenForUser(user) });
+      res.json({ token: tokenForUser(user), user: {
+        username: user.username,
+        email: user.email,
+      }});
     });
   });
 };

@@ -65,7 +65,8 @@ const authForm = props => {
   };
 
   const passwordValidator = password => {
-    if (password.trim().length < 5 && password.trim().length !== 0) {
+    if (props.type === "signup" && password.trim().length < 5 
+    && password.trim().length !== 0) {
       setErrorMessage("Password must be 5 characters or longer");
       return false;
     }
@@ -100,7 +101,8 @@ const authForm = props => {
   };
 
   const handleSignUp = () => {
-    props.context.signup(inputValues.email, inputValues.password);
+    console.log(props.type);
+    props.context.signup(inputValues.email, inputValues.password, inputValues.username);
   };
 
   let verifyPassword = null;
@@ -167,7 +169,7 @@ const authForm = props => {
         </Button>
 
         <Button
-          onClick={props.type === "signin" ? handleSignIn : handleSignUp}
+          onClick={props.type === "login" ? handleSignIn : handleSignUp}
           color="primary"
         >
           Submit
