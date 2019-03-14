@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import Header from "./ui/header";
+import Header from "./ui/Header";
 import withAppContext from "../context/withAppContext";
 import { BrowserRouter, Route, Link } from "react-router-dom";
 
