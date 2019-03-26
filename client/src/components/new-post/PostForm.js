@@ -5,7 +5,7 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogActions from "@material-ui/core/DialogActions";
 import Button from "@material-ui/core/Button";
 
-const authForm = props => {
+const postForm = props => {
   const [inputValidators, setInputValidators] = useState({
     email: true,
     password: true,
@@ -187,4 +187,4 @@ const authForm = props => {
   );
 };
 
-export default withAppContext(authForm);
+export default withAppContext(postForm);

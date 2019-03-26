@@ -9,6 +9,8 @@ import AuthDialog from "./AuthDialog";
 import { Link } from "react-router-dom";
 import Fab from "@material-ui/core/Fab";
 import AddIcon from "@material-ui/icons/Add";
+import MediaQuery from "react-responsive";
+
 const useStyles = makeStyles({
   root: {
     flexGrow: 1
@@ -62,16 +64,18 @@ const header = props => {
     if (user !== undefined) {
       authButtons = (
         <div>
-          <Fab
-            variant="extended"
-            color="secondary"
-            size="small"
-            className={classes.fab}
-            aria-label="New"
-          >
-            <AddIcon className={classes.extendedIcon} />
-            <span className={classes.fabText}>New Post</span>
-          </Fab>
+          <MediaQuery query="(min-device-width: 560px)">
+            <Fab
+              variant="extended"
+              color="secondary"
+              size="small"
+              className={classes.fab}
+              aria-label="New"
+            >
+              <AddIcon className={classes.extendedIcon} />
+              <span className={classes.fabText}>New Post</span>
+            </Fab>
+          </MediaQuery>
           <Button onClick={() => console.log(props)} color="inherit">
             {user.username}
           </Button>

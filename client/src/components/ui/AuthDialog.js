@@ -20,7 +20,11 @@ const AuthDialog = props => {
 
   return (
     <div>
-      <Dialog open={props.open} aria-labelledby="form-dialog-title">
+      <Dialog
+        open={props.open}
+        onClose={props.onClickClose}
+        aria-labelledby="form-dialog-title"
+      >
         <DialogTitle id="form-dialog-title">{title}</DialogTitle>
         <AuthForm type={props.type} close={props.onClickClose} />
       </Dialog>
