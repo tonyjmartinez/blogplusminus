@@ -28,26 +28,22 @@ exports.tokenSignin = function(req, res, next) {
   });
 };
 
-exports.signup = function(req, res, next) {
-  const email = req.body.email;
-  const password = req.body.password;
-  const username = req.body.username;
-
+exports.signup = function({ email, password, username }, cb) {
   if (!email || !password) {
-    return res
-      .status(422)
-      .send({ error: "You must provide email and password" });
+    return cb(null, "Email and password required");
   }
+
+  console.log(email);
 
   // See if a user with the given email exists
   User.findOne({ email: email }, function(err, existingUser) {
     if (err) {
-      return next(err);
+      return cb(null, "Error");
     }
 
     // If a user with email does exist, return an error
     if (existingUser) {
-      return res.status(422).send({ error: "Email is in use" });
+      return cb(null, "Email is in use");
     }
 
     // If a user with email does NOT exist, create and save user record
@@ -59,14 +55,23 @@ exports.signup = function(req, res, next) {
 
     user.save(function(err) {
       if (err) {
-        return next(err);
+        return cb(null, "Save error");
       }
 
+      console.log(user);
+
       // Repond to request indicating the user was created
-      res.json({ token: tokenForUser(user), user: {
-        username: user.username,
-        email: user.email,
-      }});
+      return cb(
+        {
+          token: tokenForUser(user),
+          user: {
+            id: user._id,
+            username: user.username,
+            email: user.email
+          }
+        },
+        "New user was created"
+      );
     });
   });
 };
