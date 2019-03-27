@@ -5,14 +5,24 @@ const expressGraphQL = require("express-graphql");
 const schema = require("../server/schema/schema");
 const requireAuth = passport.authenticate("jwt", { session: false });
 const requireSignin = passport.authenticate("local", { session: false });
+const jwt = require("express-jwt");
+
+const auth = jwt({
+  secret: "fqdfqfddsfwrq3r3qr43fr",
+  credentialsRequired: false
+});
 
 module.exports = function(app) {
   app.use(
     "/graphql",
-    expressGraphQL({
+    auth,
+    expressGraphQL(req => ({
       schema,
-      graphiql: true
-    })
+      graphiql: true,
+      context: {
+        user: req.user
+      }
+    }))
   );
 
   //app.get("/tokenSignin", requireAuth, Auth.tokenSignin);

@@ -3,14 +3,13 @@ const { GraphQLObjectType, GraphQLString } = graphql;
 const axios = require("axios");
 
 const UserType = require("./types/user-type");
-const AuthType = require("./types/auth-type.js");
 const Auth = require("../controllers/authentication");
 
 const mutation = new GraphQLObjectType({
   name: "Mutation",
   fields: {
     signup: {
-      type: AuthType,
+      type: GraphQLString,
       args: {
         email: { type: GraphQLString },
         password: { type: GraphQLString },
@@ -20,13 +19,13 @@ const mutation = new GraphQLObjectType({
         return new Promise((resolve, reject) => {
           const creds = { email, password, username };
 
-          Auth.signup(creds, function(user, msg) {
+          Auth.signup(creds, function(token, msg) {
             console.log(msg);
-            if (user === null) {
+            if (token === null) {
               console.log("problem", msg);
             }
-            console.log(user);
-            resolve(user);
+            console.log(token);
+            resolve(token);
           });
         });
       }

@@ -61,17 +61,7 @@ exports.signup = function({ email, password, username }, cb) {
       console.log(user);
 
       // Repond to request indicating the user was created
-      return cb(
-        {
-          token: tokenForUser(user),
-          user: {
-            id: user._id,
-            username: user.username,
-            email: user.email
-          }
-        },
-        "New user was created"
-      );
+      return cb(tokenForUser(user), "New user was created");
     });
   });
 };
