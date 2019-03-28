@@ -29,6 +29,22 @@ const mutation = new GraphQLObjectType({
           });
         });
       }
+    },
+    login: {
+      type: GraphQLString,
+      args: {
+        email: { type: GraphQLString },
+        password: { type: GraphQLString }
+      },
+      resolve(parentValue, { email, password }, req) {
+        return new Promise((resolve, reject) => {
+          const creds = { email, password };
+          Auth.login(creds, function(token, msg) {
+            console.log(token, msg);
+            resolve(token);
+          });
+        });
+      }
     }
   }
 });

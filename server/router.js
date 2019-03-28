@@ -6,9 +6,10 @@ const schema = require("../server/schema/schema");
 const requireAuth = passport.authenticate("jwt", { session: false });
 const requireSignin = passport.authenticate("local", { session: false });
 const jwt = require("express-jwt");
+const config = require("./config.js");
 
 const auth = jwt({
-  secret: "fqdfqfddsfwrq3r3qr43fr",
+  secret: config.secret,
   credentialsRequired: false
 });
 
