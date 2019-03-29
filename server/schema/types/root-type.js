@@ -1,25 +1,18 @@
 const graphql = require("graphql");
 const { GraphQLObjectType } = graphql;
 const UserType = require("./user-type");
-const AuthType = require("./auth-type");
+const User = require("../../models/user");
 
 const RootType = new GraphQLObjectType({
   name: "RootType",
   fields: {
     user: {
       type: UserType,
-      resolve(parentValue, args, req) {
-        return req.user;
-      }
-    },
-    auth: {
-      type: AuthType,
-      resolve(parentValue, args, { user }) {
+      async resolve(parentValue, args, { user }) {
         if (!user) {
           throw new Error("You are not authenticated!");
         }
-        console.log(user);
-        return user;
+        return await User.findById(user.id);
       }
     }
   }
