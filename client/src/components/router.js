@@ -5,13 +5,10 @@ import { BrowserRouter, Route, Link } from "react-router-dom";
 
 const router = props => {
   useEffect(() => {
-    console.log(localStorage.getItem("token"));
-    if (localStorage.getItem("token") !== null) {
-      props.context.attemptAuth();
-    } else {
-      props.context.setAuth("unauthorized");
-    }
+    props.context.attemptAuth();
   }, []);
+
+  console.log(props);
 
   return (
     <React.Fragment>

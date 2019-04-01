@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { signin, signup } from "./fetchAuth";
 import { tokenSignin } from "./fetchAuth";
 import AppContext from "./appContext";
+import axios from "../axios-users.js";
 
 const appProvider = props => {
   const initialUser = {
@@ -15,13 +16,13 @@ const appProvider = props => {
   const attemptSignup = (email, password, username) => {
     const success = (status, user) => {
       if (status) {
-        setUser({username: user.username});
+        setUser({ username: user.username });
         setAuth("authorized");
       } else {
         setAuth("unauthorized");
       }
     };
-    signup(email,password, username, success);
+    signup(email, password, username, success);
   };
 
   const attemptSignin = (email, password) => {
@@ -38,11 +39,12 @@ const appProvider = props => {
 
   const attemptAuth = () => {
     console.log("attemptauth");
-    tokenSignin((status, user) => {
-      console.log(status, user);
-      setAuth(status);
-      setUser({ username: user.username });
-    });
+    setAuth(localStorage.getItem("token"));
+    //tokenSignin((status, user) => {
+    //  console.log(status, user);
+    //  setAuth(status);
+    //  setUser({ username: user.username });
+    //});
   };
 
   const signOut = () => {
@@ -60,7 +62,7 @@ const appProvider = props => {
         attemptAuth: attemptAuth,
         user: user,
         signOut: signOut,
-        signup : attemptSignup,
+        signup: attemptSignup
       }}
     >
       {props.children}
