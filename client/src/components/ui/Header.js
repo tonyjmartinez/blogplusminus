@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { makeStyles } from "@material-ui/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -60,8 +60,8 @@ const header = props => {
   };
 
   let authButtons = null;
-  if (auth === "authorized") {
-    if (user !== undefined) {
+  if (auth) {
+    if (user !== null) {
       authButtons = (
         <div>
           <MediaQuery query="(min-device-width: 560px)">
@@ -85,7 +85,7 @@ const header = props => {
         </div>
       );
     }
-  } else if (auth === "unauthorized") {
+  } else if (!auth) {
     authButtons = (
       <div>
         <AuthDialog
@@ -110,7 +110,7 @@ const header = props => {
         <Toolbar>
           <Typography variant="h6" color="inherit" className={classes.grow}>
             <Link to="/" className={classes.link}>
-              Blog Plus{"/"}Minus
+              Blog {"+ / -"}
             </Link>
           </Typography>
           {authButtons}

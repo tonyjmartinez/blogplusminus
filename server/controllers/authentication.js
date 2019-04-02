@@ -3,9 +3,13 @@ const config = require("../config");
 const jwt = require("jsonwebtoken");
 
 function tokenForUser(user) {
-  return jwt.sign({ id: user._id, email: user.email }, config.secret, {
-    expiresIn: "1d"
-  });
+  return jwt.sign(
+    { id: user._id, email: user.email, username: user.username },
+    config.secret,
+    {
+      expiresIn: "1d"
+    }
+  );
 }
 
 exports.login = function({ email, password }, cb) {
@@ -22,8 +26,9 @@ exports.login = function({ email, password }, cb) {
       if (!match) {
         return cb(null, "Incorrect password");
       }
+      console.log(user._id);
 
-      return cb(tokenForUser({ email, password }), "Success");
+      return cb(tokenForUser(user), "Success");
     });
   });
 };

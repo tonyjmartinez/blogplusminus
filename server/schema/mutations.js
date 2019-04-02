@@ -33,11 +33,13 @@ const mutation = new GraphQLObjectType({
         password: { type: GraphQLString }
       },
       resolve(parentValue, { email, password }, req) {
+        console.log(email, password);
         return new Promise((resolve, reject) => {
           Auth.login({ email, password }, function(token, msg) {
             if (token === null) {
               reject(msg);
             }
+            console.log(token);
             resolve(token);
           });
         });
