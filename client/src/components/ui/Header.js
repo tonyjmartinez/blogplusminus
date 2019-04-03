@@ -24,10 +24,18 @@ const useStyles = makeStyles({
   },
   link: {
     textDecoration: "none",
-    color: "black"
+    color: "white"
+  },
+  topFab: {
+    marginRight: "20px"
   },
   fab: {
-    margin: "10px"
+    margin: 0,
+    top: "auto",
+    right: 20,
+    bottom: 20,
+    left: "auto",
+    position: "fixed"
   },
   extendedIcon: {
     marginRight: "5px"
@@ -60,16 +68,17 @@ const header = props => {
   };
 
   let authButtons = null;
+  let newPostButton = null;
   if (auth) {
     if (user !== null) {
       authButtons = (
         <div>
-          <MediaQuery query="(min-device-width: 560px)">
+          <MediaQuery minDeviceWidth={560}>
             <Fab
               variant="extended"
               color="secondary"
               size="small"
-              className={classes.fab}
+              className={classes.topFab}
               aria-label="New"
             >
               <AddIcon className={classes.extendedIcon} />
@@ -83,6 +92,21 @@ const header = props => {
             Sign Out
           </Button>
         </div>
+      );
+
+      newPostButton = (
+        <MediaQuery maxDeviceWidth={559}>
+          <Fab
+            variant="extended"
+            color="secondary"
+            size="small"
+            className={classes.fab}
+            aria-label="New"
+          >
+            <AddIcon className={classes.extendedIcon} />
+            <span className={classes.fabText}>New Post</span>
+          </Fab>
+        </MediaQuery>
       );
     }
   } else if (!auth) {
@@ -110,12 +134,13 @@ const header = props => {
         <Toolbar>
           <Typography variant="h6" color="inherit" className={classes.grow}>
             <Link to="/" className={classes.link}>
-              Blog {"+ / -"}
+              Blog {"+/-"}
             </Link>
           </Typography>
           {authButtons}
         </Toolbar>
       </AppBar>
+      {newPostButton}
     </div>
   );
 };
