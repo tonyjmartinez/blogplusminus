@@ -80,6 +80,7 @@ const header = props => {
               size="small"
               className={classes.topFab}
               aria-label="New"
+              onClick={props.onOpen}
             >
               <AddIcon className={classes.extendedIcon} />
               <span className={classes.fabText}>New Post</span>
@@ -102,6 +103,7 @@ const header = props => {
             size="small"
             className={classes.fab}
             aria-label="New"
+            onClick={props.onOpen}
           >
             <AddIcon className={classes.extendedIcon} />
             <span className={classes.fabText}>New Post</span>
