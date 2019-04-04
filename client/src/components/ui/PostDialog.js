@@ -8,7 +8,10 @@ import Typography from "@material-ui/core/Typography";
 import CloseIcon from "@material-ui/icons/Close";
 import Slide from "@material-ui/core/Slide";
 import Button from "@material-ui/core/Button";
+import TextField from "@material-ui/core/TextField";
+import Fab from "@material-ui/core/Fab";
 
+import AddIcon from "@material-ui/icons/Add";
 const useStyles = makeStyles({
   appBar: {
     position: "relative"
@@ -19,6 +22,25 @@ const useStyles = makeStyles({
   container: {
     display: "flex",
     flexWrap: "wrap"
+  },
+
+  textFieldDiv: {
+    margin: "0px auto",
+    width: "100%"
+  },
+  form: {
+    margin: "0px auto",
+    width: "80%",
+    display: "flex",
+    flexWrap: "wrap"
+  },
+
+  fabDiv: {
+    margin: "0px auto",
+    marginTop: "20px"
+  },
+  fabText: {
+    marginRight: "10px"
   }
 });
 
@@ -50,11 +72,43 @@ const postDialog = props => {
               New Post
             </Typography>
             <Button color="inherit" onClick={props.onClose}>
-              save
+              Save
             </Button>
           </Toolbar>
         </AppBar>
-        <form className={classes.container} />
+        <form className={classes.form}>
+          <div className={classes.textFieldDiv}>
+            <TextField
+              label="Title"
+              placeholder="Title"
+              margin="normal"
+              variant="outlined"
+              fullWidth
+            />
+          </div>
+          <div className={classes.textFieldDiv}>
+            <TextField
+              label="Content"
+              placeholder="Content"
+              margin="normal"
+              variant="outlined"
+              fullWidth
+              multiline
+            />
+          </div>
+          <div className={classes.fabDiv}>
+            <Fab
+              variant="extended"
+              color="secondary"
+              size="small"
+              aria-label="New"
+              onClick={props.onOpen}
+            >
+              <AddIcon className={classes.extendedIcon} />
+              <span className={classes.fabText}>Save</span>
+            </Fab>
+          </div>
+        </form>
       </Dialog>
     </div>
   );
