@@ -11,14 +11,46 @@ const schema = require("../server/schema/schema");
 const jwt = require("express-jwt");
 const config = require("./config.js");
 const jsonwebtoken = require("jsonwebtoken");
+const refresh = require("./refresh");
 
 const auth = jwt({
   secret: config.secret,
-  credentialsRequired: false
+  credentialsRequired: false,
+  getToken: function fromHeader(req) {
+    console.log("get token", req);
+    if (req.headers.authorization.split(" ")[0] === "Bearer") {
+      jsonwebtoken.verify(
+        req.headers.authorization.split(" ")[1],
+        config.secret,
+        (err, decoded) => {
+          if (err) {
+            console.log("error sdfoafnhsaoh", err);
+          } else if (decoded) {
+            if (decoded.refreshToken in refresh.tokens) {
+              console.log("miracle");
+            }
+
+            console.log("decoded aokfhaofhdsa", decoded);
+          }
+        }
+      );
+
+      return req.headers.authorization.split(" ")[1];
+    } else {
+      return null;
+    }
+  }
 });
 
-const refresh = (err, req, res, next) => {
-  console.log(err);
+const refreshCheck = (err, req, res, next) => {
+  console.log("error", err);
+  console.log("error inner token exp", err.inner.name);
+  if (err.inner.name === "TokenExpiredError") {
+    console.log("expired", req.body);
+  }
+  console.log("inside refresh");
+  console.log("errorrrrr", err);
+  console.log("REFRESH -------------------", req.context);
   next();
 };
 
@@ -31,7 +63,7 @@ app.use(
   "/graphql",
   bodyParser.json(),
   auth,
-  refresh,
+  refreshCheck,
   expressGraphQL(req => ({
     schema,
     graphiql: true,
