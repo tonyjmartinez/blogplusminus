@@ -10,6 +10,7 @@ import { Link } from "react-router-dom";
 import Fab from "@material-ui/core/Fab";
 import AddIcon from "@material-ui/icons/Add";
 import MediaQuery from "react-responsive";
+import Avatar from "@material-ui/core/Avatar";
 
 const useStyles = makeStyles({
   root: {
@@ -42,6 +43,11 @@ const useStyles = makeStyles({
   },
   fabText: {
     marginRight: "10px"
+  },
+  avatar: {},
+  avatarDiv: {
+    display: "inline-block",
+    marginRight: "10px"
   }
 });
 
@@ -73,7 +79,7 @@ const header = props => {
     if (user !== null) {
       authButtons = (
         <div>
-          <MediaQuery minDeviceWidth={560}>
+          <MediaQuery minWidth={560}>
             <Fab
               variant="extended"
               color="secondary"
@@ -86,9 +92,11 @@ const header = props => {
               <span className={classes.fabText}>New Post</span>
             </Fab>
           </MediaQuery>
-          <Button onClick={() => console.log(props)} color="inherit">
-            {user.username}
-          </Button>
+          <div className={classes.avatarDiv}>
+            <Avatar className={classes.avatar}>
+              {user.username.charAt(0).toUpperCase()}
+            </Avatar>
+          </div>
           <Button onClick={handleSignOut} color="inherit">
             Sign Out
           </Button>
@@ -96,7 +104,7 @@ const header = props => {
       );
 
       newPostButton = (
-        <MediaQuery maxDeviceWidth={559}>
+        <MediaQuery maxWidth={559}>
           <Fab
             variant="extended"
             color="secondary"

@@ -10,7 +10,7 @@ import Slide from "@material-ui/core/Slide";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Fab from "@material-ui/core/Fab";
-
+import MediaQuery from "react-responsive";
 import AddIcon from "@material-ui/icons/Add";
 const useStyles = makeStyles({
   appBar: {
@@ -30,9 +30,14 @@ const useStyles = makeStyles({
   },
   form: {
     margin: "0px auto",
-    width: "80%",
     display: "flex",
     flexWrap: "wrap"
+  },
+  formDesktop: {
+    width: "60%"
+  },
+  formMobile: {
+    width: "80%"
   },
 
   fabDiv: {
@@ -50,6 +55,24 @@ const Transition = props => {
 
 const postDialog = props => {
   const classes = useStyles();
+
+  const PostForm = props => (
+    <MediaQuery minWidth={700}>
+      {matches => {
+        let width;
+        if (matches) {
+          width = classes.formDesktop;
+        } else {
+          width = classes.formMobile;
+        }
+        return (
+          <form {...props} className={classes.form + " " + width}>
+            {props.children}
+          </form>
+        );
+      }}
+    </MediaQuery>
+  );
 
   return (
     <div>
@@ -76,7 +99,7 @@ const postDialog = props => {
             </Button>
           </Toolbar>
         </AppBar>
-        <form className={classes.form}>
+        <PostForm>
           <div className={classes.textFieldDiv}>
             <TextField
               label="Title"
@@ -108,7 +131,7 @@ const postDialog = props => {
               <span className={classes.fabText}>Save</span>
             </Fab>
           </div>
-        </form>
+        </PostForm>
       </Dialog>
     </div>
   );
