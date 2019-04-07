@@ -35,7 +35,8 @@ const mutation = new GraphQLObjectType({
       resolve(parentValue, { email, password }, req) {
         console.log(email, password);
         return new Promise((resolve, reject) => {
-          Auth.login({ email, password }, function(token, msg) {
+          Auth.login({ email, password }, function(tokens, msg) {
+            const token = tokens.token;
             if (token === null) {
               reject(msg);
             }

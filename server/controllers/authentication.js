@@ -1,6 +1,9 @@
 const User = require("../models/user");
 const config = require("../config");
 const jwt = require("jsonwebtoken");
+const randToken = require("rand-token");
+
+let refreshTokens = {};
 
 function tokenForUser(user) {
   return jwt.sign(
@@ -26,9 +29,11 @@ exports.login = function({ email, password }, cb) {
       if (!match) {
         return cb(null, "Incorrect password");
       }
-      console.log(user._id);
 
-      return cb(tokenForUser(user), "Success");
+      const refreshToken = randToken.uid(256);
+      refreshTokens[refreshToken] = user.username;
+
+      return cb({ token: tokenForUser(user), refreshToken }, "Success");
     });
   });
 };
