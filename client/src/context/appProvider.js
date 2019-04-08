@@ -16,7 +16,11 @@ const appProvider = props => {
     console.log("curUser", currentUser);
     if (currentUser !== undefined && currentUser !== null) {
       if (currentUser.token !== null) {
+        console.log(currentUser);
         localStorage.setItem("token", currentUser.token);
+        if (currentUser.expires !== null) {
+          localStorage.setItem("expires", currentUser.expires);
+        }
       }
       authorized = true;
     }
@@ -48,13 +52,13 @@ const appProvider = props => {
         const tokens = JSON.parse(user.data.login);
         const token = tokens.jwt;
         const refToken = tokens.refreshToken;
-        const expireTime = tokens.expireTime;
-        console.log(expireTime);
+        const expires = tokens.expires;
+        console.log(expires);
 
         props.resetStore();
         localStorage.setItem("token", token);
         localStorage.setItem("refreshToken", refToken);
-        localStorage.setItem("expireTime", expireTime);
+        localStorage.setItem("expires", expires);
       }
     } catch (err) {
       console.log(err);

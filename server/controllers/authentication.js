@@ -3,14 +3,16 @@ const config = require("../config");
 const jwt = require("jsonwebtoken");
 const randToken = require("rand-token");
 const refresh = require("../refresh");
+const jwtExpress = require("express-jwt");
 
 function tokenForUser(user) {
-  console.log("refreshinggggg", user.refreshToken);
   return jwt.sign(
     {
       id: user._id,
       email: user.email,
-      username: user.username
+      username: user.username,
+      token: user.token ? user.token : null,
+      expires: user.expires ? user.expires : null
     },
     config.secret,
     {
@@ -18,6 +20,50 @@ function tokenForUser(user) {
     }
   );
 }
+
+exports.jwtAuth = jwtExpress({
+  secret: config.secret,
+  credentialsRequired: false,
+  getToken: function fromHeader(req) {
+    if (req.headers.authorization.split(" ")[0] === "Bearer") {
+      let token = req.headers.authorization.split(" ")[1];
+      return jwt.verify(token, config.secret, (err, decoded) => {
+        if (err) {
+          if (err.name === "TokenExpiredError") {
+            return jwt.verify(
+              token,
+              config.secret,
+              { ignoreExpiration: true },
+              (err, decoded) => {
+                if (err) {
+                  console.log(err);
+                } else {
+                  const refreshToken = req.headers.authrefresh;
+                  if (
+                    refreshToken in refresh.tokens &&
+                    refresh.tokens[refreshToken] === decoded.username
+                  ) {
+                    decoded.token = tokenForUser(decoded);
+                    decoded.expires = new Date();
+                    return tokenForUser(decoded);
+                  }
+                }
+              }
+            );
+          }
+        } else if (decoded) {
+          return req.headers.authorization.split(" ")[1];
+        }
+      });
+
+      console.log("here");
+
+      return req.headers.authorization.split(" ")[1];
+    } else {
+      return null;
+    }
+  }
+});
 
 exports.login = function({ email, password }, cb) {
   User.findOne({ email: email }, function(err, user) {

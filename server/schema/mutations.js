@@ -39,12 +39,13 @@ const mutation = new GraphQLObjectType({
             if (jwt === null) {
               reject(msg);
             }
-            const expireTime = new Date();
+            const expires = new Date();
+            console.log("exp", expires);
             resolve(
               JSON.stringify({
                 jwt: jwt,
                 refreshToken: refreshToken,
-                expireTime: expireTime
+                expires: expires
               })
             );
           });

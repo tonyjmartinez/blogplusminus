@@ -7,6 +7,7 @@ export default gql`
       email
       username
       token
+      expires
     }
   }
 `;
