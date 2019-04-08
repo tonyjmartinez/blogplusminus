@@ -44,7 +44,9 @@ exports.jwtAuth = jwtExpress({
                     refresh.tokens[refreshToken] === decoded.username
                   ) {
                     decoded.token = tokenForUser(decoded);
-                    decoded.expires = new Date();
+                    const expires = new Date();
+                    expires.setSeconds(expires.getSeconds() + 15);
+                    decoded.expires = expires;
                     return tokenForUser(decoded);
                   }
                 }
