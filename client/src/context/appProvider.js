@@ -26,15 +26,22 @@ const appProvider = props => {
     }
   }
 
+  //TODO: save refresh token in localstorage
   const attemptSignup = async (email, password, username) => {
     try {
       const newUser = await props.signup({
         variables: { email, password, username }
       });
 
-      if (newUser !== undefined) {
+      if (newUser.data !== undefined) {
+        const tokens = JSON.parse(newUser.data.signup);
+        const token = tokens.jwt;
+        const refToken = tokens.refreshToken;
+        const expires = tokens.expires;
         props.resetStore();
-        localStorage.setItem("token", newUser.data.signup);
+        localStorage.setItem("token", token);
+        localStorage.setItem("refreshToken", refToken);
+        localStorage.setItem("expires", expires);
       }
     } catch (err) {}
   };
@@ -52,6 +59,7 @@ const appProvider = props => {
         const tokens = JSON.parse(user.data.login);
         const token = tokens.jwt;
         const refToken = tokens.refreshToken;
+        console.log("expireees", tokens.expires);
         const expires = tokens.expires;
         console.log(expires);
 

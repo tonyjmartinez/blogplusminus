@@ -17,11 +17,23 @@ const mutation = new GraphQLObjectType({
       },
       resolve(parentValue, { email, password, username }, req) {
         return new Promise((resolve, reject) => {
-          Auth.signup({ email, password, username }, function(token, msg) {
-            if (token === null) {
+          Auth.signup({ email, password, username }, function(
+            { jwt, refreshToken },
+            msg
+          ) {
+            if (jwt === null) {
               reject(msg);
             }
-            resolve(token);
+            const expires = new Date();
+
+            expires.setSeconds(expires.getSeconds() + 10);
+            resolve(
+              JSON.stringify({
+                jwt: jwt,
+                refreshToken: refreshToken,
+                expires: expires
+              })
+            );
           });
         });
       }
@@ -40,6 +52,7 @@ const mutation = new GraphQLObjectType({
               reject(msg);
             }
             const expires = new Date();
+            expires.setSeconds(expires.getSeconds() + 10);
             console.log("exp", expires);
             resolve(
               JSON.stringify({

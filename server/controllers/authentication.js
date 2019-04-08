@@ -45,7 +45,7 @@ exports.jwtAuth = jwtExpress({
                   ) {
                     decoded.token = tokenForUser(decoded);
                     const expires = new Date();
-                    expires.setSeconds(expires.getSeconds() + 15);
+                    expires.setSeconds(expires.getSeconds() + 10);
                     decoded.expires = expires;
                     return tokenForUser(decoded);
                   }
@@ -90,6 +90,7 @@ exports.login = function({ email, password }, cb) {
   });
 };
 
+//TODO return refresh token in signup
 exports.signup = function({ email, password, username }, cb) {
   if (!email || !password) {
     return cb(null, "Email and password required");
@@ -115,7 +116,12 @@ exports.signup = function({ email, password, username }, cb) {
         return cb(null, "User save error");
       }
 
-      return cb(tokenForUser(user), "New user was created");
+      const refreshToken = randToken.uid(256);
+      refresh.tokens[refreshToken] = username;
+      return cb(
+        { jwt: tokenForUser(user), refreshToken },
+        "New user was created"
+      );
     });
   });
 };
