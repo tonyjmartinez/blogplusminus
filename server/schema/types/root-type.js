@@ -8,13 +8,17 @@ const RootType = new GraphQLObjectType({
   fields: {
     user: {
       type: UserType,
-      async resolve(parentValue, args, { user }) {
-        if (!user) {
+      async resolve(parentValue, args, req) {
+        if (req.user) {
+          console.log("requser", req.user);
+          return req.user;
+        } else if (!req.user) {
           console.log("You are not authenticated!");
           return null;
+        } else {
+          const foundUser = await User.findById(req.user.id);
+          return foundUser;
         }
-        const foundUser = await User.findById(user.id);
-        return foundUser;
       }
     }
   }

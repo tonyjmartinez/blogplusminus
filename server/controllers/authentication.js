@@ -10,12 +10,11 @@ function tokenForUser(user) {
     {
       id: user._id,
       email: user.email,
-      username: user.username,
-      refreshToken: user.refreshToken
+      username: user.username
     },
     config.secret,
     {
-      expiresIn: "1d"
+      expiresIn: "10s"
     }
   );
 }
@@ -37,9 +36,8 @@ exports.login = function({ email, password }, cb) {
 
       const refreshToken = randToken.uid(256);
       refresh.tokens[refreshToken] = user.username;
-      user.refreshToken = refreshToken;
 
-      return cb(tokenForUser(user), "Success");
+      return cb({ jwt: tokenForUser(user), refreshToken }, "Success");
     });
   });
 };

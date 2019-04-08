@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 //import { signin, signup } from "./fetchAuth";
 import AppContext from "./appContext";
 import { graphql, compose } from "react-apollo";
@@ -9,10 +9,15 @@ import query from "../queries/user";
 const appProvider = props => {
   let currentUser = null;
   let authorized = false;
+
   if (!props.getUser.loading) {
     currentUser = props.getUser.user;
 
+    console.log("curUser", currentUser);
     if (currentUser !== undefined && currentUser !== null) {
+      if (currentUser.token !== null) {
+        localStorage.setItem("token", currentUser.token);
+      }
       authorized = true;
     }
   }
@@ -37,8 +42,19 @@ const appProvider = props => {
       });
 
       if (user.data !== undefined) {
+        console.log("12313");
+        console.log(user.data);
+
+        const tokens = JSON.parse(user.data.login);
+        const token = tokens.jwt;
+        const refToken = tokens.refreshToken;
+        const expireTime = tokens.expireTime;
+        console.log(expireTime);
+
         props.resetStore();
-        localStorage.setItem("token", user.data.login);
+        localStorage.setItem("token", token);
+        localStorage.setItem("refreshToken", refToken);
+        localStorage.setItem("expireTime", expireTime);
       }
     } catch (err) {
       console.log(err);

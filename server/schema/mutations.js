@@ -35,12 +35,18 @@ const mutation = new GraphQLObjectType({
       resolve(parentValue, { email, password }, req) {
         console.log(email, password);
         return new Promise((resolve, reject) => {
-          Auth.login({ email, password }, function(token, msg) {
-            if (token === null) {
+          Auth.login({ email, password }, function({ jwt, refreshToken }, msg) {
+            if (jwt === null) {
               reject(msg);
             }
-            console.log(token);
-            resolve(token);
+            const expireTime = new Date();
+            resolve(
+              JSON.stringify({
+                jwt: jwt,
+                refreshToken: refreshToken,
+                expireTime: expireTime
+              })
+            );
           });
         });
       }

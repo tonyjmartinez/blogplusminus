@@ -13,27 +13,70 @@ const config = require("./config.js");
 const jsonwebtoken = require("jsonwebtoken");
 const refresh = require("./refresh");
 
+function tokenForUser(user) {
+  return jsonwebtoken.sign(
+    {
+      id: user.id,
+      email: user.email,
+      username: user.username,
+      token: user.token
+    },
+    config.secret,
+    {
+      expiresIn: "1d"
+    }
+  );
+}
 const auth = jwt({
   secret: config.secret,
   credentialsRequired: false,
   getToken: function fromHeader(req) {
-    console.log("get token", req);
     if (req.headers.authorization.split(" ")[0] === "Bearer") {
-      jsonwebtoken.verify(
-        req.headers.authorization.split(" ")[1],
+      let token = req.headers.authorization.split(" ")[1];
+      return jsonwebtoken.verify(
+        token,
         config.secret,
+        //{ ignoreExpiration: true },
         (err, decoded) => {
           if (err) {
-            console.log("error sdfoafnhsaoh", err);
-          } else if (decoded) {
-            if (decoded.refreshToken in refresh.tokens) {
-              console.log("miracle");
-            }
+            console.log("error sdfoafnhsaoh", err.name);
 
-            console.log("decoded aokfhaofhdsa", decoded);
+            if (err.name === "TokenExpiredError") {
+              console.log("token expired");
+              console.log(decoded);
+              console.log("ref token???", req.headers.authrefresh);
+              return jsonwebtoken.verify(
+                token,
+                config.secret,
+                { ignoreExpiration: true },
+                (err, decoded) => {
+                  console.log("decoded?", decoded);
+                  if (err) {
+                    console.log(err);
+                  } else {
+                    const refreshToken = req.headers.authrefresh;
+
+                    if (
+                      refreshToken in refresh.tokens &&
+                      refresh.tokens[refreshToken] === decoded.username
+                    ) {
+                      console.log("yes");
+                      decoded.token = tokenForUser(decoded);
+
+                      return tokenForUser(decoded);
+                    }
+                  }
+                }
+              );
+            }
+          } else if (decoded) {
+            console.log("decoded", decoded);
+            return req.headers.authorization.split(" ")[1];
           }
         }
       );
+
+      console.log("here");
 
       return req.headers.authorization.split(" ")[1];
     } else {
@@ -43,14 +86,9 @@ const auth = jwt({
 });
 
 const refreshCheck = (err, req, res, next) => {
-  console.log("error", err);
-  console.log("error inner token exp", err.inner.name);
-  if (err.inner.name === "TokenExpiredError") {
-    console.log("expired", req.body);
-  }
   console.log("inside refresh");
-  console.log("errorrrrr", err);
-  console.log("REFRESH -------------------", req.context);
+  const token = auth(req);
+  console.log(token);
   next();
 };
 
@@ -63,7 +101,6 @@ app.use(
   "/graphql",
   bodyParser.json(),
   auth,
-  refreshCheck,
   expressGraphQL(req => ({
     schema,
     graphiql: true,

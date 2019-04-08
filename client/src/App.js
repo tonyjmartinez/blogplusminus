@@ -19,10 +19,22 @@ const cache = new InMemoryCache({ dataIdFromObject: obj => obj.id });
 const authLink = setContext((_, { headers }) => {
   const token = localStorage.getItem("token");
 
+  let refreshToken = null;
+  const now = new Date();
+  console.log(now);
+  console.log(new Date(localStorage.getItem("expireTime")));
+
+  if (now > new Date(localStorage.getItem("expireTime"))) {
+    console.log("expired");
+    refreshToken = localStorage.getItem("refreshToken");
+  } else {
+    console.log("not expired");
+  }
   return {
     headers: {
       ...headers,
-      authorization: token ? `Bearer ${token}` : ""
+      authorization: token ? `Bearer ${token}` : "",
+      authrefresh: refreshToken ? refreshToken : ""
     }
   };
 });
