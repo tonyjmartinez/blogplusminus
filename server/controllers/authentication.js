@@ -25,7 +25,9 @@ exports.jwtAuth = jwtExpress({
   secret: config.secret,
   credentialsRequired: false,
   getToken: function fromHeader(req) {
+    console.log("getToken");
     if (req.headers.authorization.split(" ")[0] === "Bearer") {
+      console.log("bearer");
       let token = req.headers.authorization.split(" ")[1];
       return jwt.verify(token, config.secret, (err, decoded) => {
         if (err) {
@@ -57,17 +59,20 @@ exports.jwtAuth = jwtExpress({
           return req.headers.authorization.split(" ")[1];
         }
       });
-
-      console.log("here");
-
       return req.headers.authorization.split(" ")[1];
     } else {
-      return null;
+      console.log("else");
+      console.log("auth", req.headers.authorization);
+      return;
     }
   }
 });
 
 exports.login = function({ email, password }, cb) {
+  console.log("login", email, password);
+  if (email === "" || email === null || password === "" || password === null) {
+    return cb(null, "missing email or password");
+  }
   User.findOne({ email: email }, function(err, user) {
     if (!user) {
       return cb(null, "No user with that email");
