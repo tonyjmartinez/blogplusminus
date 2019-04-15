@@ -2,6 +2,8 @@ const graphql = require("graphql");
 const { GraphQLObjectType } = graphql;
 const UserType = require("./user-type");
 const User = require("../../models/user");
+const PostType = require("./post-type");
+const Post = require("../../models/post");
 
 const RootType = new GraphQLObjectType({
   name: "RootType",
@@ -19,6 +21,12 @@ const RootType = new GraphQLObjectType({
           const foundUser = await User.findById(req.user.id);
           return foundUser;
         }
+      }
+    },
+    post: {
+      type: PostType,
+      async resolve(parentValue, args, req) {
+        const foundPost = await Post.findById();
       }
     }
   }

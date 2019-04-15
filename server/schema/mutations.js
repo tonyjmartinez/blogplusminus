@@ -1,8 +1,10 @@
 const graphql = require("graphql");
-const { GraphQLObjectType, GraphQLString } = graphql;
+const { GraphQLObjectType, GraphQLString, GraphQLID, GraphQLNonNull } = graphql;
 const axios = require("axios");
-
+const PostInputType = require("./types/post-input-type");
+const PostController = require("../controllers/post");
 const UserType = require("./types/user-type");
+const PostType = require("./types/post-type");
 const Auth = require("../controllers/authentication");
 
 const mutation = new GraphQLObjectType({
@@ -63,6 +65,19 @@ const mutation = new GraphQLObjectType({
             );
           });
         });
+      }
+    },
+    newPost: {
+      type: GraphQLString,
+      args: {
+        input: {
+          type: new GraphQLNonNull(PostInputType)
+        }
+      },
+      resolve(parentValue, args) {
+        console.log(args);
+        PostController.newPost(args);
+        return "string";
       }
     }
   }

@@ -16,7 +16,7 @@ function tokenForUser(user) {
     },
     config.secret,
     {
-      expiresIn: "10s"
+      expiresIn: "1d"
     }
   );
 }
@@ -26,11 +26,17 @@ exports.jwtAuth = jwtExpress({
   credentialsRequired: false,
   getToken: function fromHeader(req) {
     console.log("getToken");
+    if (req.headers.authorization === undefined) {
+      return;
+    }
     if (req.headers.authorization.split(" ")[0] === "Bearer") {
       console.log("bearer");
       let token = req.headers.authorization.split(" ")[1];
+      console.log("token");
+      console.log(token);
       return jwt.verify(token, config.secret, (err, decoded) => {
         if (err) {
+          console.log("errorr", err);
           if (err.name === "TokenExpiredError") {
             return jwt.verify(
               token,
@@ -47,7 +53,7 @@ exports.jwtAuth = jwtExpress({
                   ) {
                     decoded.token = tokenForUser(decoded);
                     const expires = new Date();
-                    expires.setSeconds(expires.getSeconds() + 10);
+                    expires.setSeconds(expires.getSeconds() + 86400);
                     decoded.expires = expires;
                     return tokenForUser(decoded);
                   }
