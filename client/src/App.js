@@ -46,18 +46,16 @@ const client = new ApolloClient({
 
 const App = props => {
   return (
-    <MuiThemeProvider theme={theme}>
-      <ApolloProvider client={client}>
-        <AppProvider
-          resetStore={client.resetStore}
-          clearStore={client.clearStore}
-        >
-          <BrowserRouter>
-            <Router />
-          </BrowserRouter>
-        </AppProvider>
-      </ApolloProvider>
-    </MuiThemeProvider>
+    <ApolloProvider client={client}>
+      <AppProvider
+        resetStore={client.resetStore}
+        clearStore={client.clearStore}
+      >
+        <BrowserRouter>
+          <Router />
+        </BrowserRouter>
+      </AppProvider>
+    </ApolloProvider>
   );
 };
 

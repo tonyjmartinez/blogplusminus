@@ -1,14 +1,20 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 //import { signin, signup } from "./fetchAuth";
 import AppContext from "./appContext";
 import { graphql, compose } from "react-apollo";
 import loginMutation from "../mutations/login";
 import signupMutation from "../mutations/signup";
 import query from "../queries/user";
+import { MuiThemeProvider } from "@material-ui/core/styles";
+import theme from "../themes/theme";
 
 const appProvider = props => {
   let currentUser = null;
   let authorized = false;
+
+  const [darkMode, setDarkMode] = useState(true);
+
+  document.body.style = `background: ${darkMode ? "grey" : "white"}`;
 
   if (!props.getUser.loading) {
     currentUser = props.getUser.user;
@@ -79,17 +85,21 @@ const appProvider = props => {
   };
 
   return (
-    <AppContext.Provider
-      value={{
-        auth: authorized,
-        signin: attemptLogin,
-        user: props.getUser.user,
-        signOut: signOut,
-        signup: attemptSignup
-      }}
-    >
-      {props.children}
-    </AppContext.Provider>
+    <MuiThemeProvider theme={theme(darkMode)}>
+      <AppContext.Provider
+        value={{
+          auth: authorized,
+          signin: attemptLogin,
+          user: props.getUser.user,
+          signOut: signOut,
+          signup: attemptSignup,
+          setDarkMode,
+          darkMode
+        }}
+      >
+        {props.children}
+      </AppContext.Provider>
+    </MuiThemeProvider>
   );
 };
 

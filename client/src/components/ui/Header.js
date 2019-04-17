@@ -11,6 +11,8 @@ import Fab from "@material-ui/core/Fab";
 import AddIcon from "@material-ui/icons/Add";
 import MediaQuery from "react-responsive";
 import Avatar from "@material-ui/core/Avatar";
+import MoonIcon from "@material-ui/icons/Brightness3";
+import MoonIconOutlined from "@material-ui/icons/Brightness3Outlined";
 
 const useStyles = makeStyles({
   root: {
@@ -48,12 +50,18 @@ const useStyles = makeStyles({
   avatarDiv: {
     display: "inline-block",
     marginRight: "10px"
+  },
+  moonIcon: {
+    marginRight: "10px",
+    marginTop: "5px"
   }
 });
 
 const header = props => {
   const auth = props.context.auth;
   const user = props.context.user;
+  const setDarkMode = props.context.setDarkMode;
+  const darkMode = props.context.darkMode;
 
   const [dialogOpen, setDialogOpen] = useState(false);
   const [authType, setAuthType] = useState("login");
@@ -93,7 +101,10 @@ const header = props => {
             </Fab>
           </MediaQuery>
           <div className={classes.avatarDiv}>
-            <Avatar className={classes.avatar}>
+            <Avatar
+              style={{ color: darkMode ? "white" : "black" }}
+              className={classes.avatar}
+            >
               {user.username.charAt(0).toUpperCase()}
             </Avatar>
           </div>
@@ -138,6 +149,19 @@ const header = props => {
     );
   }
 
+  const Moon = () =>
+    darkMode ? (
+      <MoonIcon
+        className={classes.moonIcon}
+        onClick={() => setDarkMode(!darkMode)}
+      />
+    ) : (
+      <MoonIconOutlined
+        className={classes.moonIcon}
+        onClick={() => setDarkMode(!darkMode)}
+      />
+    );
+
   return (
     <div className={classes.root}>
       <AppBar color="primary" position="static">
@@ -147,6 +171,7 @@ const header = props => {
               Blog {"+/-"}
             </Link>
           </Typography>
+          {Moon()}
           {authButtons}
         </Toolbar>
       </AppBar>
