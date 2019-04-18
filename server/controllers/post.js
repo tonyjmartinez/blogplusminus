@@ -18,10 +18,13 @@ module.exports = {
         title: title,
         content: content
       });
-      post.save(function(err) {
+      post.save(function(err, post) {
         if (err) {
           console.log(err);
         }
+
+        user.posts.push(post._id);
+        user.save();
       });
     });
   }

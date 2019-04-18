@@ -7,7 +7,7 @@ const userSchema = new Schema({
   email: { type: String, unique: true, lowercase: true },
   username: String,
   password: String,
-  postIds: [{ type: Schema.Types.ObjectId, ref: "post" }]
+  posts: [{ type: Schema.Types.ObjectId, ref: "post" }]
 });
 
 // On Save Hook, encrypt password
@@ -43,6 +43,12 @@ userSchema.methods.comparePassword = function(candidatePassword, callback) {
 
     callback(null, isMatch);
   });
+};
+
+userSchema.statics.findPosts = function(id) {
+  return this.findById(id)
+    .populate("posts")
+    .then(user => user.posts);
 };
 
 // Create the model class

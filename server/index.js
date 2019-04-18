@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+mongoose.connect("mongodb://localhost/auth", { useNewUrlParser: true });
 const morgan = require("morgan");
 const cors = require("cors");
 const bodyParser = require("body-parser");
@@ -8,8 +9,6 @@ const http = require("http");
 const Auth = require("./controllers/authentication");
 const expressGraphQL = require("express-graphql");
 const schema = require("../server/schema/schema");
-
-mongoose.connect("mongodb://localhost/auth", { useNewUrlParser: true });
 
 app.use(morgan("combined"));
 app.use(cors());
