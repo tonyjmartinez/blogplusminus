@@ -104,14 +104,18 @@ const authForm = props => {
     props.context.signin(inputValues.email, inputValues.password);
   };
 
-  const handleSignUp = e => {
+  const handleSignUp = async e => {
     e.preventDefault();
     console.log(props.type);
-    props.context.signup(
+    const res = await props.context.signup(
       inputValues.email,
       inputValues.password,
       inputValues.username
     );
+    if (res !== null) {
+      console.log(res);
+      setErrorMessage(res);
+    }
   };
 
   let verifyPassword = null;

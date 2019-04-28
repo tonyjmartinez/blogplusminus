@@ -35,12 +35,21 @@ const appProvider = props => {
   //TODO: save refresh token in localstorage
   const attemptSignup = async (email, password, username) => {
     try {
+      console.log("attempt signup");
       const newUser = await props.signup({
         variables: { email, password, username }
       });
+      console.log(newUser.data);
 
       if (newUser.data !== undefined) {
-        const tokens = JSON.parse(newUser.data.signup);
+        let tokens = null;
+        try {
+          tokens = JSON.parse(newUser.data.signup);
+        } catch (err) {
+          console.log(newUser.data.signup);
+          return newUser.data.signup;
+        }
+
         const token = tokens.jwt;
         const refToken = tokens.refreshToken;
         const expires = tokens.expires;
@@ -48,8 +57,12 @@ const appProvider = props => {
         localStorage.setItem("token", token);
         localStorage.setItem("refreshToken", refToken);
         localStorage.setItem("expires", expires);
+        return null;
       }
-    } catch (err) {}
+    } catch (err) {
+      console.log(err);
+      console.log("error 2");
+    }
   };
 
   const attemptLogin = async (email, password) => {

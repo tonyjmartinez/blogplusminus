@@ -39,24 +39,31 @@ exports.jwtAuth = jwtExpress({
         if (err) {
           console.log("errorr", err);
           if (err.name === "TokenExpiredError") {
+            console.log("token expired");
             return jwt.verify(
               token,
               config.secret,
               { ignoreExpiration: true },
               (err, decoded) => {
                 if (err) {
+                  console.log("err");
                   console.log(err);
                 } else {
+                  console.log("else");
                   const refreshToken = req.headers.authrefresh;
                   if (
                     refreshToken in refresh.tokens &&
                     refresh.tokens[refreshToken] === decoded.username
                   ) {
+                    console.log("if");
                     decoded.token = tokenForUser(decoded);
                     const expires = new Date();
                     expires.setSeconds(expires.getSeconds() + 86400);
                     decoded.expires = expires;
                     return tokenForUser(decoded);
+                  } else {
+                    console.log("elseeee");
+                    return null;
                   }
                 }
               }
@@ -81,16 +88,20 @@ exports.login = function({ email, password }, cb) {
     return cb(null, "missing email or password");
   }
   User.findOne({ email: email }, function(err, user) {
+    console.log("find one");
     if (!user) {
+      console.log("not found");
       return cb(null, "No user with that email");
     }
 
     user.comparePassword(password, function(err, match) {
       if (err) {
+        console.log("error check");
         return cb(null, "Error checking password");
       }
 
       if (!match) {
+        console.log("no match");
         return cb(null, "Incorrect password");
       }
 

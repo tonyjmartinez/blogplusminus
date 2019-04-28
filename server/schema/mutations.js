@@ -19,10 +19,15 @@ const mutation = new GraphQLObjectType({
       },
       resolve(parentValue, { email, password, username }, req) {
         return new Promise((resolve, reject) => {
-          Auth.signup({ email, password, username }, function(
-            { jwt, refreshToken },
-            msg
-          ) {
+          Auth.signup({ email, password, username }, function(result, msg) {
+            if (result === null) {
+              console.log("result null");
+              console.log(msg);
+              return resolve(msg);
+            } else {
+              jwt = result.jwt;
+              refreshToken = result.refreshToken;
+            }
             if (jwt === null) {
               reject(msg);
             }
@@ -49,7 +54,14 @@ const mutation = new GraphQLObjectType({
       resolve(parentValue, { email, password }, req) {
         console.log(email, password);
         return new Promise((resolve, reject) => {
-          Auth.login({ email, password }, function({ jwt, refreshToken }, msg) {
+          Auth.login({ email, password }, function(result, msg) {
+            if (result === null) {
+              console.log("result null");
+              return reject("Error");
+            } else {
+              jwt = result.jwt;
+              refreshToken = result.refreshToken;
+            }
             if (jwt === null) {
               reject(msg);
             }
