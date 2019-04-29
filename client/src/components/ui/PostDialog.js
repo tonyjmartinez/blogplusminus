@@ -12,12 +12,18 @@ import TextField from "@material-ui/core/TextField";
 import Fab from "@material-ui/core/Fab";
 import MediaQuery from "react-responsive";
 import AddIcon from "@material-ui/icons/Add";
+import withAppContext from "../../context/withAppContext";
 const useStyles = makeStyles({
   appBar: {
     position: "relative"
   },
   flex: {
     flex: 1
+  },
+  submitButton: {
+    background: "none",
+    border: "none",
+    color: "inherit"
   },
   container: {
     display: "flex",
@@ -56,6 +62,17 @@ const Transition = props => {
 const postDialog = props => {
   const classes = useStyles();
 
+  console.log(props);
+
+  const handleNewPost = async e => {
+    e.preventDefault();
+    const newPost = await props.context.newPost(
+      props.context.user.id,
+      "New title",
+      "new content"
+    );
+  };
+
   const PostForm = props => (
     <MediaQuery minWidth={700}>
       {matches => {
@@ -66,7 +83,11 @@ const postDialog = props => {
           width = classes.formMobile;
         }
         return (
-          <form {...props} className={classes.form + " " + width}>
+          <form
+            onSubmit={handleNewPost}
+            {...props}
+            className={classes.form + " " + width}
+          >
             {props.children}
           </form>
         );
@@ -126,9 +147,12 @@ const postDialog = props => {
               size="small"
               aria-label="New"
               onClick={props.onOpen}
+              type="submit"
             >
               <AddIcon className={classes.extendedIcon} />
-              <span className={classes.fabText}>Save</span>
+              <span type="submit" className={classes.fabText}>
+                Save
+              </span>
             </Fab>
           </div>
         </PostForm>
@@ -137,4 +161,4 @@ const postDialog = props => {
   );
 };
 
-export default postDialog;
+export default withAppContext(postDialog);

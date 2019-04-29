@@ -34,7 +34,7 @@ const mutation = new GraphQLObjectType({
             const expires = new Date();
 
             expires.setSeconds(expires.getSeconds() + 10);
-            resolve(
+            return resolve(
               JSON.stringify({
                 jwt: jwt,
                 refreshToken: refreshToken,
@@ -57,18 +57,18 @@ const mutation = new GraphQLObjectType({
           Auth.login({ email, password }, function(result, msg) {
             if (result === null) {
               console.log("result null");
-              return reject("Error");
+              return resolve(msg);
             } else {
               jwt = result.jwt;
               refreshToken = result.refreshToken;
             }
             if (jwt === null) {
-              reject(msg);
+              return reject(msg);
             }
             const expires = new Date();
             expires.setSeconds(expires.getSeconds() + 10);
             console.log("exp", expires);
-            resolve(
+            return resolve(
               JSON.stringify({
                 jwt: jwt,
                 refreshToken: refreshToken,
@@ -87,9 +87,10 @@ const mutation = new GraphQLObjectType({
         }
       },
       resolve(parentValue, args) {
-        console.log(args);
-        PostController.newPost(args);
-        return "string";
+        return new Promise((resolve, reject) => {
+          console.log(args);
+          PostController.newPost(args);
+        });
       }
     }
   }

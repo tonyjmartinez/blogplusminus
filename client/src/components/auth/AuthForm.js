@@ -99,9 +99,17 @@ const authForm = props => {
     return true;
   };
 
-  const handleSignIn = e => {
+  const handleSignIn = async e => {
     e.preventDefault();
-    props.context.signin(inputValues.email, inputValues.password);
+    const res = await props.context.signin(
+      inputValues.email,
+      inputValues.password
+    );
+
+    if (res !== null) {
+      console.log(res);
+      setErrorMessage(res);
+    }
   };
 
   const handleSignUp = async e => {

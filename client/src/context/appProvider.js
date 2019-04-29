@@ -4,6 +4,7 @@ import AppContext from "./appContext";
 import { graphql, compose } from "react-apollo";
 import loginMutation from "../mutations/login";
 import signupMutation from "../mutations/signup";
+import newPostMutation from "../mutations/newPost";
 import query from "../queries/user";
 import { MuiThemeProvider } from "@material-ui/core/styles";
 import theme from "../themes/theme";
@@ -11,6 +12,7 @@ import theme from "../themes/theme";
 const appProvider = props => {
   let currentUser = null;
   let authorized = false;
+  console.log(props);
 
   const [darkMode, setDarkMode] = useState(true);
 
@@ -72,10 +74,18 @@ const appProvider = props => {
       });
 
       if (user.data !== undefined) {
-        console.log("12313");
         console.log(user.data);
+        let tokens = null;
 
-        const tokens = JSON.parse(user.data.login);
+        try {
+          tokens = JSON.parse(user.data.login);
+          console.log(tokens);
+        } catch (err) {
+          return user.data.login;
+        }
+
+        console.log(tokens);
+
         const token = tokens.jwt;
         const refToken = tokens.refreshToken;
         console.log("expireees", tokens.expires);
@@ -86,10 +96,23 @@ const appProvider = props => {
         localStorage.setItem("token", token);
         localStorage.setItem("refreshToken", refToken);
         localStorage.setItem("expires", expires);
+        return null;
       }
     } catch (err) {
       console.log(err);
     }
+  };
+
+  const newPost = async (userId, title, content) => {
+    const post = await props.newPost({
+      variables: {
+        postInput: {
+          userId,
+          title,
+          content
+        }
+      }
+    });
   };
 
   const signOut = () => {
@@ -106,6 +129,7 @@ const appProvider = props => {
           user: props.getUser.user,
           signOut: signOut,
           signup: attemptSignup,
+          newPost,
           setDarkMode,
           darkMode
         }}
@@ -120,5 +144,6 @@ const appProvider = props => {
 export default compose(
   graphql(query, { name: "getUser" }),
   graphql(signupMutation, { name: "signup" }),
-  graphql(loginMutation, { name: "login" })
+  graphql(loginMutation, { name: "login" }),
+  graphql(newPostMutation, { name: "newPost" })
 )(appProvider);
