@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { makeStyles } from "@material-ui/styles";
 import Dialog from "@material-ui/core/Dialog";
 import AppBar from "@material-ui/core/AppBar";
@@ -13,6 +13,7 @@ import Fab from "@material-ui/core/Fab";
 import MediaQuery from "react-responsive";
 import AddIcon from "@material-ui/icons/Add";
 import withAppContext from "../../context/withAppContext";
+import PostForm from "./post/PostForm";
 const useStyles = makeStyles({
   appBar: {
     position: "relative"
@@ -38,12 +39,6 @@ const useStyles = makeStyles({
     margin: "0px auto",
     display: "flex",
     flexWrap: "wrap"
-  },
-  formDesktop: {
-    width: "60%"
-  },
-  formMobile: {
-    width: "80%"
   },
 
   fabDiv: {
@@ -73,24 +68,16 @@ const postDialog = props => {
     );
   };
 
-  const PostForm = props => (
+  const getWidth = () => (
     <MediaQuery minWidth={700}>
       {matches => {
         let width;
         if (matches) {
-          width = classes.formDesktop;
+          width = "60%";
         } else {
-          width = classes.formMobile;
+          width = "80%";
         }
-        return (
-          <form
-            onSubmit={handleNewPost}
-            {...props}
-            className={classes.form + " " + width}
-          >
-            {props.children}
-          </form>
-        );
+        return width;
       }}
     </MediaQuery>
   );
@@ -120,42 +107,17 @@ const postDialog = props => {
             </Button>
           </Toolbar>
         </AppBar>
-        <PostForm>
-          <div className={classes.textFieldDiv}>
-            <TextField
-              label="Title"
-              placeholder="Title"
-              margin="normal"
-              variant="outlined"
-              fullWidth
-            />
-          </div>
-          <div className={classes.textFieldDiv}>
-            <TextField
-              label="Content"
-              placeholder="Content"
-              margin="normal"
-              variant="outlined"
-              fullWidth
-              multiline
-            />
-          </div>
-          <div className={classes.fabDiv}>
-            <Fab
-              variant="extended"
-              color="secondary"
-              size="small"
-              aria-label="New"
-              onClick={props.onOpen}
-              type="submit"
-            >
-              <AddIcon className={classes.extendedIcon} />
-              <span type="submit" className={classes.fabText}>
-                Save
-              </span>
-            </Fab>
-          </div>
-        </PostForm>
+
+        <MediaQuery minWidth={700}>
+          {matches => {
+            let width;
+            if (matches) {
+              return <PostForm desktop={true} {...props} />;
+            } else {
+              return <PostForm desktop={false} {...props} />;
+            }
+          }}
+        </MediaQuery>
       </Dialog>
     </div>
   );
