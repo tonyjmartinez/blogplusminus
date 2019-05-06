@@ -47,10 +47,18 @@ const postForm = props => {
     });
   };
 
+  const handleContentChange = e => {
+    const content = e.target.value;
+    setPostFields({
+      ...postFields,
+      content
+    });
+  };
+
   const handleNewPost = e => {
     e.preventDefault();
+    props.newPost(postFields.title, postFields.content);
   };
-  console.log(props);
   return (
     <div className={props.desktop ? classes.formDesktop : classes.formMobile}>
       <form onSubmit={handleNewPost} className={classes.form}>
@@ -73,6 +81,8 @@ const postForm = props => {
             variant="outlined"
             fullWidth
             multiline
+            value={postFields.content}
+            onChange={handleContentChange}
           />
         </div>
         <div className={classes.fabDiv}>

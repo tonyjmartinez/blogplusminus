@@ -15,7 +15,8 @@ exports.newPost = function(args) {
     const post = new Post({
       userId: userId,
       title: title,
-      content: content
+      content: content,
+      dateTime: new Date()
     });
     post.save(function(err, post) {
       if (err) {

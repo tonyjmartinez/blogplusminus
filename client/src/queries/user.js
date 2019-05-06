@@ -8,6 +8,11 @@ export default gql`
       username
       token
       expires
+      posts {
+        title
+        content
+        dateTime
+      }
     }
   }
 `;

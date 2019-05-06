@@ -57,14 +57,11 @@ const Transition = props => {
 const postDialog = props => {
   const classes = useStyles();
 
-  console.log(props);
-
-  const handleNewPost = async e => {
-    e.preventDefault();
+  const handleNewPost = async (title, content) => {
     const newPost = await props.context.newPost(
       props.context.user.id,
-      "New title",
-      "new content"
+      title,
+      content
     );
   };
 
@@ -112,9 +109,13 @@ const postDialog = props => {
           {matches => {
             let width;
             if (matches) {
-              return <PostForm desktop={true} {...props} />;
+              return (
+                <PostForm newPost={handleNewPost} desktop={true} {...props} />
+              );
             } else {
-              return <PostForm desktop={false} {...props} />;
+              return (
+                <PostForm newPost={handleNewPost} desktop={false} {...props} />
+              );
             }
           }}
         </MediaQuery>
