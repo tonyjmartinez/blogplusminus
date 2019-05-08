@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-//import { signin, signup } from "./fetchAuth";
 import AppContext from "./appContext";
 import { graphql, compose } from "react-apollo";
 import loginMutation from "../mutations/login";
@@ -12,7 +11,6 @@ import theme from "../themes/theme";
 const appProvider = props => {
   let currentUser = null;
   let authorized = false;
-  console.log(props);
 
   const [darkMode, setDarkMode] = useState(true);
 
@@ -21,10 +19,8 @@ const appProvider = props => {
   if (!props.getUser.loading) {
     currentUser = props.getUser.user;
 
-    console.log("curUser", currentUser);
     if (currentUser !== undefined && currentUser !== null) {
       if (currentUser.token !== null) {
-        console.log(currentUser);
         localStorage.setItem("token", currentUser.token);
         if (currentUser.expires !== null) {
           localStorage.setItem("expires", currentUser.expires);
@@ -34,21 +30,17 @@ const appProvider = props => {
     }
   }
 
-  //TODO: save refresh token in localstorage
   const attemptSignup = async (email, password, username) => {
     try {
-      console.log("attempt signup");
       const newUser = await props.signup({
         variables: { email, password, username }
       });
-      console.log(newUser.data);
 
       if (newUser.data !== undefined) {
         let tokens = null;
         try {
           tokens = JSON.parse(newUser.data.signup);
         } catch (err) {
-          console.log(newUser.data.signup);
           return newUser.data.signup;
         }
 
@@ -63,7 +55,6 @@ const appProvider = props => {
       }
     } catch (err) {
       console.log(err);
-      console.log("error 2");
     }
   };
 
@@ -74,23 +65,17 @@ const appProvider = props => {
       });
 
       if (user.data !== undefined) {
-        console.log(user.data);
         let tokens = null;
 
         try {
           tokens = JSON.parse(user.data.login);
-          console.log(tokens);
         } catch (err) {
           return user.data.login;
         }
 
-        console.log(tokens);
-
         const token = tokens.jwt;
         const refToken = tokens.refreshToken;
-        console.log("expireees", tokens.expires);
         const expires = tokens.expires;
-        console.log(expires);
 
         props.resetStore();
         localStorage.setItem("token", token);

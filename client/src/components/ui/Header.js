@@ -27,7 +27,7 @@ const useStyles = makeStyles({
   },
   link: {
     textDecoration: "none",
-    color: "white"
+    color: "black"
   },
   topFab: {
     marginRight: "20px"
@@ -81,6 +81,8 @@ const header = props => {
     closeDialog();
   };
 
+  console.log(props);
+
   let authButtons = null;
   let newPostButton = null;
   if (auth) {
@@ -90,7 +92,7 @@ const header = props => {
           <MediaQuery minWidth={560}>
             <Fab
               variant="extended"
-              color="secondary"
+              color="primary"
               size="small"
               className={classes.topFab}
               aria-label="New"
@@ -118,7 +120,7 @@ const header = props => {
         <MediaQuery maxWidth={559}>
           <Fab
             variant="extended"
-            color="secondary"
+            color="primary"
             size="small"
             className={classes.fab}
             aria-label="New"
