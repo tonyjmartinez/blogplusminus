@@ -8,5 +8,24 @@ const postSchema = new Schema({
   userId: { type: Schema.Types.ObjectId, ref: "user" }
 });
 
+postSchema.statics.findPost = function(id) {
+  return this.findById(id);
+};
+
+postSchema.statics.findRecent = function(cb) {
+  return this.find({})
+    .sort({ dateTime: "desc" })
+    .limit(5)
+    .exec(function(err, docs) {
+      if (err) {
+        console.log(err);
+        cb(null);
+      } else {
+        console.log("found");
+        cb(docs);
+      }
+    });
+};
+
 const ModelClass = mongoose.model("post", postSchema);
 module.exports = ModelClass;

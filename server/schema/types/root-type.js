@@ -1,5 +1,5 @@
 const graphql = require("graphql");
-const { GraphQLObjectType } = graphql;
+const { GraphQLObjectType, GraphQLNonNull, GraphQLID, GraphQLList } = graphql;
 const UserType = require("./user-type");
 const User = require("../../models/user");
 const PostType = require("./post-type");
@@ -25,8 +25,28 @@ const RootType = new GraphQLObjectType({
     },
     post: {
       type: PostType,
+      args: { postId: { type: new GraphQLNonNull(GraphQLID) } },
       async resolve(parentValue, args, req) {
-        const foundPost = await Post.findById();
+        const postId = args.postId;
+        if (postId) {
+          console.log(postId);
+          const foundPost = await Post.findById(postId);
+          return foundPost;
+        }
+        return null;
+      }
+    },
+    recentPosts: {
+      type: GraphQLList(PostType),
+      resolve(parentValue, args, req) {
+        return new Promise((resolve, reject) => {
+          Post.findRecent(function(response) {
+            console.log(response);
+            if (response !== null) {
+              resolve(response);
+            }
+          });
+        });
       }
     }
   }
