@@ -50,7 +50,7 @@ const postForm = props => {
   const handleNewPost = e => {
     e.preventDefault();
   };
-  console.log(props);
+
   return (
     <div className={props.desktop ? classes.formDesktop : classes.formMobile}>
       <form onSubmit={handleNewPost} className={classes.form}>
