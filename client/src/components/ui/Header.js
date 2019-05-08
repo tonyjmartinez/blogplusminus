@@ -92,7 +92,7 @@ const header = props => {
           <MediaQuery minWidth={560}>
             <Fab
               variant="extended"
-              color="primary"
+              color="secondary"
               size="small"
               className={classes.topFab}
               aria-label="New"
@@ -120,7 +120,7 @@ const header = props => {
         <MediaQuery maxWidth={559}>
           <Fab
             variant="extended"
-            color="primary"
+            color="secondary"
             size="small"
             className={classes.fab}
             aria-label="New"

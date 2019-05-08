@@ -87,34 +87,16 @@ const postDialog = props => {
         onClose={props.onClose}
         TransitionComponent={Transition}
       >
-        <AppBar className={classes.appBar}>
-          <Toolbar>
-            <IconButton
-              color="inherit"
-              onClick={props.onClose}
-              aria-label="Close"
-            >
-              <CloseIcon />
-            </IconButton>
-            <Typography variant="h6" color="inherit" className={classes.flex}>
-              New Post
-            </Typography>
-            <Button color="inherit" onClick={props.onClose}>
-              Save
-            </Button>
-          </Toolbar>
-        </AppBar>
-
         <MediaQuery minWidth={700}>
           {matches => {
             let width;
             if (matches) {
               return (
-                <PostForm newPost={handleNewPost} desktop={true} {...props} />
+                <PostForm onClose={props.onClose} newPost={handleNewPost} desktop={true} {...props} />
               );
             } else {
               return (
-                <PostForm newPost={handleNewPost} desktop={false} {...props} />
+                <PostForm onClose={props.onClose} newPost={handleNewPost} desktop={false} {...props} />
               );
             }
           }}

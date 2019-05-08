@@ -3,6 +3,13 @@ import TextField from "@material-ui/core/TextField";
 import Fab from "@material-ui/core/Fab";
 import AddIcon from "@material-ui/icons/Add";
 import { makeStyles } from "@material-ui/styles";
+import AppBar from "@material-ui/core/AppBar";
+import Toolbar from "@material-ui/core/Toolbar";
+import IconButton from "@material-ui/core/IconButton";
+import Typography from "@material-ui/core/Typography";
+import CloseIcon from "@material-ui/icons/Close";
+import Slide from "@material-ui/core/Slide";
+import Button from "@material-ui/core/Button";
 
 const useStyles = makeStyles({
   textFieldDiv: {
@@ -28,7 +35,18 @@ const useStyles = makeStyles({
   },
   fabText: {
     marginRight: "10px"
-  }
+  },
+  appBar: {
+    position: "relative"
+  },
+  flex: {
+    flex: 1
+  },
+  submitButton: {
+    background: "none",
+    border: "none",
+    color: "inherit"
+  },
 });
 
 const postForm = props => {
@@ -61,7 +79,27 @@ const postForm = props => {
   };
 
   return (
+    <React.Fragment>
+        <AppBar className={classes.appBar}>
+          <Toolbar>
+            <IconButton
+              color="inherit"
+              onClick={props.onClose}
+              aria-label="Close"
+            >
+              <CloseIcon />
+            </IconButton>
+            <Typography variant="h6" color="inherit" className={classes.flex}>
+              New Post
+            </Typography>
+            <Button color="inherit" onClick={handleNewPost}>
+              Save
+            </Button>
+          </Toolbar>
+        </AppBar>
     <div className={props.desktop ? classes.formDesktop : classes.formMobile}>
+
+
       <form onSubmit={handleNewPost} className={classes.form}>
         <div className={classes.textFieldDiv}>
           <TextField
@@ -103,6 +141,8 @@ const postForm = props => {
         </div>
       </form>
     </div>
+    </React.Fragment>
+
   );
 };
 
