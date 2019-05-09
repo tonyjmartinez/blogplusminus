@@ -12,10 +12,11 @@ postSchema.statics.findPost = function(id) {
   return this.findById(id);
 };
 
-postSchema.statics.findRecent = function(cb) {
+postSchema.statics.findRecent = function(skip, cb) {
   return this.find({})
     .sort({ dateTime: "desc" })
     .limit(5)
+    .skip(skip)
     .exec(function(err, docs) {
       if (err) {
         console.log(err);

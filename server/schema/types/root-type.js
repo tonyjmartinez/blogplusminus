@@ -1,5 +1,11 @@
 const graphql = require("graphql");
-const { GraphQLObjectType, GraphQLNonNull, GraphQLID, GraphQLList } = graphql;
+const {
+  GraphQLObjectType,
+  GraphQLNonNull,
+  GraphQLID,
+  GraphQLList,
+  GraphQLInt
+} = graphql;
 const UserType = require("./user-type");
 const User = require("../../models/user");
 const PostType = require("./post-type");
@@ -38,9 +44,14 @@ const RootType = new GraphQLObjectType({
     },
     recentPosts: {
       type: GraphQLList(PostType),
+      args: { skip: { type: GraphQLInt } },
       resolve(parentValue, args, req) {
+        let skip = 0;
+        if (args.skip !== undefined) {
+          skip = args.skip;
+        }
         return new Promise((resolve, reject) => {
-          Post.findRecent(function(response) {
+          Post.findRecent(skip, function(response) {
             console.log(response);
             if (response !== null) {
               resolve(response);

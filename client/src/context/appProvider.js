@@ -5,6 +5,7 @@ import loginMutation from "../mutations/login";
 import signupMutation from "../mutations/signup";
 import newPostMutation from "../mutations/newPost";
 import query from "../queries/user";
+import recentPosts from "../queries/recentPosts";
 import { MuiThemeProvider } from "@material-ui/core/styles";
 import theme from "../themes/theme";
 
@@ -12,6 +13,7 @@ const appProvider = props => {
   let currentUser = null;
   let authorized = false;
 
+  console.log("appProvider", props);
   const [darkMode, setDarkMode] = useState(true);
 
   document.body.style = `background: ${darkMode ? "grey" : "white"}`;
@@ -116,7 +118,8 @@ const appProvider = props => {
           signup: attemptSignup,
           newPost,
           setDarkMode,
-          darkMode
+          darkMode,
+          recentPosts: props.recentPosts
         }}
       >
         {props.children}
@@ -128,6 +131,7 @@ const appProvider = props => {
 //export default graphql(query)(graphql(mutation)(appProvider));
 export default compose(
   graphql(query, { name: "getUser" }),
+  graphql(recentPosts, { name: "recentPosts" }),
   graphql(signupMutation, { name: "signup" }),
   graphql(loginMutation, { name: "login" }),
   graphql(newPostMutation, { name: "newPost" })
