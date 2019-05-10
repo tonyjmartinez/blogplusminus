@@ -46,10 +46,11 @@ const useStyles = makeStyles({
     background: "none",
     border: "none",
     color: "inherit"
-  },
+  }
 });
 
 const postForm = props => {
+  console.log("postForm", props);
   const classes = useStyles();
 
   const [postFields, setPostFields] = useState({
@@ -74,75 +75,73 @@ const postForm = props => {
   };
 
   const handleNewPost = e => {
+    console.log("handlenewpost");
     e.preventDefault();
     props.newPost(postFields.title, postFields.content);
   };
 
   return (
     <React.Fragment>
-        <AppBar className={classes.appBar}>
-          <Toolbar>
-            <IconButton
-              color="inherit"
-              onClick={props.onClose}
-              aria-label="Close"
-            >
-              <CloseIcon />
-            </IconButton>
-            <Typography variant="h6" color="inherit" className={classes.flex}>
-              New Post
-            </Typography>
-            <Button color="inherit" onClick={handleNewPost}>
-              Save
-            </Button>
-          </Toolbar>
-        </AppBar>
-    <div className={props.desktop ? classes.formDesktop : classes.formMobile}>
-
-
-      <form onSubmit={handleNewPost} className={classes.form}>
-        <div className={classes.textFieldDiv}>
-          <TextField
-            label="Title"
-            placeholder="Title"
-            margin="normal"
-            variant="outlined"
-            fullWidth
-            value={postFields.title}
-            onChange={handleTitleChange}
-          />
-        </div>
-        <div className={classes.textFieldDiv}>
-          <TextField
-            label="Content"
-            placeholder="Content"
-            margin="normal"
-            variant="outlined"
-            fullWidth
-            multiline
-            value={postFields.content}
-            onChange={handleContentChange}
-          />
-        </div>
-        <div className={classes.fabDiv}>
-          <Fab
-            variant="extended"
-            color="secondary"
-            size="small"
-            aria-label="New"
-            onClick={props.onOpen}
-            type="submit"
+      <AppBar className={classes.appBar}>
+        <Toolbar>
+          <IconButton
+            color="inherit"
+            onClick={props.onClose}
+            aria-label="Close"
           >
-            <AddIcon className={classes.extendedIcon} />
-            <span type="submit" className={classes.fabText}>
-              Save
-            </span>
-          </Fab>
-        </div>
-      </form>
-    </div>
+            <CloseIcon />
+          </IconButton>
+          <Typography variant="h6" color="inherit" className={classes.flex}>
+            New Post
+          </Typography>
+          <Button color="inherit" onClick={handleNewPost}>
+            Save
+          </Button>
+        </Toolbar>
+      </AppBar>
+      <div className={props.desktop ? classes.formDesktop : classes.formMobile}>
+        <form onSubmit={handleNewPost} className={classes.form}>
+          <div className={classes.textFieldDiv}>
+            <TextField
+              label="Title"
+              placeholder="Title"
+              margin="normal"
+              variant="outlined"
+              fullWidth
+              value={postFields.title}
+              onChange={handleTitleChange}
+            />
+          </div>
+          <div className={classes.textFieldDiv}>
+            <TextField
+              label="Content"
+              placeholder="Content"
+              margin="normal"
+              variant="outlined"
+              fullWidth
+              multiline
+              value={postFields.content}
+              onChange={handleContentChange}
+            />
+          </div>
+          <div className={classes.fabDiv}>
+            <Fab
+              variant="extended"
+              color="secondary"
+              size="small"
+              aria-label="New"
+              onClick={props.onOpen}
+              type="submit"
+            >
+              <AddIcon className={classes.extendedIcon} />
+              <span type="submit" className={classes.fabText}>
+                Save
+              </span>
+            </Fab>
+          </div>
+        </form>
+      </div>
     </React.Fragment>
-
   );
 };
 

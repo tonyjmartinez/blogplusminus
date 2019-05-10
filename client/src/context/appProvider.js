@@ -10,6 +10,7 @@ import { MuiThemeProvider } from "@material-ui/core/styles";
 import theme from "../themes/theme";
 
 const appProvider = props => {
+  console.log(props);
   let currentUser = null;
   let authorized = false;
 
@@ -91,15 +92,21 @@ const appProvider = props => {
   };
 
   const newPost = async (userId, title, content) => {
-    const post = await props.newPost({
-      variables: {
-        postInput: {
-          userId,
-          title,
-          content
+    console.log("new post");
+    const post = await props
+      .newPost({
+        variables: {
+          postInput: {
+            userId,
+            title,
+            content
+          }
         }
-      }
-    });
+      })
+      .then(res => {
+        console.log("res");
+        props.recentPosts.refetch();
+      });
   };
 
   const signOut = () => {

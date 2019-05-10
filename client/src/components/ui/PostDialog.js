@@ -63,6 +63,8 @@ const postDialog = props => {
       title,
       content
     );
+    props.onClose();
+    console.log(newPost);
   };
 
   const getWidth = () => (
@@ -92,11 +94,21 @@ const postDialog = props => {
             let width;
             if (matches) {
               return (
-                <PostForm onClose={props.onClose} newPost={handleNewPost} desktop={true} {...props} />
+                <PostForm
+                  onClose={props.onClose}
+                  newPost={handleNewPost}
+                  desktop={true}
+                  {...props}
+                />
               );
             } else {
               return (
-                <PostForm onClose={props.onClose} newPost={handleNewPost} desktop={false} {...props} />
+                <PostForm
+                  onClose={props.onClose}
+                  newPost={handleNewPost}
+                  desktop={false}
+                  {...props}
+                />
               );
             }
           }}

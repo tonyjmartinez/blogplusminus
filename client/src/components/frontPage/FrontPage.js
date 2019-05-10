@@ -15,25 +15,25 @@ const frontPage = props => {
   const classes = useStyles();
   console.log("frontpage", props);
 
-  const post = () => {
+  const posts = () => {
     if (!props.context.recentPosts.loading) {
       const posts = props.context.recentPosts.recentPosts;
-      const title = posts[0].title;
-      const content = posts[0].content;
-      return (
-        <Paper className={classes.root} elevation={1}>
+      //const title = posts[0].title;
+      //const content = posts[0].content;
+      return posts.map((post, idx) => (
+        <Paper key={idx} className={classes.root} elevation={1}>
           <Typography variant="h5" component="h3">
-            {title}
+            {post.title}
           </Typography>
-          <Typography component="p">{content}</Typography>
+          <Typography component="p">{post.content}</Typography>
         </Paper>
-      );
+      ));
     } else {
       return null;
     }
   };
 
-  return <div>{post()}</div>;
+  return <div>{posts()}</div>;
 };
 
 export default withAppContext(frontPage);
