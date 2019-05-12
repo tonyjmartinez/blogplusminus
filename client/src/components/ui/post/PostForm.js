@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import TextField from "@material-ui/core/TextField";
 import Fab from "@material-ui/core/Fab";
 import AddIcon from "@material-ui/icons/Add";
@@ -58,6 +58,12 @@ const postForm = props => {
     content: ""
   });
 
+  const titleField = useRef(null);
+
+  useEffect(() => {
+    titleField.current.focus();
+  }, []);
+
   const handleTitleChange = e => {
     const title = e.target.value;
     setPostFields({
@@ -110,6 +116,7 @@ const postForm = props => {
               fullWidth
               value={postFields.title}
               onChange={handleTitleChange}
+              inputRef={titleField}
             />
           </div>
           <div className={classes.textFieldDiv}>

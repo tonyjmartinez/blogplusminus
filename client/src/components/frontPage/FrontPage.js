@@ -5,9 +5,12 @@ import { makeStyles } from "@material-ui/styles";
 import withAppContext from "../../context/withAppContext";
 
 const useStyles = makeStyles({
-  root: {
+  post: {
     padding: "2em",
-    marginTop: "1em"
+    marginTop: "1em",
+    marginLeft: "auto",
+    marginRight: "auto",
+    width: "70%"
   }
 });
 
@@ -18,10 +21,8 @@ const frontPage = props => {
   const posts = () => {
     if (!props.context.recentPosts.loading) {
       const posts = props.context.recentPosts.recentPosts;
-      //const title = posts[0].title;
-      //const content = posts[0].content;
       return posts.map((post, idx) => (
-        <Paper key={idx} className={classes.root} elevation={1}>
+        <Paper key={idx} className={classes.post} elevation={1}>
           <Typography variant="h5" component="h3">
             {post.title}
           </Typography>

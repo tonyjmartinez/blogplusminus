@@ -166,7 +166,7 @@ const header = props => {
 
   return (
     <div className={classes.root}>
-      <AppBar color="primary" position="static">
+      <AppBar color="primary" position="fixed">
         <Toolbar>
           <Typography variant="h6" color="inherit" className={classes.grow}>
             <Link to="/" className={classes.link}>

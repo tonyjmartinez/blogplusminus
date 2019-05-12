@@ -15,7 +15,7 @@ postSchema.statics.findPost = function(id) {
 postSchema.statics.findRecent = function(skip, cb) {
   return this.find({})
     .sort({ dateTime: "desc" })
-    .limit(5)
+    .limit(10)
     .skip(skip)
     .exec(function(err, docs) {
       if (err) {
