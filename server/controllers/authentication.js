@@ -119,7 +119,10 @@ exports.signup = function({ email, password, username }, cb) {
     return cb(null, "Email and password required");
   }
 
+  console.log(email, password);
+
   User.findOne({ email: email }, function(err, existingUser) {
+    console.log("here");
     if (err) {
       return cb(null, "Error finding user");
     }
@@ -135,6 +138,7 @@ exports.signup = function({ email, password, username }, cb) {
     });
 
     user.save(function(err) {
+      console.log("141");
       if (err) {
         return cb(null, "User save error");
       }
