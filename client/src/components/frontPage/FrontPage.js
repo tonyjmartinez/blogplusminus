@@ -34,7 +34,12 @@ const frontPage = props => {
     }
   };
 
-  return <div>{posts()}</div>;
+  return (
+    <div>
+      {posts()}
+      <button onClick={props.context.fetchMorePosts}>Fetch More </button>
+    </div>
+  );
 };
 
 export default withAppContext(frontPage);

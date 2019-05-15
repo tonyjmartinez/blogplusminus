@@ -16,6 +16,7 @@ const appProvider = props => {
 
   console.log("appProvider", props);
   const [darkMode, setDarkMode] = useState(true);
+  const [page, setPage] = useState(0);
 
   document.body.style = `background: ${darkMode ? "grey" : "white"}`;
 
@@ -114,6 +115,21 @@ const appProvider = props => {
     localStorage.removeItem("token");
   };
 
+  const fetchMorePosts = () => {
+    props.recentPosts.fetchMore({
+      variables: {
+        skip: page + 10
+      },
+      updateQuery: (prev, { fetchMoreResult }) => {
+        if (!fetchMoreResult) return prev;
+        return Object.assign({}, prev, {
+          recentPosts: [...prev.recentPosts, ...fetchMoreResult.recentPosts]
+        });
+      }
+    });
+    setPage(page + 10);
+  };
+
   return (
     <MuiThemeProvider theme={theme(darkMode)}>
       <AppContext.Provider
@@ -126,7 +142,8 @@ const appProvider = props => {
           newPost,
           setDarkMode,
           darkMode,
-          recentPosts: props.recentPosts
+          recentPosts: props.recentPosts,
+          fetchMorePosts: fetchMorePosts
         }}
       >
         {props.children}
