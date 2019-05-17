@@ -27,27 +27,47 @@ const frontPage = props => {
   const classes = useStyles();
   console.log("frontpage", props);
 
-  const [page, setPage] = useState(0);
+  const [pagination, setPagination] = useState({
+    page: 0,
+    morePosts: true
+  });
+
+  console.log("pagination", pagination);
 
   const fetchMorePosts = async () => {
+    console.log("fetch mroe posts)");
     if (props.data.loading) {
       return;
     }
-    await props.data.fetchMore({
-      variables: {
-        skip: page + 10
-      },
-      updateQuery: (prev, { fetchMoreResult }) => {
-        if (!fetchMoreResult) {
-          return prev;
+    if (pagination.morePosts) {
+      await props.data.fetchMore({
+        variables: {
+          skip: pagination.page + 10
+        },
+        updateQuery: (prev, { fetchMoreResult }) => {
+          console.log("inside update query", fetchMoreResult);
+          if (!fetchMoreResult || fetchMoreResult.recentPosts.length === 0) {
+            console.log("no more posts");
+            setPagination({
+              ...pagination,
+              morePosts: false
+            });
+            return prev;
+          }
+          console.log();
+
+          const newPosts = Object.assign({}, prev, {
+            recentPosts: [...prev.recentPosts, ...fetchMoreResult.recentPosts]
+          });
+
+          setPagination({
+            ...pagination,
+            page: pagination.page + 5
+          });
+          return newPosts;
         }
-        console.log();
-        return Object.assign({}, prev, {
-          recentPosts: [...prev.recentPosts, ...fetchMoreResult.recentPosts]
-        });
-      }
-    });
-    setPage(page + 10);
+      });
+    }
   };
 
   const posts = () => {
@@ -71,7 +91,7 @@ const frontPage = props => {
       <InfiniteScroll
         pageStart={0}
         loadMore={fetchMorePosts}
-        hasMore={true}
+        hasMore={pagination.morePosts}
         loader={
           <div className={classes.loader}>
             <CircularProgress className={classes.progress} color="secondary" />
