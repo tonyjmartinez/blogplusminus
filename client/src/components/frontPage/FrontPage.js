@@ -6,6 +6,7 @@ import withAppContext from "../../context/withAppContext";
 import InfiniteScroll from "react-infinite-scroller";
 import query from "../../queries/recentPosts";
 import { graphql } from "react-apollo";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 const useStyles = makeStyles({
   post: {
@@ -14,6 +15,10 @@ const useStyles = makeStyles({
     marginLeft: "auto",
     marginRight: "auto",
     width: "70%"
+  },
+  loader: {
+    marginLeft: "0px auto",
+    marginRight: "0px auto"
   }
 });
 
@@ -68,8 +73,8 @@ const frontPage = props => {
         loadMore={fetchMorePosts}
         hasMore={true}
         loader={
-          <div className="loader" key={0}>
-            Loading ...
+          <div className={classes.loader}>
+            <CircularProgress className={classes.progress} color="secondary" />
           </div>
         }
       >
