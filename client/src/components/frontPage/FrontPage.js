@@ -7,6 +7,7 @@ import InfiniteScroll from "react-infinite-scroller";
 import query from "../../queries/recentPosts";
 import { graphql } from "react-apollo";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import PostCard from "./PostCard";
 
 const useStyles = makeStyles({
   post: {
@@ -22,7 +23,6 @@ const useStyles = makeStyles({
   }
 });
 
-//TODO: Better loading component, figure out how to know when hasMore is false
 const frontPage = props => {
   const classes = useStyles();
   console.log("frontpage", props);
@@ -69,20 +69,21 @@ const frontPage = props => {
       });
     }
   };
+  console.log(props.data.recentPosts);
 
   const posts = () => {
-    if (!props.data.loading) {
+    if (!props.data.loading && props.data.recentPosts !== undefined) {
       const posts = props.data.recentPosts;
-      return posts.map((post, idx) => (
-        <Paper key={idx} className={classes.post} elevation={1}>
-          <Typography variant="h5" component="h3">
-            {post.title}
-          </Typography>
-          <Typography component="p">{post.content}</Typography>
-        </Paper>
-      ));
+      const postCards = posts.map(post => {
+        return (
+          <div key={post.id} className={classes.loader}>
+            <PostCard post={post} />
+          </div>
+        );
+      });
+      return postCards;
     } else {
-      return null;
+      return <div>Loading...</div>;
     }
   };
 
@@ -93,7 +94,7 @@ const frontPage = props => {
         loadMore={fetchMorePosts}
         hasMore={pagination.morePosts}
         loader={
-          <div className={classes.loader}>
+          <div>
             <CircularProgress className={classes.progress} color="secondary" />
           </div>
         }

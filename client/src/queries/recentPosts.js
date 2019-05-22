@@ -6,6 +6,8 @@ export default gql`
       id
       title
       content
+      userId
+      dateTime
     }
   }
 `;
