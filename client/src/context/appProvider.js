@@ -93,7 +93,7 @@ const appProvider = props => {
     }
   };
 
-  const newPost = async (userId, title, content) => {
+  const newPost = async (userId, title, content, username) => {
     console.log("new post");
     const post = await props
       .newPost({
@@ -101,7 +101,8 @@ const appProvider = props => {
           postInput: {
             userId,
             title,
-            content
+            content,
+            username
           }
         }
       })

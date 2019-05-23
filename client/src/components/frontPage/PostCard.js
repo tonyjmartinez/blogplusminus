@@ -25,19 +25,24 @@ const useStyles = makeStyles({
 
 const postCard = props => {
   const classes = useStyles();
-  const { title, content, dateTime, id } = props.post;
+  const { title, username, content, dateTime, id } = props.post;
+  let user = username;
+
+  if (!username) {
+    user = "user";
+  }
 
   console.log(title, content, dateTime);
 
   return (
-    <Card key={id} className={classes.card}>
+    <Card className={classes.card}>
       <CardContent>
         <Typography
           className={classes.title}
           color="textSecondary"
           gutterBottom
         >
-          UserName
+          {user}
         </Typography>
         <Typography variant="h5" component="h2">
           {title}

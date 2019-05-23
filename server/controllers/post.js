@@ -4,7 +4,7 @@ const ObjectID = require("mongodb").ObjectID;
 
 exports.newPost = function(args) {
   return new Promise(function(resolve, reject) {
-    const { userId, title, content } = args.input;
+    const { userId, title, content, username } = args.input;
     console.log(userId);
     User.findOne({ _id: new ObjectID(userId) }, function(err, user) {
       if (err) {
@@ -17,7 +17,8 @@ exports.newPost = function(args) {
         userId: userId,
         title: title,
         content: content,
-        dateTime: new Date()
+        dateTime: new Date(),
+        username: username
       });
       post.save(function(err, post) {
         if (err) {

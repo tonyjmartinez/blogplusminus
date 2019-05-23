@@ -19,6 +19,9 @@ const PostType = new GraphQLObjectType({
     },
     dateTime: {
       type: GraphQLDateTime
+    },
+    username: {
+      type: GraphQLString
     }
   }
 });

@@ -61,7 +61,8 @@ const postDialog = props => {
     const newPost = await props.context.newPost(
       props.context.user.id,
       title,
-      content
+      content,
+      props.context.user.username
     );
     props.onClose();
     console.log(newPost);

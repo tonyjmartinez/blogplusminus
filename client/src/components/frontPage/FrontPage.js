@@ -19,7 +19,8 @@ const useStyles = makeStyles({
   },
   loader: {
     marginLeft: "0px auto",
-    marginRight: "0px auto"
+    marginRight: "0px auto",
+    marginTop: "1em"
   }
 });
 
@@ -74,9 +75,9 @@ const frontPage = props => {
   const posts = () => {
     if (!props.data.loading && props.data.recentPosts !== undefined) {
       const posts = props.data.recentPosts;
-      const postCards = posts.map(post => {
+      const postCards = posts.map((post, idx) => {
         return (
-          <div key={post.id} className={classes.loader}>
+          <div key={idx} className={classes.loader}>
             <PostCard post={post} />
           </div>
         );

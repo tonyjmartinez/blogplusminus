@@ -5,7 +5,8 @@ const postSchema = new Schema({
   title: String,
   content: String,
   dateTime: Date,
-  userId: { type: Schema.Types.ObjectId, ref: "user" }
+  userId: { type: Schema.Types.ObjectId, ref: "user" },
+  username: String
 });
 
 postSchema.statics.findPost = function(id) {

@@ -12,6 +12,9 @@ module.exports = new GraphQLInputObjectType({
     },
     content: {
       type: GraphQLString
+    },
+    username: {
+      type: GraphQLString
     }
   })
 });
