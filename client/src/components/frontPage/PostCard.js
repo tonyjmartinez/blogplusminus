@@ -4,8 +4,11 @@ import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
-import { makeStyles } from "@material-ui/styles";
+import { makeStyles, useTheme } from "@material-ui/styles";
 import moment from "moment";
+import withAppContext from "../../context/withAppContext.js";
+import { withStyles } from "@material-ui/core/styles";
+import clsx from "clsx";
 
 const useStyles = makeStyles({
   card: {
@@ -26,14 +29,26 @@ const useStyles = makeStyles({
 
 const postCard = props => {
   const classes = useStyles();
+  const theme = useTheme();
+  console.log(theme);
   const { title, username, content, dateTime, id } = props.post;
   let user = username;
+
+  const darkMode = props.context.darkMode;
+
+  const cardColor = darkMode ? null : theme.palette.paper.main;
+
+  console.log(cardColor);
+  const style = {
+    background: cardColor
+  };
 
   if (!username) {
     user = "user";
   }
 
   console.log(title, content, dateTime);
+  console.log(props);
 
   let dt = "";
   if (dateTime) {
@@ -41,7 +56,7 @@ const postCard = props => {
   }
 
   return (
-    <Card className={classes.card}>
+    <Card style={style}>
       <CardContent>
         <Typography
           className={classes.title}
@@ -65,4 +80,4 @@ const postCard = props => {
   );
 };
 
-export default postCard;
+export default withAppContext(postCard);

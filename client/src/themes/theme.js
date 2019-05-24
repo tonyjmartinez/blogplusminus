@@ -7,11 +7,10 @@ import grey from "@material-ui/core/colors/grey";
 const theme = dark => {
   return createMuiTheme({
     palette: {
-      /*primary: { main: blueGrey[500] },
-      secondary: { main: blueGrey[900] },*/
       primary: { main: green["A100"] },
       secondary: { main: grey[400] },
-      type: dark ? "dark" : "light"
+      type: dark ? "dark" : "light",
+      paper: { main: grey[300] }
     },
     typography: { useNextVariants: true }
   });
