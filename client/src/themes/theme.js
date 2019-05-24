@@ -2,6 +2,7 @@ import { createMuiTheme } from "@material-ui/core/styles";
 
 import blueGrey from "@material-ui/core/colors/blueGrey";
 import green from "@material-ui/core/colors/green";
+import grey from "@material-ui/core/colors/grey";
 
 const theme = dark => {
   return createMuiTheme({
@@ -9,7 +10,7 @@ const theme = dark => {
       /*primary: { main: blueGrey[500] },
       secondary: { main: blueGrey[900] },*/
       primary: { main: green["A100"] },
-      secondary: { main: green["A200"] },
+      secondary: { main: grey[400] },
       type: dark ? "dark" : "light"
     },
     typography: { useNextVariants: true }

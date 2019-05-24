@@ -35,7 +35,10 @@ const postCard = props => {
 
   console.log(title, content, dateTime);
 
-  let dt = moment(dateTime.toString()).fromNow();
+  let dt = "";
+  if (dateTime) {
+    dt = moment(dateTime.toString()).fromNow();
+  }
 
   return (
     <Card className={classes.card}>
