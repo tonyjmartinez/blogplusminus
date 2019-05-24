@@ -5,6 +5,7 @@ import CardContent from "@material-ui/core/CardContent";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/styles";
+import moment from "moment";
 
 const useStyles = makeStyles({
   card: {
@@ -34,6 +35,8 @@ const postCard = props => {
 
   console.log(title, content, dateTime);
 
+  let dt = moment(dateTime.toString()).fromNow();
+
   return (
     <Card className={classes.card}>
       <CardContent>
@@ -48,7 +51,7 @@ const postCard = props => {
           {title}
         </Typography>
         <Typography className={classes.pos} color="textSecondary">
-          {dateTime}
+          {dt}
         </Typography>
         <Typography component="p">{content}</Typography>
       </CardContent>
