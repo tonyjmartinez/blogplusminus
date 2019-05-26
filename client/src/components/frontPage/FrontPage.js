@@ -21,6 +21,11 @@ const useStyles = makeStyles({
     marginLeft: "0px auto",
     marginRight: "0px auto",
     marginTop: "1em"
+  },
+  circle: {
+    margin: "0px auto",
+    width: "10%",
+    paddingTop: "10px"
   }
 });
 
@@ -95,15 +100,13 @@ const frontPage = props => {
         loadMore={fetchMorePosts}
         hasMore={pagination.morePosts}
         loader={
-          <div>
+          <div className={classes.circle}>
             <CircularProgress className={classes.progress} color="secondary" />
           </div>
         }
       >
         {posts()}
       </InfiniteScroll>
-
-      <button onClick={fetchMorePosts}>Fetch More </button>
     </div>
   );
 };
