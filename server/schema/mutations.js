@@ -2,7 +2,9 @@ const graphql = require("graphql");
 const { GraphQLObjectType, GraphQLString, GraphQLID, GraphQLNonNull } = graphql;
 const axios = require("axios");
 const PostInputType = require("./types/post-input-type");
+const CommentInputType = require("./types/comment-input-type");
 const PostController = require("../controllers/post");
+const CommentController = require("../controllers/comment");
 const UserType = require("./types/user-type");
 const PostType = require("./types/post-type");
 const Auth = require("../controllers/authentication");
@@ -90,6 +92,24 @@ const mutation = new GraphQLObjectType({
         return new Promise((resolve, reject) => {
           console.log(args);
           PostController.newPost(args).then(function(res) {
+            console.log("res", res);
+            resolve();
+          });
+        });
+      }
+    },
+
+    newComment: {
+      type: GraphQLString,
+      args: {
+        input: {
+          type: new GraphQLNonNull(CommentInputType)
+        }
+      },
+      resolve(parentValue, args) {
+        return new Promise((resolve, reject) => {
+          console.log(args);
+          CommentController.newComment(args).then(function(res) {
             console.log("res", res);
             resolve();
           });

@@ -1,7 +1,7 @@
 const graphql = require("graphql");
 const {
-  GraphQLObjectType,
   GraphQLList,
+  GraphQLObjectType,
   GraphQLString,
   GraphQLID,
   GraphQLBoolean
@@ -9,17 +9,19 @@ const {
 const gqDateTime = require("graphql-iso-date");
 const { GraphQLDateTime } = gqDateTime;
 const UserType = require("./user-type");
-const CommentType = require("./comment-type");
 
-const PostType = new GraphQLObjectType({
-  name: "PostType",
-  fields: {
+const CommentType = new GraphQLObjectType({
+  name: "CommentType",
+  fields: () => ({
     id: { type: GraphQLID },
     userId: {
       type: GraphQLID
     },
-    title: {
-      type: GraphQLString
+    parentCommentId: {
+      type: GraphQLID
+    },
+    postId: {
+      type: GraphQLID
     },
     content: {
       type: GraphQLString
@@ -36,7 +38,7 @@ const PostType = new GraphQLObjectType({
         return;
       }
     }
-  }
+  })
 });
 
-module.exports = PostType;
+module.exports = CommentType;

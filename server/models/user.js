@@ -8,7 +8,8 @@ const userSchema = new Schema({
   email: { type: String, required: true, unique: true, lowercase: true },
   username: { type: String, required: true, index: { unique: true } },
   password: { type: String, required: true },
-  posts: [{ type: Schema.Types.ObjectId, ref: "post" }]
+  posts: [{ type: Schema.Types.ObjectId, ref: "post" }],
+  comments: [{ type: Schema.Types.ObjectId, ref: "comment" }]
 });
 
 userSchema.pre("save", function(next) {

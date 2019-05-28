@@ -10,6 +10,8 @@ const UserType = require("./user-type");
 const User = require("../../models/user");
 const PostType = require("./post-type");
 const Post = require("../../models/post");
+const Comment = require("../../models/comment");
+const CommentType = require("./comment-type");
 
 const RootType = new GraphQLObjectType({
   name: "RootType",
@@ -39,6 +41,13 @@ const RootType = new GraphQLObjectType({
           const foundPost = await Post.findById(postId);
           return foundPost;
         }
+        return null;
+      }
+    },
+    comment: {
+      type: CommentType,
+      args: { commentId: { type: new GraphQLNonNull(GraphQLID) } },
+      async resolve(parentValue, args, req) {
         return null;
       }
     },
