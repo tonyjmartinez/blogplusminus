@@ -83,39 +83,34 @@ const postDialog = props => {
   );
 
   return (
-    <div>
-      <Dialog
-        fullScreen
-        open={props.open}
-        onClose={props.onClose}
-        TransitionComponent={Transition}
-      >
-        <MediaQuery minWidth={700}>
-          {matches => {
-            let width;
-            if (matches) {
-              return (
-                <PostForm
-                  onClose={props.onClose}
-                  newPost={handleNewPost}
-                  desktop={true}
-                  {...props}
-                />
-              );
-            } else {
-              return (
-                <PostForm
-                  onClose={props.onClose}
-                  newPost={handleNewPost}
-                  desktop={false}
-                  {...props}
-                />
-              );
-            }
-          }}
-        </MediaQuery>
-      </Dialog>
-    </div>
+    <MediaQuery minWidth={700}>
+      {matches => {
+        let desktop = false;
+        if (matches) {
+          desktop = true;
+        }
+        const PostFormRefs = React.forwardRef((props, ref) => (
+          <PostForm
+            onClose={props.onClose}
+            newPost={handleNewPost}
+            desktop={desktop}
+            {...props}
+          />
+        ))
+        return (
+          <Dialog
+            fullScreen
+            open={props.open}
+            onClose={props.onClose}
+            TransitionComponent={Transition}
+          >
+            {PostFormRefs}
+          </Dialog>
+        );
+      }}
+
+    </MediaQuery>
+
   );
 };
 

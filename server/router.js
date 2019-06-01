@@ -8,7 +8,7 @@ const config = require("./config.js");
 
 const auth = jwt({
   secret: config.secret,
-  credentialsRequired: false
+  credentialsRequired: true
 });
 
 module.exports = function(app) {

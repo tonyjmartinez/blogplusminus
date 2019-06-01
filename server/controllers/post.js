@@ -10,9 +10,6 @@ exports.newPost = function(args) {
       if (err) {
         console.log(err);
       }
-      console.log("postcontrolelr");
-      console.log(user);
-
       const post = new Post({
         userId: userId,
         title: title,
@@ -27,6 +24,8 @@ exports.newPost = function(args) {
 
         user.posts.push(post._id);
         user.save();
+        console.log("Post Successful");
+        console.log(post);
         resolve();
       });
     });

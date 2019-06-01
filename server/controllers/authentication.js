@@ -31,38 +31,38 @@ exports.jwtAuth = jwtExpress({
       return;
     }
     if (req.headers.authorization.split(" ")[0] === "Bearer") {
-      console.log("bearer");
       let token = req.headers.authorization.split(" ")[1];
-      console.log("token");
-      console.log(token);
+      const refreshToken = req.headers.authrefresh;
+      return authorize(token, refreshToken);
+    } else {
+      return;
+    }
+  }
+});
+
+const authorize = function(token, refreshToken) {
       return jwt.verify(token, config.secret, (err, decoded) => {
         if (err) {
-          console.log("errorr", err);
           if (err.name === "TokenExpiredError") {
-            console.log("token expired");
             return jwt.verify(
               token,
               config.secret,
               { ignoreExpiration: true },
               (err, decoded) => {
                 if (err) {
-                  console.log("err");
                   console.log(err);
                 } else {
-                  console.log("else");
-                  const refreshToken = req.headers.authrefresh;
+
                   if (
                     refreshToken in refresh.tokens &&
                     refresh.tokens[refreshToken] === decoded.username
                   ) {
-                    console.log("if");
                     decoded.token = tokenForUser(decoded);
                     const expires = new Date();
                     expires.setSeconds(expires.getSeconds() + 86400);
                     decoded.expires = expires;
                     return tokenForUser(decoded);
                   } else {
-                    console.log("elseeee");
                     return null;
                   }
                 }
@@ -70,17 +70,13 @@ exports.jwtAuth = jwtExpress({
             );
           }
         } else if (decoded) {
-          return req.headers.authorization.split(" ")[1];
+          return token;
         }
       });
-      return req.headers.authorization.split(" ")[1];
-    } else {
-      console.log("else");
-      console.log("auth", req.headers.authorization);
-      return;
-    }
-  }
-});
+}
+
+exports.checkToken = authorize;
+
 
 exports.login = function({ email, password }, cb) {
   console.log("login", email, password);
@@ -113,7 +109,6 @@ exports.login = function({ email, password }, cb) {
   });
 };
 
-//TODO return refresh token in signup
 exports.signup = function({ email, password, username }, cb) {
   if (!email || !password) {
     return cb(null, "Email and password required");
