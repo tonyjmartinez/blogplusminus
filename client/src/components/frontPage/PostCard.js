@@ -8,7 +8,6 @@ import { makeStyles, useTheme } from "@material-ui/styles";
 import moment from "moment";
 import withAppContext from "../../context/withAppContext.js";
 import { withStyles } from "@material-ui/core/styles";
-import clsx from "clsx";
 
 const useStyles = makeStyles({
   card: {
@@ -74,7 +73,9 @@ const postCard = props => {
         <Typography component="p">{content}</Typography>
       </CardContent>
       <CardActions>
-        <Button size="small">Open</Button>
+        <Button variant="outlined" color="primary" size="small">
+          Open
+        </Button>
       </CardActions>
     </Card>
   );
