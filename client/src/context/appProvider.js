@@ -14,8 +14,6 @@ const appProvider = props => {
   let authorized = false;
 
   const [darkMode, setDarkMode] = useState(true);
-  const [page, setPage] = useState(0);
-  const [postsLeft, setPostsLeft] = useState(true);
 
   document.body.style = `background: ${darkMode ? "grey" : "white"}`;
 
@@ -92,7 +90,7 @@ const appProvider = props => {
   };
 
   const newPost = async (userId, title, content, username) => {
-    const post = await props
+    await props
       .newPost({
         variables: {
           postInput: {

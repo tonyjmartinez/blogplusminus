@@ -28,7 +28,7 @@ const useStyles = makeStyles({
 const postCard = props => {
   const classes = useStyles();
   const theme = useTheme();
-  const { title, username, content, dateTime, id } = props.post;
+  const { title, username, content, dateTime } = props.post;
   let user = username;
 
   const darkMode = props.context.darkMode;
