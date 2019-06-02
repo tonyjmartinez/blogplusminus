@@ -21,11 +21,8 @@ const authLink = setContext((_, { headers }) => {
 
   let refreshToken = null;
   const now = new Date();
-  console.log(now);
-  console.log(new Date(localStorage.getItem("expires")));
 
   if (now > new Date(localStorage.getItem("expires"))) {
-    console.log("expired");
     refreshToken = localStorage.getItem("refreshToken");
   } else {
     console.log("not expired");

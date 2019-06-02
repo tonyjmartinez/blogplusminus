@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import AppContext from "./appContext";
 import { graphql, compose } from "react-apollo";
 import loginMutation from "../mutations/login";
@@ -10,11 +10,9 @@ import { MuiThemeProvider } from "@material-ui/core/styles";
 import theme from "../themes/theme";
 
 const appProvider = props => {
-  console.log(props);
   let currentUser = null;
   let authorized = false;
 
-  console.log("appProvider", props);
   const [darkMode, setDarkMode] = useState(true);
   const [page, setPage] = useState(0);
   const [postsLeft, setPostsLeft] = useState(true);
@@ -94,7 +92,6 @@ const appProvider = props => {
   };
 
   const newPost = async (userId, title, content, username) => {
-    console.log("new post");
     const post = await props
       .newPost({
         variables: {
@@ -107,7 +104,6 @@ const appProvider = props => {
         }
       })
       .then(res => {
-        console.log("res");
         props.recentPosts.refetch();
       });
   };

@@ -7,7 +7,6 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles, useTheme } from "@material-ui/styles";
 import moment from "moment";
 import withAppContext from "../../context/withAppContext.js";
-import { withStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles({
   card: {
@@ -29,7 +28,6 @@ const useStyles = makeStyles({
 const postCard = props => {
   const classes = useStyles();
   const theme = useTheme();
-  console.log(theme);
   const { title, username, content, dateTime, id } = props.post;
   let user = username;
 
@@ -37,7 +35,6 @@ const postCard = props => {
 
   const cardColor = darkMode ? null : theme.palette.paper.main;
 
-  console.log(cardColor);
   const style = {
     background: cardColor
   };
@@ -45,9 +42,6 @@ const postCard = props => {
   if (!username) {
     user = "user";
   }
-
-  console.log(title, content, dateTime);
-  console.log(props);
 
   let dt = "";
   if (dateTime) {

@@ -81,8 +81,6 @@ const header = props => {
     closeDialog();
   };
 
-  console.log(props);
-
   let authButtons = null;
   let newPostButton = null;
   if (auth) {

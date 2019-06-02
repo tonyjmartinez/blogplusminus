@@ -50,13 +50,9 @@ const useStyles = makeStyles({
   }
 });
 
-const Transition = props => {
-  return <Slide direction="up" {...props} />;
-};
-
-const TransitionRefs = React.forwardRef((props, ref) => (
-  <Transition {...props} ref={ref} />
-));
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
 
 const postDialog = props => {
   const classes = useStyles();
@@ -99,7 +95,7 @@ const postDialog = props => {
             fullScreen
             open={props.open}
             onClose={props.onClose}
-            TransitionComponent={TransitionRefs}
+            TransitionComponent={Transition}
           >
             <PostForm
               onClose={props.onClose}

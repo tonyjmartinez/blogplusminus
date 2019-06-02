@@ -31,17 +31,13 @@ const useStyles = makeStyles({
 
 const frontPage = props => {
   const classes = useStyles();
-  console.log("frontpage", props);
 
   const [pagination, setPagination] = useState({
     page: 0,
     morePosts: true
   });
 
-  console.log("pagination", pagination);
-
   const fetchMorePosts = async () => {
-    console.log("fetch mroe posts)");
     if (props.data.loading) {
       return;
     }
@@ -51,16 +47,13 @@ const frontPage = props => {
           skip: pagination.page + 10
         },
         updateQuery: (prev, { fetchMoreResult }) => {
-          console.log("inside update query", fetchMoreResult);
           if (!fetchMoreResult || fetchMoreResult.recentPosts.length === 0) {
-            console.log("no more posts");
             setPagination({
               ...pagination,
               morePosts: false
             });
             return prev;
           }
-          console.log();
 
           const newPosts = Object.assign({}, prev, {
             recentPosts: [...prev.recentPosts, ...fetchMoreResult.recentPosts]
@@ -75,7 +68,6 @@ const frontPage = props => {
       });
     }
   };
-  console.log(props.data.recentPosts);
 
   const posts = () => {
     if (!props.data.loading && props.data.recentPosts !== undefined) {
@@ -100,7 +92,7 @@ const frontPage = props => {
         loadMore={fetchMorePosts}
         hasMore={pagination.morePosts}
         loader={
-          <div className={classes.circle}>
+          <div key={1} className={classes.circle}>
             <CircularProgress className={classes.progress} color="secondary" />
           </div>
         }
