@@ -54,6 +54,10 @@ const Transition = props => {
   return <Slide direction="up" {...props} />;
 };
 
+const TransitionRefs = React.forwardRef((props, ref) => (
+  <Transition {...props} ref={ref} />
+));
+
 const postDialog = props => {
   const classes = useStyles();
 
@@ -89,28 +93,24 @@ const postDialog = props => {
         if (matches) {
           desktop = true;
         }
-        const PostFormRefs = React.forwardRef((props, ref) => (
-          <PostForm
-            onClose={props.onClose}
-            newPost={handleNewPost}
-            desktop={desktop}
-            {...props}
-          />
-        ))
+
         return (
           <Dialog
             fullScreen
             open={props.open}
             onClose={props.onClose}
-            TransitionComponent={Transition}
+            TransitionComponent={TransitionRefs}
           >
-            {PostFormRefs}
+            <PostForm
+              onClose={props.onClose}
+              newPost={handleNewPost}
+              desktop={desktop}
+              {...props}
+            />
           </Dialog>
         );
       }}
-
     </MediaQuery>
-
   );
 };
 
