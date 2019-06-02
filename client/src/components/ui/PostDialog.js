@@ -10,12 +10,14 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 const postDialog = props => {
+  console.log(props);
   const handleNewPost = async (title, content) => {
     const newPost = await props.context.newPost(
       props.context.user.id,
       title,
       content,
-      props.context.user.username
+      props.context.user.username,
+      props.context.user.token
     );
     props.onClose();
     console.log(newPost);

@@ -1,7 +1,9 @@
 const User = require("../models/user");
 const Post = require("../models/post");
 const ObjectID = require("mongodb").ObjectID;
+import Auth from "./authentication";
 
+//TODO check token before sending new post
 exports.newPost = function(args) {
   return new Promise(function(resolve, reject) {
     const { userId, title, content, username } = args.input;

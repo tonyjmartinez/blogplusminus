@@ -12,6 +12,7 @@ import theme from "../themes/theme";
 const appProvider = props => {
   let currentUser = null;
   let authorized = false;
+  let userToken = null;
 
   const [darkMode, setDarkMode] = useState(true);
 
@@ -26,6 +27,8 @@ const appProvider = props => {
         if (currentUser.expires !== null) {
           localStorage.setItem("expires", currentUser.expires);
         }
+      } else {
+        currentUser.token = localStorage.getItem("token");
       }
       authorized = true;
     }
@@ -89,7 +92,7 @@ const appProvider = props => {
     }
   };
 
-  const newPost = async (userId, title, content, username) => {
+  const newPost = async (userId, title, content, username, token) => {
     await props
       .newPost({
         variables: {
@@ -97,7 +100,8 @@ const appProvider = props => {
             userId,
             title,
             content,
-            username
+            username,
+            token
           }
         }
       })

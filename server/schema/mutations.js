@@ -90,7 +90,6 @@ const mutation = new GraphQLObjectType({
       },
       resolve(parentValue, args) {
         return new Promise((resolve, reject) => {
-          console.log(args);
           PostController.newPost(args).then(function(res) {
             console.log("res", res);
             resolve();

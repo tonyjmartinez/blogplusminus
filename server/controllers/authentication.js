@@ -41,42 +41,40 @@ exports.jwtAuth = jwtExpress({
 });
 
 const authorize = function(token, refreshToken) {
-      return jwt.verify(token, config.secret, (err, decoded) => {
-        if (err) {
-          if (err.name === "TokenExpiredError") {
-            return jwt.verify(
-              token,
-              config.secret,
-              { ignoreExpiration: true },
-              (err, decoded) => {
-                if (err) {
-                  console.log(err);
-                } else {
-
-                  if (
-                    refreshToken in refresh.tokens &&
-                    refresh.tokens[refreshToken] === decoded.username
-                  ) {
-                    decoded.token = tokenForUser(decoded);
-                    const expires = new Date();
-                    expires.setSeconds(expires.getSeconds() + 86400);
-                    decoded.expires = expires;
-                    return tokenForUser(decoded);
-                  } else {
-                    return null;
-                  }
-                }
+  return jwt.verify(token, config.secret, (err, decoded) => {
+    if (err) {
+      if (err.name === "TokenExpiredError") {
+        return jwt.verify(
+          token,
+          config.secret,
+          { ignoreExpiration: true },
+          (err, decoded) => {
+            if (err) {
+              console.log(err);
+            } else {
+              if (
+                refreshToken in refresh.tokens &&
+                refresh.tokens[refreshToken] === decoded.username
+              ) {
+                decoded.token = tokenForUser(decoded);
+                const expires = new Date();
+                expires.setSeconds(expires.getSeconds() + 86400);
+                decoded.expires = expires;
+                return tokenForUser(decoded);
+              } else {
+                return null;
               }
-            );
+            }
           }
-        } else if (decoded) {
-          return token;
-        }
-      });
-}
+        );
+      }
+    } else if (decoded) {
+      return token;
+    }
+  });
+};
 
 exports.checkToken = authorize;
-
 
 exports.login = function({ email, password }, cb) {
   console.log("login", email, password);
