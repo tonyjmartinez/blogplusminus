@@ -36,6 +36,7 @@ const RootType = new GraphQLObjectType({
       args: { postId: { type: new GraphQLNonNull(GraphQLID) } },
       async resolve(parentValue, args, req) {
         const postId = args.postId;
+        console.log("postId querying...", postId);
         if (postId) {
           console.log(postId);
           const foundPost = await Post.findById(postId);

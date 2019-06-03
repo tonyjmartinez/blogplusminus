@@ -5,6 +5,7 @@ import CardContent from "@material-ui/core/CardContent";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles, useTheme } from "@material-ui/styles";
+import { Link } from "react-router-dom";
 import moment from "moment";
 import withAppContext from "../../context/withAppContext.js";
 
@@ -28,7 +29,8 @@ const useStyles = makeStyles({
 const postCard = props => {
   const classes = useStyles();
   const theme = useTheme();
-  const { title, username, content, dateTime } = props.post;
+  console.log(props.post);
+  const { title, username, content, dateTime, id } = props.post;
   let user = username;
 
   const darkMode = props.context.darkMode;
@@ -48,6 +50,23 @@ const postCard = props => {
     dt = moment(dateTime.toString()).fromNow();
   }
 
+  const detailButton = () => {
+    const link = `/post/${id}`;
+    if (props.frontPage) {
+      return (
+        <CardActions>
+          <Link to={link}>
+            <Button variant="outlined" color="primary" size="small">
+              Open
+            </Button>
+          </Link>
+        </CardActions>
+      );
+    } else {
+      return null;
+    }
+  };
+
   return (
     <Card style={style}>
       <CardContent>
@@ -66,11 +85,7 @@ const postCard = props => {
         </Typography>
         <Typography component="p">{content}</Typography>
       </CardContent>
-      <CardActions>
-        <Button variant="outlined" color="primary" size="small">
-          Open
-        </Button>
-      </CardActions>
+      {detailButton()}
     </Card>
   );
 };

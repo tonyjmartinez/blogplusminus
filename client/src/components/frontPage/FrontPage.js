@@ -72,7 +72,7 @@ const frontPage = props => {
       const postCards = posts.map((post, idx) => {
         return (
           <div key={idx} className={classes.loader}>
-            <PostCard post={post} />
+            <PostCard frontPage post={post} />
           </div>
         );
       });

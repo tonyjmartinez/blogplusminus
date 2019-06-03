@@ -67,6 +67,8 @@ const authorize = function(token, refreshToken) {
             }
           }
         );
+      } else {
+        return null;
       }
     } else if (decoded) {
       return token;
