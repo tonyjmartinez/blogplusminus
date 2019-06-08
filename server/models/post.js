@@ -30,5 +30,13 @@ postSchema.statics.findRecent = function(skip, cb) {
     });
 };
 
+
+postSchema.statics.findComments = function(id) {
+  console.log("Post ID", id);
+  return this.findById(id)
+    .populate("posts")
+    .then(post => post.comments);
+};
+
 const ModelClass = mongoose.model("post", postSchema);
 module.exports = ModelClass;

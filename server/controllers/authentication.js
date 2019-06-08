@@ -76,29 +76,30 @@ const authorize = function(token, refreshToken) {
   });
 };
 
-exports.checkToken = authorize;
+
 
 exports.login = function({ email, password }, cb) {
+  const AUTH_FAIL_MSG = "Username/password combination incorrect"
   console.log("login", email, password);
   if (email === "" || email === null || password === "" || password === null) {
-    return cb(null, "missing email or password");
+    return cb(null, "Missing email and/or password");
   }
   User.findOne({ email: email }, function(err, user) {
     console.log("find one");
     if (!user) {
       console.log("not found");
-      return cb(null, "No user with that email");
+      return cb(null, AUTH_FAIL_MSG);
     }
 
     user.comparePassword(password, function(err, match) {
       if (err) {
         console.log("error check");
-        return cb(null, "Error checking password");
+        return cb(null, AUTH_FAIL_MSG);
       }
 
       if (!match) {
         console.log("no match");
-        return cb(null, "Incorrect password");
+        return cb(null, AUTH_FAIL_MSG);
       }
 
       const refreshToken = randToken.uid(256);
@@ -147,3 +148,5 @@ exports.signup = function({ email, password, username }, cb) {
     });
   });
 };
+
+exports.checkToken = authorize;

@@ -1,109 +1,111 @@
-import React, { useState } from "react";
-import TextField from "@material-ui/core/TextField";
-import withAppContext from "../../context/withAppContext";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogActions from "@material-ui/core/DialogActions";
-import Button from "@material-ui/core/Button";
+import React, {useState} from 'react';
+import TextField from '@material-ui/core/TextField';
+import withAppContext from '../../context/withAppContext';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogActions from '@material-ui/core/DialogActions';
+import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
 
 const authForm = props => {
   const [inputValidators, setInputValidators] = useState({
     email: true,
     password: true,
     verifyPassword: true,
-    username: true
+    username: true,
   });
 
   const [inputValues, setInputValues] = useState({
-    email: "",
-    password: "",
-    verifyPassword: "",
-    username: ""
+    email: '',
+    password: '',
+    verifyPassword: '',
+    username: '',
   });
 
-  const [errorMessage, setErrorMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState('');
 
   const emailHandler = event => {
     const email = event.target.value;
     setInputValidators({
       ...inputValidators,
-      email: emailValidator(email)
+      email: emailValidator(email),
     });
-    setInputValues({ ...inputValues, email: email });
+    setInputValues({...inputValues, email: email});
   };
 
   const usernameHandler = event => {
     const username = event.target.value;
     setInputValidators({
       ...inputValidators,
-      username: usernameValidator(username)
+      username: usernameValidator(username),
     });
-    setInputValues({ ...inputValues, username: username });
+    setInputValues({...inputValues, username: username});
   };
 
   const passwordHandler = event => {
     const password = event.target.value;
     setInputValidators({
       ...inputValidators,
-      password: passwordValidator(password)
+      password: passwordValidator(password),
     });
 
-    setInputValues({ ...inputValues, password: password });
+    setInputValues({...inputValues, password: password});
   };
 
   const verifyPasswordHandler = event => {
     const password = event.target.value;
     setInputValidators({
       ...inputValidators,
-      verifyPassword: verifyPasswordValidator(password)
+      verifyPassword: verifyPasswordValidator(password),
     });
 
-    setInputValues({ ...inputValues, verifyPassword: password });
+    setInputValues({...inputValues, verifyPassword: password});
   };
   const emailValidator = email => {
+    // eslint-disable-next-line max-len
     const reg = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return reg.test(String(email).toLowerCase());
   };
 
   const passwordValidator = password => {
     if (
-      props.type === "signup" &&
+      props.type === 'signup' &&
       password.trim().length < 5 &&
       password.trim().length !== 0
     ) {
-      setErrorMessage("Password must be 5 characters or longer");
+      setErrorMessage('Password must be 5 characters or longer');
       return false;
     }
-    setErrorMessage("");
+    setErrorMessage('');
     return true;
   };
 
   const usernameValidator = username => {
     if (username.trim().length < 5 && username.trim().length !== 0) {
-      setErrorMessage("Username must be 5 characters or longer");
+      setErrorMessage('Username must be 5 characters or longer');
       return false;
     }
-    setErrorMessage("");
+    setErrorMessage('');
     return true;
   };
 
   const verifyPasswordValidator = password => {
     if (password.trim().length < 5 && password.trim().length !== 0) {
-      setErrorMessage("Password must be 5 characters or longer");
+      setErrorMessage('Password must be 5 characters or longer');
       return false;
     }
     if (password !== inputValues.password) {
-      setErrorMessage("Passwords don't match");
+      setErrorMessage('Passwords don\'t match');
       return false;
     }
-    setErrorMessage("");
+    setErrorMessage('');
     return true;
   };
 
   const handleSignIn = async e => {
     e.preventDefault();
     const res = await props.context.signin(
-      inputValues.email,
-      inputValues.password
+        inputValues.email,
+        inputValues.password
     );
 
     if (res !== null) {
@@ -116,9 +118,9 @@ const authForm = props => {
     e.preventDefault();
     console.log(props.type);
     const res = await props.context.signup(
-      inputValues.email,
-      inputValues.password,
-      inputValues.username
+        inputValues.email,
+        inputValues.password,
+        inputValues.username
     );
     if (res !== null) {
       console.log(res);
@@ -128,7 +130,7 @@ const authForm = props => {
 
   let verifyPassword = null;
   let username = null;
-  if (props.type === "signup") {
+  if (props.type === 'signup') {
     verifyPassword = (
       <TextField
         margin="dense"
@@ -157,7 +159,7 @@ const authForm = props => {
 
   return (
     <React.Fragment>
-      <form onSubmit={props.type === "login" ? handleSignIn : handleSignUp}>
+      <form onSubmit={props.type === 'login' ? handleSignIn : handleSignUp}>
         <DialogContent>
           <TextField
             autoFocus
@@ -182,7 +184,7 @@ const authForm = props => {
             error={inputValidators.password ? false : true}
           />
           {verifyPassword}
-          <p style={{ color: "red" }}>{errorMessage}</p>
+          <p style={{color: 'red'}}>{errorMessage}</p>
         </DialogContent>
 
         <DialogActions>

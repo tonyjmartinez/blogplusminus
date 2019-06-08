@@ -7,7 +7,7 @@ const {
   GraphQLBoolean
 } = graphql;
 const PostType = require("./post-type");
-const Post = require("../../models/post");
+
 const User = require("../../models/user");
 
 const UserType = new GraphQLObjectType({
