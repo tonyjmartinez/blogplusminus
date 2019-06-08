@@ -49,6 +49,11 @@ const RootType = new GraphQLObjectType({
       type: CommentType,
       args: { commentId: { type: new GraphQLNonNull(GraphQLID) } },
       async resolve(parentValue, args, req) {
+        const commentId = args.commentId;
+        if (commentId) {
+          const foundComment = await Comment.findById(commentId);
+          return foundComment;
+        }
         return null;
       }
     },
