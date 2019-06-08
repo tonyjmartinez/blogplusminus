@@ -1,4 +1,4 @@
-import gql from 'graphql-tag';
+import gql from "graphql-tag";
 
 export default gql`
   query Post($postId: ID!) {
@@ -9,6 +9,13 @@ export default gql`
       content
       dateTime
       username
+      comments {
+        id
+        userId
+        content
+        dateTime
+        username
+      }
     }
   }
 `;

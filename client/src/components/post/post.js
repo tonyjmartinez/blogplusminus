@@ -1,7 +1,7 @@
-import React from 'react';
-import {graphql} from 'react-apollo';
-import query from '../../queries/post';
-import PostCard from '../frontPage/PostCard';
+import React from "react";
+import { graphql } from "react-apollo";
+import query from "../../queries/post";
+import PostCard from "../frontPage/PostCard";
 
 const post = props => {
   console.log(props);
@@ -13,5 +13,5 @@ const post = props => {
 };
 
 export default graphql(query, {
-  options: props => ({variables: {postId: props.match.params.id}}),
+  options: props => ({ variables: { postId: props.match.params.id } })
 })(post);
