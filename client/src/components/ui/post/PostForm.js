@@ -8,7 +8,6 @@ import Toolbar from "@material-ui/core/Toolbar";
 import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
 import CloseIcon from "@material-ui/icons/Close";
-import Slide from "@material-ui/core/Slide";
 import Button from "@material-ui/core/Button";
 
 const useStyles = makeStyles({
@@ -50,7 +49,6 @@ const useStyles = makeStyles({
 });
 
 const postForm = props => {
-  console.log("postForm", props);
   const classes = useStyles();
 
   const [postFields, setPostFields] = useState({
@@ -81,7 +79,6 @@ const postForm = props => {
   };
 
   const handleNewPost = e => {
-    console.log("handlenewpost");
     e.preventDefault();
     props.newPost(postFields.title, postFields.content);
   };
