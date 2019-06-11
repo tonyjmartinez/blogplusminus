@@ -1,5 +1,5 @@
 import React from 'react';
-import {makeStyles} from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import ListSubheader from '@material-ui/core/ListSubheader';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -11,8 +11,9 @@ import ExpandMore from '@material-ui/icons/ExpandMore';
 import StarBorder from '@material-ui/icons/StarBorder';
 import Divider from '@material-ui/core/Divider';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
+import UserAvatar from '../ui/UserAvatar';
+
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -26,13 +27,14 @@ const useStyles = makeStyles(theme => ({
   inline: {
     display: 'inline',
   },
-
 }));
 
 const comment = props => {
   const classes = useStyles();
 
   const [open, setOpen] = React.useState(true);
+
+  const { username, darkMode } = props;
 
   /**
        * Toggles nested comment visibility
@@ -49,12 +51,10 @@ const comment = props => {
     >
       <ListItem button onClick={handleClick} alignItems="flex-start">
         <ListItemAvatar>
-          <Avatar
-
-            className={classes.avatar}
-          >
-          A
-          </Avatar>
+          <UserAvatar
+            username={username}
+            darkMode={darkMode}
+          />
         </ListItemAvatar>
         <ListItemText
           secondary={
@@ -65,7 +65,7 @@ const comment = props => {
                 className={classes.inline}
                 color="textPrimary"
               >
-                                to Scott, Alex, Jennifer
+                to Scott, Alex, Jennifer
               </Typography>
               {' — Wish I could come, but I\'m out of town this…'}
             </React.Fragment>

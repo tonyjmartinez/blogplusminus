@@ -1,18 +1,19 @@
-import React, {useState} from 'react';
-import {makeStyles} from '@material-ui/styles';
+import React, { useState } from 'react';
+import { makeStyles } from '@material-ui/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import withAppContext from '../../context/withAppContext.js';
 import AuthDialog from './AuthDialog';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import MediaQuery from 'react-responsive';
 import Avatar from '@material-ui/core/Avatar';
 import MoonIcon from '@material-ui/icons/Brightness3';
 import MoonIconOutlined from '@material-ui/icons/Brightness3Outlined';
+import UserAvatar from './UserAvatar';
 
 const useStyles = makeStyles({
   root: {
@@ -46,7 +47,6 @@ const useStyles = makeStyles({
   fabText: {
     marginRight: '10px',
   },
-  avatar: {},
   avatarDiv: {
     display: 'inline-block',
     marginRight: '10px',
@@ -60,6 +60,7 @@ const useStyles = makeStyles({
 const header = (props) => {
   const auth = props.context.auth;
   const user = props.context.user;
+  console.log(user);
   const setDarkMode = props.context.setDarkMode;
   const darkMode = props.context.darkMode;
 
@@ -101,12 +102,11 @@ const header = (props) => {
             </Fab>
           </MediaQuery>
           <div className={classes.avatarDiv}>
-            <Avatar
-              style={{color: darkMode ? 'white' : 'black'}}
-              className={classes.avatar}
-            >
-              {user.username.charAt(0).toUpperCase()}
-            </Avatar>
+            <UserAvatar
+              username={user.username !== undefined ? user.username : null}
+              darkMode={darkMode}
+            />
+
           </div>
           <Button onClick={handleSignOut} color="inherit">
             Sign Out
@@ -156,11 +156,11 @@ const header = (props) => {
         onClick={() => setDarkMode(!darkMode)}
       />
     ) : (
-      <MoonIconOutlined
-        className={classes.moonIcon}
-        onClick={() => setDarkMode(!darkMode)}
-      />
-    );
+        <MoonIconOutlined
+          className={classes.moonIcon}
+          onClick={() => setDarkMode(!darkMode)}
+        />
+      );
 
   return (
     <div className={classes.root}>
@@ -171,7 +171,7 @@ const header = (props) => {
               Blog {'+/-'}
             </Link>
           </Typography>
-          <Moon/>
+          <Moon />
           {authButtons}
         </Toolbar>
       </AppBar>
