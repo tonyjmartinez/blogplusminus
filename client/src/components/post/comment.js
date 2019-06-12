@@ -34,8 +34,10 @@ const comment = props => {
 
   const [open, setOpen] = React.useState(true);
 
-  const { username, darkMode } = props;
+  const { darkMode, comment } = props;
+  const {username, content} = comment;
 
+  console.log(comment);
   /**
        * Toggles nested comment visibility
        */
@@ -65,9 +67,9 @@ const comment = props => {
                 className={classes.inline}
                 color="textPrimary"
               >
-                to Scott, Alex, Jennifer
+                {username}
               </Typography>
-              {' — Wish I could come, but I\'m out of town this…'}
+              {' — ' + content}
             </React.Fragment>
           }
         />

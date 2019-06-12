@@ -7,24 +7,38 @@ import withAppContext from '../../context/withAppContext';
 
 
 const post = props => {
-  console.log(props);
-  const ctxProps = props.context;
-  const username = !props.data.loading ? props.data.post.username : null;
-  console.log(ctxProps);
-  console.log(username);
-  const { darkMode } = ctxProps;
-
   if (props.data.loading) {
     return <div>Loading...</div>;
   }
 
+  console.log(props);
+  const ctxProps = props.context;
+  const username = !props.data.loading ? props.data.post.username : null;
+  const gqlProps = props.data;
+  console.log(ctxProps);
+  console.log(username);
+  const { darkMode } = ctxProps;
+  const { post } = gqlProps;
+  const { comments } = post;
+  console.log(post);
+  console.log(comments);
+
+  const Comments = props => {
+    if (comments.length > 0) {
+      return comments.map((cmt, idx) => {
+        return (
+          <Comment key={idx} darkMode={darkMode} comment={cmt} />
+        );
+      });
+    }
+    return null;
+  };
+
   return (
     <React.Fragment>
-      <PostCard post={props.data.post} />
-      <Comment darkMode={darkMode} username={username} />
+      <PostCard post={post} />
+      <Comments />
     </React.Fragment>
-
-
   );
 };
 
