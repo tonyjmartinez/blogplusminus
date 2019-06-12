@@ -5,7 +5,6 @@ import PostCard from '../frontPage/PostCard';
 import Comment from './comment';
 import withAppContext from '../../context/withAppContext';
 
-
 const post = props => {
   if (props.data.loading) {
     return <div>Loading...</div>;
