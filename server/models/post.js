@@ -24,14 +24,12 @@ postSchema.statics.findRecent = function(skip, cb) {
         console.log(err);
         cb(null);
       } else {
-        console.log("found");
         cb(docs);
       }
     });
 };
 
 postSchema.statics.findComments = function(id) {
-  console.log("Post ID", id);
   return this.findById(id)
     .populate("comments")
     .then(post => post.comments);

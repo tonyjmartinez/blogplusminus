@@ -20,10 +20,8 @@ const RootType = new GraphQLObjectType({
       type: UserType,
       async resolve(parentValue, args, req) {
         if (req.user) {
-          console.log("requser", req.user);
           return req.user;
         } else if (!req.user) {
-          console.log("You are not authenticated!");
           return null;
         } else {
           const foundUser = await User.findById(req.user.id);
@@ -36,9 +34,7 @@ const RootType = new GraphQLObjectType({
       args: { postId: { type: new GraphQLNonNull(GraphQLID) } },
       async resolve(parentValue, args, req) {
         const postId = args.postId;
-        console.log("postId querying...", postId);
         if (postId) {
-          console.log(postId);
           const foundPost = await Post.findById(postId);
           return foundPost;
         }
@@ -67,7 +63,6 @@ const RootType = new GraphQLObjectType({
         }
         return new Promise((resolve, reject) => {
           Post.findRecent(skip, function(response) {
-            console.log(response);
             if (response !== null) {
               resolve(response);
             }

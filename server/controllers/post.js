@@ -3,11 +3,10 @@ const Post = require("../models/post");
 const ObjectID = require("mongodb").ObjectID;
 const Auth = require("./authentication");
 
-//TODO check token before sending new post
+//TODO: check token before sending new post
 exports.newPost = function(args) {
   return new Promise(function(resolve, reject) {
     const { userId, title, content, username, token } = args.input;
-    console.log(userId);
     User.findOne({ _id: new ObjectID(userId) }, function(err, user) {
       if (err) {
         console.log(err);

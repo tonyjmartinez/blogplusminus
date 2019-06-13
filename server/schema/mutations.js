@@ -23,8 +23,6 @@ const mutation = new GraphQLObjectType({
         return new Promise((resolve, reject) => {
           Auth.signup({ email, password, username }, function(result, msg) {
             if (result === null) {
-              console.log("result null");
-              console.log(msg);
               return resolve(msg);
             } else {
               jwt = result.jwt;
@@ -54,11 +52,9 @@ const mutation = new GraphQLObjectType({
         password: { type: GraphQLString }
       },
       resolve(parentValue, { email, password }, req) {
-        console.log(email, password);
         return new Promise((resolve, reject) => {
           Auth.login({ email, password }, function(result, msg) {
             if (result === null) {
-              console.log("result null");
               return resolve(msg);
             } else {
               jwt = result.jwt;
@@ -69,7 +65,6 @@ const mutation = new GraphQLObjectType({
             }
             const expires = new Date();
             expires.setSeconds(expires.getSeconds() + 10);
-            console.log("exp", expires);
             return resolve(
               JSON.stringify({
                 jwt: jwt,
@@ -91,7 +86,6 @@ const mutation = new GraphQLObjectType({
       resolve(parentValue, args) {
         return new Promise((resolve, reject) => {
           PostController.newPost(args).then(function(res) {
-            console.log("res", res);
             resolve();
           });
         });
@@ -107,9 +101,7 @@ const mutation = new GraphQLObjectType({
       },
       resolve(parentValue, args) {
         return new Promise((resolve, reject) => {
-          console.log(args);
           CommentController.newComment(args).then(function(res) {
-            console.log("res", res);
             resolve();
           });
         });

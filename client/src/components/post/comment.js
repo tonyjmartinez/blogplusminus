@@ -13,6 +13,8 @@ import Divider from '@material-ui/core/Divider';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Typography from '@material-ui/core/Typography';
 import UserAvatar from '../ui/UserAvatar';
+import { graphql } from 'react-apollo';
+import query from '../../queries/comment';
 
 
 const useStyles = makeStyles(theme => ({
@@ -20,6 +22,8 @@ const useStyles = makeStyles(theme => ({
     width: '100%',
     maxWidth: 360,
     backgroundColor: theme.palette.background.paper,
+    borderRadius: '5px',
+    marginTop: '0.5em',
   },
   nested: {
     paddingLeft: theme.spacing(4),
@@ -35,7 +39,10 @@ const comment = props => {
   const [open, setOpen] = React.useState(true);
 
   const { darkMode, comment } = props;
-  const {username, content} = comment;
+  const { username, content } = comment;
+  if (!props.data.loading) {
+    console.log(props.data);
+  }
 
   console.log(comment);
   /**
@@ -51,7 +58,7 @@ const comment = props => {
       aria-labelledby="nested-list-subheader"
       className={classes.root}
     >
-      <ListItem button onClick={handleClick} alignItems="flex-start">
+      <ListItem alignItems="flex-start">
         <ListItemAvatar>
           <UserAvatar
             username={username}
@@ -73,22 +80,13 @@ const comment = props => {
             </React.Fragment>
           }
         />
-        {open ? <ExpandLess /> : <ExpandMore />}
-        <Divider variant="inset" component="li" />
+        {open ? <ExpandLess onClick={handleClick} />
+          : <ExpandMore onClick={handleClick} />}
       </ListItem>
-      <Divider variant="inset" component="li" />
-      <Collapse in={open} timeout="auto" unmountOnExit>
-        <List component="div" disablePadding>
-          <ListItem button className={classes.nested}>
-            <ListItemIcon>
-              <StarBorder />
-            </ListItemIcon>
-            <ListItemText primary="Starred" />
-          </ListItem>
-        </List>
-      </Collapse>
     </List>
   );
 };
 
-export default comment;
+export default graphql(query, {
+  options: props => ({ variables: { commentId: props.comment.id } }),
+})(comment);

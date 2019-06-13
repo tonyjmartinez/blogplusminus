@@ -26,7 +26,6 @@ exports.jwtAuth = jwtExpress({
   secret: config.secret,
   credentialsRequired: false,
   getToken: function fromHeader(req) {
-    console.log("getToken");
     if (req.headers.authorization === undefined) {
       return;
     }
@@ -80,25 +79,20 @@ const authorize = function(token, refreshToken) {
 
 exports.login = function({ email, password }, cb) {
   const AUTH_FAIL_MSG = "Username/password combination incorrect"
-  console.log("login", email, password);
   if (email === "" || email === null || password === "" || password === null) {
     return cb(null, "Missing email and/or password");
   }
   User.findOne({ email: email }, function(err, user) {
-    console.log("find one");
     if (!user) {
-      console.log("not found");
       return cb(null, AUTH_FAIL_MSG);
     }
 
     user.comparePassword(password, function(err, match) {
       if (err) {
-        console.log("error check");
         return cb(null, AUTH_FAIL_MSG);
       }
 
       if (!match) {
-        console.log("no match");
         return cb(null, AUTH_FAIL_MSG);
       }
 
@@ -115,10 +109,8 @@ exports.signup = function({ email, password, username }, cb) {
     return cb(null, "Email and password required");
   }
 
-  console.log(email, password);
 
   User.findOne({ email: email }, function(err, existingUser) {
-    console.log("here");
     if (err) {
       return cb(null, "Error finding user");
     }
@@ -134,7 +126,6 @@ exports.signup = function({ email, password, username }, cb) {
     });
 
     user.save(function(err) {
-      console.log("141");
       if (err) {
         return cb(null, "User save error");
       }

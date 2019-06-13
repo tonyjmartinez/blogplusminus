@@ -9,6 +9,7 @@ const {
 const gqDateTime = require("graphql-iso-date");
 const { GraphQLDateTime } = gqDateTime;
 const UserType = require("./user-type");
+const Comment = require("../../models/comment");
 
 const CommentType = new GraphQLObjectType({
   name: "CommentType",
@@ -17,7 +18,7 @@ const CommentType = new GraphQLObjectType({
     userId: {
       type: GraphQLID
     },
-    parentCommentId: {
+    parentId: {
       type: GraphQLID
     },
     postId: {
@@ -32,10 +33,13 @@ const CommentType = new GraphQLObjectType({
     username: {
       type: GraphQLString
     },
+    parentType: {
+      type: GraphQLID
+    },
     comments: {
       type: new GraphQLList(CommentType),
       resolve(parentValue) {
-        return;
+        return Comment.findComments(parentValue.id);
       }
     }
   })

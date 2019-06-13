@@ -12,7 +12,7 @@ module.exports = new GraphQLInputObjectType({
     userId: {
       type: GraphQLID
     },
-    parentCommentId: {
+    parentId: {
       type: GraphQLID
     },
     postId: {
@@ -22,6 +22,9 @@ module.exports = new GraphQLInputObjectType({
       type: GraphQLString
     },
     username: {
+      type: GraphQLString
+    },
+    parentType: {
       type: GraphQLString
     }
   }
