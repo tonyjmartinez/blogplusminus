@@ -1,9 +1,10 @@
-import React from 'react';
-import { graphql } from 'react-apollo';
-import query from '../../queries/post';
-import PostCard from '../frontPage/PostCard';
-import Comment from './comment';
-import withAppContext from '../../context/withAppContext';
+import React from "react";
+import { graphql } from "react-apollo";
+import query from "../../queries/post";
+import PostCard from "../frontPage/PostCard";
+import Comment from "./comment";
+import Comments from "./comments";
+import withAppContext from "../../context/withAppContext";
 
 const post = props => {
   if (props.data.loading) {
@@ -22,13 +23,11 @@ const post = props => {
   console.log(post);
   console.log(comments);
 
-  const Comments = props => {
+  const GenComments = props => {
     if (comments.length > 0) {
-      return comments.map((cmt, idx) => {
-        return (
-          <Comment key={idx} darkMode={darkMode} comment={cmt} />
-        );
-      });
+      return (
+        <Comments leftMargin={1} darkMode={darkMode} comments={comments} />
+      );
     }
     return null;
   };
@@ -36,11 +35,11 @@ const post = props => {
   return (
     <React.Fragment>
       <PostCard post={post} />
-      <Comments />
+      <GenComments />
     </React.Fragment>
   );
 };
 
 export default graphql(query, {
-  options: props => ({ variables: { postId: props.match.params.id } }),
+  options: props => ({ variables: { postId: props.match.params.id } })
 })(withAppContext(post));
