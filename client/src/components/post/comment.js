@@ -42,26 +42,35 @@ const comment = props => {
   const { username, content } = comment;
   console.log(comment);
   console.log(props.data);
+  const commentsAvailable =
+    !props.data.loading && props.data.comment.comments.length > 0;
 
   let nestedComments = () => {
-    if (
-      props.data !== undefined &&
-      !props.data.loading &&
-      props.data.comment.comments.length > 0
-    ) {
-      console.log("heeeeere");
-      return <Comments comments={props.data.comment.comments} {...props} />;
+    if (!open) {
+      return null;
     }
-    return null;
+    if (commentsAvailable) {
+      return <Comments comments={props.data.comment.comments} {...props} />;
+    } else {
+      return null;
+    }
   };
 
   console.log(comment);
   /**
    * Toggles nested comment visibility
    */
-  function handleClick() {
+  const handleClick = () => {
     setOpen(!open);
-  }
+  };
+
+  const expandBtn = () => {
+    if (open && commentsAvailable) {
+      return <ExpandMore style={{ color: "white" }} onClick={handleClick} />;
+    } else {
+      return <ExpandLess style={{ color: "white" }} onClick={handleClick} />;
+    }
+  };
 
   return (
     <div style={{ marginLeft: "" + 10 * props.leftMargin + "px" }}>
@@ -89,11 +98,7 @@ const comment = props => {
               </React.Fragment>
             }
           />
-          {open ? (
-            <ExpandLess onClick={handleClick} />
-          ) : (
-            <ExpandMore onClick={handleClick} />
-          )}
+          {commentsAvailable ? expandBtn() : null}
         </ListItem>
       </List>
       {nestedComments()}
