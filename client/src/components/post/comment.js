@@ -1,12 +1,15 @@
-import React from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import ListSubheader from "@material-ui/core/ListSubheader";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
+import ReplyIcon from "@material-ui/icons/Reply";
+import CancelIcon from "@material-ui/icons/Cancel";
 import Collapse from "@material-ui/core/Collapse";
 import ExpandLess from "@material-ui/icons/ExpandLess";
+import TextField from "@material-ui/core/TextField";
 import ExpandMore from "@material-ui/icons/ExpandMore";
 import StarBorder from "@material-ui/icons/StarBorder";
 import Divider from "@material-ui/core/Divider";
@@ -16,6 +19,7 @@ import UserAvatar from "../ui/UserAvatar";
 import { graphql } from "react-apollo";
 import query from "../../queries/comment";
 import Comments from "./comments.js";
+import mutation from "../../mutations/newComment.js";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -34,9 +38,12 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const comment = props => {
+  console.log(props);
   const classes = useStyles();
 
-  const [open, setOpen] = React.useState(true);
+  const [open, setOpen] = useState(true);
+  const [replyOpen, setReplyOpen] = useState(false);
+  const [reply, setReply] = useState("");
 
   const { darkMode, comment } = props;
   const { username, content } = comment;
@@ -56,7 +63,18 @@ const comment = props => {
     }
   };
 
-  console.log(comment);
+  useEffect(
+    () => {
+      console.log("useEffect");
+      if (replyOpen) {
+        commentField.current.focus();
+      }
+    },
+    [replyOpen]
+  );
+
+  const commentField = useRef(null);
+
   /**
    * Toggles nested comment visibility
    */
@@ -64,12 +82,23 @@ const comment = props => {
     setOpen(!open);
   };
 
+  const submitComment = () => {};
+
   const expandBtn = () => {
     if (open && commentsAvailable) {
-      return <ExpandMore style={{ color: "white" }} onClick={handleClick} />;
-    } else {
       return <ExpandLess style={{ color: "white" }} onClick={handleClick} />;
+    } else {
+      return <ExpandMore style={{ color: "white" }} onClick={handleClick} />;
     }
+  };
+
+  const handleReplyChange = e => {
+    e.preventDefault();
+    setReply(e.target.value);
+  };
+
+  const handleReplyOpen = e => {
+    setReplyOpen(!replyOpen);
   };
 
   return (
@@ -98,8 +127,36 @@ const comment = props => {
               </React.Fragment>
             }
           />
+          {replyOpen ? (
+            <CancelIcon
+              onClick={handleReplyOpen}
+              style={{ color: "white", display: "block" }}
+            />
+          ) : (
+            <ReplyIcon
+              onClick={handleReplyOpen}
+              style={{ color: "white", display: "block" }}
+            />
+          )}
+
           {commentsAvailable ? expandBtn() : null}
         </ListItem>
+        <Collapse in={replyOpen} timeout="auto" unmountOnExit>
+          <List component="div" disablePadding>
+            <ListItem>
+              <TextField
+                label="Reply"
+                placeholder="Press Enter to Submit"
+                margin="normal"
+                variant="outlined"
+                fullWidth
+                value={reply}
+                onChange={handleReplyChange}
+                inputRef={commentField}
+              />
+            </ListItem>
+          </List>
+        </Collapse>
       </List>
       {nestedComments()}
     </div>
@@ -108,4 +165,4 @@ const comment = props => {
 
 export default graphql(query, {
   options: props => ({ variables: { commentId: props.comment.id } })
-})(comment);
+})(graphql(mutation)(comment));
