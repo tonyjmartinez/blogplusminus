@@ -101,6 +101,26 @@ const comment = props => {
     setReplyOpen(!replyOpen);
   };
 
+  const handleSubmit = e => {
+    e.preventDefault();
+    console.log(reply);
+    //await props
+    // .mutate({
+    //   variables: {
+    //     commentInput: {
+    //       userId,
+    //       title,
+    //       content,
+    //       username,
+    //       token
+    //     }
+    //   }
+    // })
+    // .then(res => {
+    //   props.recentPosts.refetch();
+    // });
+  };
+
   return (
     <div style={{ marginLeft: "" + 10 * props.leftMargin + "px" }}>
       <List
@@ -144,16 +164,18 @@ const comment = props => {
         <Collapse in={replyOpen} timeout="auto" unmountOnExit>
           <List component="div" disablePadding>
             <ListItem>
-              <TextField
-                label="Reply"
-                placeholder="Press Enter to Submit"
-                margin="normal"
-                variant="outlined"
-                fullWidth
-                value={reply}
-                onChange={handleReplyChange}
-                inputRef={commentField}
-              />
+              <form onSubmit={handleSubmit}>
+                <TextField
+                  label="Reply"
+                  placeholder="Press Enter to Submit"
+                  margin="normal"
+                  variant="outlined"
+                  fullWidth
+                  value={reply}
+                  onChange={handleReplyChange}
+                  inputRef={commentField}
+                />
+              </form>
             </ListItem>
           </List>
         </Collapse>

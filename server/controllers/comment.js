@@ -5,12 +5,20 @@ const ObjectID = require("mongodb").ObjectID;
 
 exports.newComment = function(args) {
   return new Promise(function(resolve, reject) {
-    const { userId, postId, content, username, parentId, parentType } = args.input;
+    const {
+      userId,
+      postId,
+      content,
+      username,
+      parentId,
+      parentType
+    } = args.input;
     const Parent = parentType === "post" ? Post : Comment;
     Parent.findOne({ _id: new ObjectID(parentId) }, function(err, parent) {
       if (err) {
         console.log(err);
       }
+      console.log(parent);
 
       const comment = new Comment({
         postId: postId,
