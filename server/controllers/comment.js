@@ -2,6 +2,7 @@ const User = require("../models/user");
 const Comment = require("../models/comment");
 const Post = require("../models/post");
 const ObjectID = require("mongodb").ObjectID;
+const Auth = require('./authentication');
 
 exports.newComment = function(args) {
   return new Promise(function(resolve, reject) {
@@ -11,14 +12,19 @@ exports.newComment = function(args) {
       content,
       username,
       parentId,
-      parentType
+      parentType,
+      token
     } = args.input;
     const Parent = parentType === "post" ? Post : Comment;
     Parent.findOne({ _id: new ObjectID(parentId) }, function(err, parent) {
       if (err) {
         console.log(err);
       }
-      console.log(parent);
+
+      const verified = Auth.checkToken(token, null);
+      if (!verified) {
+        return resolve("Not authorized");
+      }
 
       const comment = new Comment({
         postId: postId,

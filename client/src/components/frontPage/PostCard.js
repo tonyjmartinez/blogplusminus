@@ -49,7 +49,7 @@ const postCard = props => {
     dt = moment(dateTime.toString()).fromNow();
   }
 
-  const detailButton = () => {
+  const DetailButton = props => {
     const link = `/post/${id}`;
     if (props.frontPage) {
       return (
@@ -84,7 +84,7 @@ const postCard = props => {
         </Typography>
         <Typography component="p">{content}</Typography>
       </CardContent>
-      {detailButton()}
+      <DetailButton {...props} />
     </Card>
   );
 };

@@ -1,9 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import ListSubheader from "@material-ui/core/ListSubheader";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import ReplyIcon from "@material-ui/icons/Reply";
 import CancelIcon from "@material-ui/icons/Cancel";
@@ -11,8 +9,6 @@ import Collapse from "@material-ui/core/Collapse";
 import ExpandLess from "@material-ui/icons/ExpandLess";
 import TextField from "@material-ui/core/TextField";
 import ExpandMore from "@material-ui/icons/ExpandMore";
-import StarBorder from "@material-ui/icons/StarBorder";
-import Divider from "@material-ui/core/Divider";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import Typography from "@material-ui/core/Typography";
 import UserAvatar from "../ui/UserAvatar";
@@ -20,6 +16,7 @@ import { graphql } from "react-apollo";
 import query from "../../queries/comment";
 import Comments from "./comments.js";
 import mutation from "../../mutations/newComment.js";
+import withAppContext from '../../context/withAppContext';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -27,14 +24,14 @@ const useStyles = makeStyles(theme => ({
     maxWidth: 360,
     backgroundColor: theme.palette.background.paper,
     borderRadius: "5px",
-    marginTop: "0.5em"
+    marginTop: "0.5em",
   },
   nested: {
-    paddingLeft: theme.spacing(4)
+    paddingLeft: theme.spacing(4),
   },
   inline: {
-    display: "inline"
-  }
+    display: "inline",
+  },
 }));
 
 const comment = props => {
@@ -47,12 +44,23 @@ const comment = props => {
 
   const { darkMode, comment } = props;
   const { username, content } = comment;
-  console.log(comment);
-  console.log(props.data);
+  console.log(props);
+
   const commentsAvailable =
     !props.data.loading && props.data.comment.comments.length > 0;
 
-  let nestedComments = () => {
+
+  let myUserId = null;
+  let myUsername = null;
+  let myToken = null;
+  if (props.context.auth) {
+    const user = props.context.user;
+    myUserId = user.id;
+    myUsername = user.username;
+    myToken = user.token;
+  }
+
+  const nestedComments = () => {
     if (!open) {
       return null;
     }
@@ -82,7 +90,7 @@ const comment = props => {
     setOpen(!open);
   };
 
-  const submitComment = () => {};
+  const submitComment = () => { };
 
   const expandBtn = () => {
     if (open && commentsAvailable) {
@@ -101,90 +109,98 @@ const comment = props => {
     setReplyOpen(!replyOpen);
   };
 
-  const handleSubmit = e => {
+  const handleSubmit = async e => {
     e.preventDefault();
     console.log(reply);
-    //await props
-    // .mutate({
-    //   variables: {
-    //     commentInput: {
-    //       userId,
-    //       title,
-    //       content,
-    //       username,
-    //       token
-    //     }
-    //   }
-    // })
-    // .then(res => {
-    //   props.recentPosts.refetch();
-    // });
+    if (!props.context.auth) {
+      return;
+    }
+
+    await props
+      .mutate({
+        variables: {
+          commentInput: {
+            userId: myUserId,
+            content: reply,
+            username: myUsername,
+            token: myToken,
+            parentType: "comment",
+            parentId: comment.id
+          }
+        }
+      })
+     .then(res => {
+       console.log("then");
+       setReply("");
+       setReplyOpen(false);
+        props.data.refetch();
+      });
   };
 
-  return (
-    <div style={{ marginLeft: "" + 10 * props.leftMargin + "px" }}>
-      <List
-        component="nav"
-        aria-labelledby="nested-list-subheader"
-        className={classes.root}
-      >
-        <ListItem alignItems="flex-start">
-          <ListItemAvatar>
-            <UserAvatar username={username} darkMode={darkMode} />
-          </ListItemAvatar>
-          <ListItemText
-            secondary={
-              <React.Fragment>
-                <Typography
-                  component="span"
-                  variant="body2"
-                  className={classes.inline}
-                  color="textPrimary"
-                >
-                  {username}
-                </Typography>
-                {" — " + content}
-              </React.Fragment>
-            }
+return (
+  <div style={{ marginLeft: "" + 10 * props.leftMargin + "px" }}>
+    <List
+      component="nav"
+      aria-labelledby="nested-list-subheader"
+      className={classes.root}
+    >
+      <ListItem alignItems="flex-start">
+        <ListItemAvatar>
+          <UserAvatar username={username} darkMode={darkMode} />
+        </ListItemAvatar>
+        <ListItemText
+          secondary={
+            <React.Fragment>
+              <Typography
+                component="span"
+                variant="body2"
+                className={classes.inline}
+                color="textPrimary"
+              >
+                {username}
+              </Typography>
+              {" — " + content}
+            </React.Fragment>
+          }
+        />
+        {replyOpen ? (
+          <CancelIcon
+            onClick={handleReplyOpen}
+            style={{ color: "white", display: "block" }}
           />
-          {replyOpen ? (
-            <CancelIcon
-              onClick={handleReplyOpen}
-              style={{ color: "white", display: "block" }}
-            />
-          ) : (
+        ) : (
             <ReplyIcon
               onClick={handleReplyOpen}
               style={{ color: "white", display: "block" }}
             />
           )}
 
-          {commentsAvailable ? expandBtn() : null}
-        </ListItem>
-        <Collapse in={replyOpen} timeout="auto" unmountOnExit>
-          <List component="div" disablePadding>
-            <ListItem>
-              <form onSubmit={handleSubmit}>
-                <TextField
-                  label="Reply"
-                  placeholder="Press Enter to Submit"
-                  margin="normal"
-                  variant="outlined"
-                  fullWidth
-                  value={reply}
-                  onChange={handleReplyChange}
-                  inputRef={commentField}
-                />
-              </form>
-            </ListItem>
-          </List>
-        </Collapse>
-      </List>
-      {nestedComments()}
-    </div>
-  );
+        {commentsAvailable ? expandBtn() : null}
+      </ListItem>
+      <Collapse in={replyOpen} timeout="auto" unmountOnExit>
+        <List component="div" disablePadding>
+          <ListItem>
+            <form onSubmit={handleSubmit}>
+              <TextField
+                label="Reply"
+                placeholder="Press Enter to Submit"
+                margin="normal"
+                variant="outlined"
+                fullWidth
+                value={reply}
+                onChange={handleReplyChange}
+                inputRef={commentField}
+              />
+            </form>
+          </ListItem>
+        </List>
+      </Collapse>
+    </List>
+    {nestedComments()}
+  </div>
+);
 };
 
 export default graphql(query, {
-  options: props => ({ variables: { commentId: props.comment.id } })
-})(graphql(mutation)(comment));
+  options: props => ({ variables: { commentId: props.comment.id } }),
+})(graphql(mutation)(withAppContext(comment)));

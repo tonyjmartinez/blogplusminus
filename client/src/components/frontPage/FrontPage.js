@@ -66,7 +66,7 @@ const frontPage = props => {
     }
   };
 
-  const posts = () => {
+  const Posts = props => {
     if (!props.data.loading && props.data.recentPosts !== undefined) {
       const posts = props.data.recentPosts;
       const postCards = posts.map((post, idx) => {
@@ -94,7 +94,7 @@ const frontPage = props => {
           </div>
         }
       >
-        {posts()}
+        <Posts {...props} />
       </InfiniteScroll>
     </div>
   );

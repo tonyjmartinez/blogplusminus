@@ -26,6 +26,9 @@ module.exports = new GraphQLInputObjectType({
     },
     parentType: {
       type: GraphQLString
+    },
+    token: {
+      type: GraphQLString
     }
   }
 });
