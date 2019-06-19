@@ -111,11 +111,16 @@ const appProvider = props => {
       });
   };
 
-
-  const newComment = async (userId, content, username, token,
-    parentType, parentId) => {
+  const newComment = async (
+    userId,
+    content,
+    username,
+    token,
+    parentType,
+    parentId
+  ) => {
     return new Promise((resolve, reject) => {
-      console.log('inside new comment');
+      console.log("inside new comment");
       props
         .newComment({
           variables: {
@@ -128,9 +133,11 @@ const appProvider = props => {
               parentId
             }
           }
-        }).then(res => {
+        })
+        .then(res => {
           resolve("Success");
-        }).catch(err => {
+        })
+        .catch(err => {
           reject(err);
         });
     });
@@ -170,5 +177,5 @@ export default compose(
   graphql(signupMutation, { name: "signup" }),
   graphql(loginMutation, { name: "login" }),
   graphql(newPostMutation, { name: "newPost" }),
-  graphql(newCommentMutation, { name: "newComment" }),
+  graphql(newCommentMutation, { name: "newComment" })
 )(appProvider);

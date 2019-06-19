@@ -5,6 +5,7 @@ import query from "../../queries/recentPosts";
 import { graphql } from "react-apollo";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import PostCard from "./PostCard";
+import withAppContext from "../../context/withAppContext.js";
 
 const useStyles = makeStyles({
   post: {
@@ -67,19 +68,16 @@ const frontPage = props => {
   };
 
   const Posts = props => {
-    if (!props.data.loading && props.data.recentPosts !== undefined) {
-      const posts = props.data.recentPosts;
-      const postCards = posts.map((post, idx) => {
-        return (
-          <div key={idx} className={classes.loader}>
-            <PostCard frontPage post={post} />
-          </div>
-        );
-      });
-      return postCards;
-    } else {
-      return <div>Loading...</div>;
-    }
+    //  if (!props.data.loading && props.data.recentPosts !== undefined) {
+    const posts = props.data.recentPosts;
+    const postCards = posts.map((post, idx) => {
+      return (
+        <div key={idx} className={classes.loader}>
+          <PostCard darkMode={props.context.darkMode} frontPage post={post} />
+        </div>
+      );
+    });
+    return postCards;
   };
 
   return (
@@ -94,10 +92,14 @@ const frontPage = props => {
           </div>
         }
       >
-        <Posts {...props} />
+        {props.data.recentPosts !== undefined ? (
+          <Posts {...props} />
+        ) : (
+          <div>Loading...</div>
+        )}
       </InfiniteScroll>
     </div>
   );
 };
 
-export default graphql(query)(frontPage);
+export default graphql(query)(withAppContext(frontPage));

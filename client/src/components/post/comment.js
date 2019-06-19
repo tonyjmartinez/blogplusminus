@@ -16,7 +16,9 @@ import { graphql } from "react-apollo";
 import query from "../../queries/comment";
 import Comments from "./comments.js";
 import mutation from "../../mutations/newComment.js";
-import withAppContext from '../../context/withAppContext';
+import withAppContext from "../../context/withAppContext";
+import Divider from "@material-ui/core/Divider";
+import Fade from "../hoc/Fade";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -24,20 +26,21 @@ const useStyles = makeStyles(theme => ({
     maxWidth: 360,
     backgroundColor: theme.palette.background.paper,
     borderRadius: "5px",
-    marginTop: "0.5em",
+    marginTop: "0.5em"
   },
   nested: {
-    paddingLeft: theme.spacing(4),
+    paddingLeft: theme.spacing(4)
   },
   inline: {
-    display: "inline",
-  },
+    display: "inline"
+  }
 }));
 
 const comment = props => {
   const classes = useStyles();
 
   const [open, setOpen] = useState(true);
+  const [fade, setFade] = useState(1);
   const [replyOpen, setReplyOpen] = useState(false);
   const [reply, setReply] = useState("");
 
@@ -46,7 +49,6 @@ const comment = props => {
 
   const commentsAvailable =
     !props.data.loading && props.data.comment.comments.length > 0;
-
 
   let myUserId = null;
   let myUsername = null;
@@ -58,11 +60,9 @@ const comment = props => {
     myToken = user.token;
   }
 
-  const nestedComments = () => {
-    if (!open) {
-      return null;
-    }
-    if (commentsAvailable) {
+  const NestedComments = props => {
+    if (props.data !== undefined && commentsAvailable && open) {
+      console.log(props.data);
       return <Comments comments={props.data.comment.comments} {...props} />;
     } else {
       return null;
@@ -79,19 +79,40 @@ const comment = props => {
   );
 
   const commentField = useRef(null);
+  const duration = 200;
+
+  useEffect(
+    () => {
+      if (fade === 0) {
+        setTimeout(() => {
+          setOpen(false);
+        }, duration);
+      }
+    },
+    [fade]
+  );
 
   /**
    * Toggles nested comment visibility
    */
   const handleClick = () => {
-    setOpen(!open);
+    if (open) {
+      setFade(0);
+    } else {
+      setOpen(true);
+      setFade(1);
+    }
   };
 
   const expandBtn = () => {
     if (open && commentsAvailable) {
-      return <ExpandLess style={{ color: "white" }} onClick={handleClick} />;
+      return (
+        <ExpandLess style={{ color: "white" }} onClick={e => handleClick()} />
+      );
     } else {
-      return <ExpandMore style={{ color: "white" }} onClick={handleClick} />;
+      return (
+        <ExpandMore style={{ color: "white" }} onClick={e => handleClick()} />
+      );
     }
   };
 
@@ -109,14 +130,8 @@ const comment = props => {
       return;
     }
 
-    props.context.newComment(
-      myUserId,
-      reply,
-      myUsername,
-      myToken,
-      "comment",
-      comment.id
-    )
+    props.context
+      .newComment(myUserId, reply, myUsername, myToken, "comment", comment.id)
       .then(res => {
         props.data.refetch();
         setReply("");
@@ -156,15 +171,16 @@ const comment = props => {
               style={{ color: "white", display: "block" }}
             />
           ) : (
-              <ReplyIcon
-                onClick={handleReplyOpen}
-                style={{ color: "white", display: "block" }}
-              />
-            )}
+            <ReplyIcon
+              onClick={handleReplyOpen}
+              style={{ color: "white", display: "block" }}
+            />
+          )}
 
           {commentsAvailable ? expandBtn() : null}
         </ListItem>
         <Collapse in={replyOpen} timeout="auto" unmountOnExit>
+          <Divider variant="middle" />
           <List component="div" disablePadding>
             <ListItem>
               <form onSubmit={handleSubmit}>
@@ -183,11 +199,18 @@ const comment = props => {
           </List>
         </Collapse>
       </List>
-      {nestedComments()}
+      <div
+        style={{
+          opacity: fade,
+          transition: `opacity ${duration}ms ease-in-out`
+        }}
+      >
+        <NestedComments {...props} />
+      </div>
     </div>
   );
 };
 
 export default graphql(query, {
-  options: props => ({ variables: { commentId: props.comment.id } }),
+  options: props => ({ variables: { commentId: props.comment.id } })
 })(withAppContext(comment));
