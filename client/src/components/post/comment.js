@@ -35,7 +35,6 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const comment = props => {
-  console.log(props);
   const classes = useStyles();
 
   const [open, setOpen] = useState(true);
@@ -44,7 +43,6 @@ const comment = props => {
 
   const { darkMode, comment } = props;
   const { username, content } = comment;
-  console.log(props);
 
   const commentsAvailable =
     !props.data.loading && props.data.comment.comments.length > 0;
@@ -73,7 +71,6 @@ const comment = props => {
 
   useEffect(
     () => {
-      console.log("useEffect");
       if (replyOpen) {
         commentField.current.focus();
       }
@@ -90,8 +87,6 @@ const comment = props => {
     setOpen(!open);
   };
 
-  const submitComment = () => { };
-
   const expandBtn = () => {
     if (open && commentsAvailable) {
       return <ExpandLess style={{ color: "white" }} onClick={handleClick} />;
@@ -101,7 +96,6 @@ const comment = props => {
   };
 
   const handleReplyChange = e => {
-    e.preventDefault();
     setReply(e.target.value);
   };
 
@@ -109,98 +103,91 @@ const comment = props => {
     setReplyOpen(!replyOpen);
   };
 
-  const handleSubmit = async e => {
+  const handleSubmit = e => {
     e.preventDefault();
-    console.log(reply);
     if (!props.context.auth) {
       return;
     }
 
-    await props
-      .mutate({
-        variables: {
-          commentInput: {
-            userId: myUserId,
-            content: reply,
-            username: myUsername,
-            token: myToken,
-            parentType: "comment",
-            parentId: comment.id
-          }
-        }
-      })
-     .then(res => {
-       console.log("then");
-       setReply("");
-       setReplyOpen(false);
+    props.context.newComment(
+      myUserId,
+      reply,
+      myUsername,
+      myToken,
+      "comment",
+      comment.id
+    )
+      .then(res => {
         props.data.refetch();
+        setReply("");
+        setReplyOpen(false);
       });
   };
 
-return (
-  <div style={{ marginLeft: "" + 10 * props.leftMargin + "px" }}>
-    <List
-      component="nav"
-      aria-labelledby="nested-list-subheader"
-      className={classes.root}
-    >
-      <ListItem alignItems="flex-start">
-        <ListItemAvatar>
-          <UserAvatar username={username} darkMode={darkMode} />
-        </ListItemAvatar>
-        <ListItemText
-          secondary={
-            <React.Fragment>
-              <Typography
-                component="span"
-                variant="body2"
-                className={classes.inline}
-                color="textPrimary"
-              >
-                {username}
-              </Typography>
-              {" — " + content}
-            </React.Fragment>
-          }
-        />
-        {replyOpen ? (
-          <CancelIcon
-            onClick={handleReplyOpen}
-            style={{ color: "white", display: "block" }}
+  return (
+    <div style={{ marginLeft: "" + 10 * props.leftMargin + "px" }}>
+      <List
+        component="nav"
+        aria-labelledby="nested-list-subheader"
+        className={classes.root}
+      >
+        <ListItem alignItems="flex-start">
+          <ListItemAvatar>
+            <UserAvatar username={username} darkMode={darkMode} />
+          </ListItemAvatar>
+          <ListItemText
+            secondary={
+              <React.Fragment>
+                <Typography
+                  component="span"
+                  variant="body2"
+                  className={classes.inline}
+                  color="textPrimary"
+                >
+                  {username}
+                </Typography>
+                {" — " + content}
+              </React.Fragment>
+            }
           />
-        ) : (
-            <ReplyIcon
+          {replyOpen ? (
+            <CancelIcon
               onClick={handleReplyOpen}
               style={{ color: "white", display: "block" }}
             />
-          )}
-
-        {commentsAvailable ? expandBtn() : null}
-      </ListItem>
-      <Collapse in={replyOpen} timeout="auto" unmountOnExit>
-        <List component="div" disablePadding>
-          <ListItem>
-            <form onSubmit={handleSubmit}>
-              <TextField
-                label="Reply"
-                placeholder="Press Enter to Submit"
-                margin="normal"
-                variant="outlined"
-                fullWidth
-                value={reply}
-                onChange={handleReplyChange}
-                inputRef={commentField}
+          ) : (
+              <ReplyIcon
+                onClick={handleReplyOpen}
+                style={{ color: "white", display: "block" }}
               />
-            </form>
-          </ListItem>
-        </List>
-      </Collapse>
-    </List>
-    {nestedComments()}
-  </div>
-);
+            )}
+
+          {commentsAvailable ? expandBtn() : null}
+        </ListItem>
+        <Collapse in={replyOpen} timeout="auto" unmountOnExit>
+          <List component="div" disablePadding>
+            <ListItem>
+              <form onSubmit={handleSubmit}>
+                <TextField
+                  label="Reply"
+                  placeholder="Press Enter to Submit"
+                  margin="normal"
+                  variant="outlined"
+                  fullWidth
+                  value={reply}
+                  onChange={handleReplyChange}
+                  inputRef={commentField}
+                />
+              </form>
+            </ListItem>
+          </List>
+        </Collapse>
+      </List>
+      {nestedComments()}
+    </div>
+  );
 };
 
 export default graphql(query, {
   options: props => ({ variables: { commentId: props.comment.id } }),
-})(graphql(mutation)(withAppContext(comment)));
+})(withAppContext(comment));

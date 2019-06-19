@@ -2,7 +2,6 @@ import React from 'react';
 import Avatar from '@material-ui/core/Avatar';
 
 const userAvatar = props => {
-    console.log(props);
     const { darkMode, username } = props;
     if (username === null || username === undefined) return null;
     return (

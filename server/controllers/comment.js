@@ -15,6 +15,7 @@ exports.newComment = function(args) {
       parentType,
       token
     } = args.input;
+    console.log("new comment");
     const Parent = parentType === "post" ? Post : Comment;
     Parent.findOne({ _id: new ObjectID(parentId) }, function(err, parent) {
       if (err) {
@@ -38,6 +39,7 @@ exports.newComment = function(args) {
         if (err) {
           console.log(err);
         }
+        console.log(comment);
 
         parent.comments.push(comment._id);
         parent.save(function(err, result) {

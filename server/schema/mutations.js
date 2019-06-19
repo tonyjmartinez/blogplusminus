@@ -100,6 +100,7 @@ const mutation = new GraphQLObjectType({
         }
       },
       resolve(parentValue, args) {
+        console.log("new comment mutation")
         return new Promise((resolve, reject) => {
           CommentController.newComment(args).then(function(res) {
             resolve();

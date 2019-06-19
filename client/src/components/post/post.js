@@ -34,7 +34,7 @@ const post = props => {
 
   return (
     <React.Fragment>
-      <PostCard post={post} />
+      <PostCard postDetail post={post} />
       <GenComments />
     </React.Fragment>
   );

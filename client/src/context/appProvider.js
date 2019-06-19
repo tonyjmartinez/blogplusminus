@@ -4,6 +4,7 @@ import { graphql, compose } from "react-apollo";
 import loginMutation from "../mutations/login";
 import signupMutation from "../mutations/signup";
 import newPostMutation from "../mutations/newPost";
+import newCommentMutation from "../mutations/newComment";
 import query from "../queries/user";
 import recentPosts from "../queries/recentPosts";
 import { MuiThemeProvider } from "@material-ui/core/styles";
@@ -12,7 +13,7 @@ import theme from "../themes/theme";
 const appProvider = props => {
   let currentUser = null;
   let authorized = false;
-  let userToken = null;
+  const userToken = null;
 
   const [darkMode, setDarkMode] = useState(true);
 
@@ -110,6 +111,31 @@ const appProvider = props => {
       });
   };
 
+
+  const newComment = async (userId, content, username, token,
+    parentType, parentId) => {
+    return new Promise((resolve, reject) => {
+      console.log('inside new comment');
+      props
+        .newComment({
+          variables: {
+            commentInput: {
+              userId,
+              content,
+              username,
+              token,
+              parentType,
+              parentId
+            }
+          }
+        }).then(res => {
+          resolve("Success");
+        }).catch(err => {
+          reject(err);
+        });
+    });
+  };
+
   const signOut = () => {
     props.resetStore();
     localStorage.removeItem("token");
@@ -127,6 +153,7 @@ const appProvider = props => {
           newPost,
           setDarkMode,
           darkMode,
+          newComment,
           recentPosts: props.recentPosts
         }}
       >
@@ -136,11 +163,12 @@ const appProvider = props => {
   );
 };
 
-//export default graphql(query)(graphql(mutation)(appProvider));
+// export default graphql(query)(graphql(mutation)(appProvider));
 export default compose(
   graphql(query, { name: "getUser" }),
   graphql(recentPosts, { name: "recentPosts" }),
   graphql(signupMutation, { name: "signup" }),
   graphql(loginMutation, { name: "login" }),
-  graphql(newPostMutation, { name: "newPost" })
+  graphql(newPostMutation, { name: "newPost" }),
+  graphql(newCommentMutation, { name: "newComment" }),
 )(appProvider);
