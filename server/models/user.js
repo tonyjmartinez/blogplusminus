@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-const bcrypt = require("bcrypt-nodejs");
+const bcrypt = require("bcrypt");
 const saltRounds = 10;
 
 // Define our model
@@ -17,16 +17,20 @@ userSchema.pre("save", function(next) {
 
   if (!user.isModified("password")) return next();
 
+  console.log("salting");
   bcrypt.genSalt(saltRounds, function(err, salt) {
     if (err) {
+      console.log(err);
       return next(err);
     }
+    console.log(salt);
 
-    bcrypt.hash(user.password, salt, null, function(err, hash) {
+    bcrypt.hash(user.password, salt, function(err, hash) {
       if (err) {
         console.log("err");
         return next(err);
       }
+      console.log(hash);
 
       user.password = hash;
       next();

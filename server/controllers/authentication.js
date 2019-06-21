@@ -75,10 +75,8 @@ const authorize = function(token, refreshToken) {
   });
 };
 
-
-
 exports.login = function({ email, password }, cb) {
-  const AUTH_FAIL_MSG = "Username/password combination incorrect"
+  const AUTH_FAIL_MSG = "Username/password combination incorrect";
   if (email === "" || email === null || password === "" || password === null) {
     return cb(null, "Missing email and/or password");
   }
@@ -109,9 +107,10 @@ exports.signup = function({ email, password, username }, cb) {
     return cb(null, "Email and password required");
   }
 
-
   User.findOne({ email: email }, function(err, existingUser) {
+    console.log("user find one");
     if (err) {
+      console.log(err);
       return cb(null, "Error finding user");
     }
 
@@ -124,16 +123,20 @@ exports.signup = function({ email, password, username }, cb) {
       password: password,
       username: username
     });
+    console.log(user);
 
-    user.save(function(err) {
+    user.save(function(err, savedUser) {
+      console.log(err, savedUser);
       if (err) {
+        console.log(err);
         return cb(null, "User save error");
       }
 
       const refreshToken = randToken.uid(256);
       refresh.tokens[refreshToken] = username;
+      console.log(savedUser);
       return cb(
-        { jwt: tokenForUser(user), refreshToken },
+        { jwt: tokenForUser(savedUser), refreshToken },
         "New user was created"
       );
     });

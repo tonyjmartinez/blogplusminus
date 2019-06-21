@@ -21,7 +21,9 @@ const mutation = new GraphQLObjectType({
       },
       resolve(parentValue, { email, password, username }, req) {
         return new Promise((resolve, reject) => {
+          console.log("promise", email, password);
           Auth.signup({ email, password, username }, function(result, msg) {
+            console.log("result,", result);
             if (result === null) {
               return resolve(msg);
             } else {
@@ -32,6 +34,7 @@ const mutation = new GraphQLObjectType({
               reject(msg);
             }
             const expires = new Date();
+            console.log(jwt);
 
             expires.setSeconds(expires.getSeconds() + 10);
             return resolve(
@@ -100,7 +103,7 @@ const mutation = new GraphQLObjectType({
         }
       },
       resolve(parentValue, args) {
-        console.log("new comment mutation")
+        console.log("new comment mutation");
         return new Promise((resolve, reject) => {
           CommentController.newComment(args).then(function(res) {
             resolve();

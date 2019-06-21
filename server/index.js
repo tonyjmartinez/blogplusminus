@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-mongoose.connect("mongodb://localhost/auth", { useNewUrlParser: true });
 const morgan = require("morgan");
 const cors = require("cors");
 const bodyParser = require("body-parser");
@@ -8,7 +7,17 @@ const app = express();
 const http = require("http");
 const Auth = require("./controllers/authentication");
 const expressGraphQL = require("express-graphql");
-const schema = require("../server/schema/schema");
+const schema = require("./schema/schema.js");
+
+const MONGO_URI =
+  "mongodb://tonyjmartinez:" +
+  process.env.MONGOPWD +
+  "@ds117540.mlab.com:17540/blogplusminus";
+mongoose.Promise = global.Promise;
+mongoose.connect(MONGO_URI);
+mongoose.connection
+  .once("open", () => console.log("Connected to Mlab"))
+  .on("error", error => console.log(error));
 
 app.use(morgan("combined"));
 app.use(cors());
