@@ -26,5 +26,10 @@
         "object-curly-spacing": 0,
         "quotes": "off",
         "comma-dangle": 0
+    },
+    "settings": {
+      "react": {
+        "version": "999.999.999"
+      }
     }
 }
