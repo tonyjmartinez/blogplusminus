@@ -10,7 +10,7 @@ const post = props => {
   const ctxProps = props.context;
   const username = !props.data.loading ? props.data.post.username : null;
   const gqlProps = props.data;
-  const { darkMode } = ctxProps;
+  const { darkMode, user } = ctxProps;
   const { post } = gqlProps;
   const { comments } = post || [];
   let myUserId = null;
@@ -39,22 +39,26 @@ const post = props => {
   };
 
   const newComment = reply => {
-    if (!props.context.auth) {
-      return;
-    }
-
-    props.context
-      .newComment(
-        myUserId,
-        reply,
-        myUsername,
-        myToken,
-        "post",
-        props.data.post.id
-      )
-      .then(res => {
-        props.data.refetch();
-      });
+    return new Promise((resolve, reject) => {
+      if (!props.context.auth) {
+        resolve("Not authorized");
+      }
+      props.context
+        .newComment(
+          myUserId,
+          reply,
+          myUsername,
+          myToken,
+          "post",
+          props.data.post.id
+        )
+        .then(res => {
+          props.data.refetch();
+          resolve();
+        }).catch(err => {
+          reject(err);
+        });
+    });
   };
   if (props.data.loading) {
     return null;
@@ -67,6 +71,7 @@ const post = props => {
         postDetail
         post={post}
         darkMode={darkMode || true}
+        authorized={user !== null}
       />
       <GenComments />
     </React.Fragment>

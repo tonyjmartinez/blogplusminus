@@ -161,7 +161,6 @@ const appProvider = props => {
           setDarkMode,
           darkMode,
           newComment,
-          recentPosts: props.recentPosts
         }}
       >
         {props.children}

@@ -46,6 +46,7 @@ const comment = props => {
 
   const { darkMode, comment } = props;
   const { username, content } = comment;
+  const authorized = props.context.auth;
 
   const commentsAvailable =
     !props.data.loading && props.data.comment.comments.length > 0;
@@ -139,6 +140,30 @@ const comment = props => {
       });
   };
 
+  const ReplyActions = props => {
+    if (authorized) {
+      if (replyOpen) {
+        return (
+
+          <CancelIcon
+            onClick={handleReplyOpen}
+            style={{ color: "white", display: "block" }}
+          />
+        );
+      } else {
+        return (
+          <ReplyIcon
+            onClick={handleReplyOpen}
+            style={{ color: "white", display: "block" }}
+          />
+
+        );
+      }
+    } else {
+      return null;
+    }
+  };
+
   return (
     <div style={{ marginLeft: "" + 10 * props.leftMargin + "px" }}>
       <List
@@ -165,17 +190,7 @@ const comment = props => {
               </React.Fragment>
             }
           />
-          {replyOpen ? (
-            <CancelIcon
-              onClick={handleReplyOpen}
-              style={{ color: "white", display: "block" }}
-            />
-          ) : (
-            <ReplyIcon
-              onClick={handleReplyOpen}
-              style={{ color: "white", display: "block" }}
-            />
-          )}
+          <ReplyActions />
 
           {commentsAvailable ? expandBtn() : null}
         </ListItem>

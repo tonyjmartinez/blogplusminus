@@ -73,7 +73,9 @@ const frontPage = props => {
     const postCards = posts.map((post, idx) => {
       return (
         <div key={idx} className={classes.loader}>
-          <PostCard darkMode={props.context.darkMode} frontPage post={post} />
+          <PostCard
+            darkMode={props.context.darkMode}
+            frontPage post={post} />
         </div>
       );
     });
@@ -95,8 +97,8 @@ const frontPage = props => {
         {props.data.recentPosts !== undefined ? (
           <Posts {...props} />
         ) : (
-          <div>Loading...</div>
-        )}
+            <div>Loading...</div>
+          )}
       </InfiniteScroll>
     </div>
   );

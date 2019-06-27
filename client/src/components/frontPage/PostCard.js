@@ -46,6 +46,7 @@ const postCard = props => {
   let user = username;
   const darkMode = props.darkMode;
   const cardColor = darkMode ? null : theme.palette.paper.main;
+  const authorized = { props };
 
   const [replyOpen, setReplyOpen] = useState(false);
   const [reply, setReply] = useState("");
@@ -101,14 +102,17 @@ const postCard = props => {
             <MoreIcon style={{ color: iconColor }} />
           </Link>
         ) : null}
-        {props.postDetail ? <ReplyToggle /> : null}
+        {(props.postDetail && props.authorized) ? <ReplyToggle /> : null}
       </CardActions>
     );
   };
 
   const handleSubmit = e => {
     e.preventDefault();
-    props.newComment(reply);
+    props.newComment(reply).then(res => {
+      setReply("");
+      setReplyOpen(false);
+    });
   };
 
   return (
