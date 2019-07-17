@@ -28,11 +28,7 @@ const post = props => {
     if (comments === undefined || comments.length > 0) {
       console.log(comments);
       return (
-        <Comments
-          leftMargin={1}
-          darkMode={darkMode || true}
-          comments={comments}
-        />
+        <Comments leftMargin={1} darkMode={darkMode} comments={comments} />
       );
     }
     return null;
@@ -55,7 +51,8 @@ const post = props => {
         .then(res => {
           props.data.refetch();
           resolve();
-        }).catch(err => {
+        })
+        .catch(err => {
           reject(err);
         });
     });
@@ -70,7 +67,7 @@ const post = props => {
         newComment={newComment}
         postDetail
         post={post}
-        darkMode={darkMode || true}
+        darkMode={darkMode}
         authorized={user !== null}
       />
       <GenComments />
