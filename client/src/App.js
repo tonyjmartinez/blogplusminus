@@ -1,36 +1,36 @@
-import React from 'react';
-import AppProvider from './context/appProvider';
-import { BrowserRouter } from 'react-router-dom';
-import Router from './components/router';
-import { ApolloClient } from 'apollo-client';
-import { ApolloProvider } from 'react-apollo';
-import { createHttpLink } from 'apollo-link-http';
-import { setContext } from 'apollo-link-context';
-import { InMemoryCache } from 'apollo-cache-inmemory';
+import React from "react";
+import AppProvider from "./context/appProvider";
+import { BrowserRouter } from "react-router-dom";
+import Router from "./components/router";
+import { ApolloClient } from "apollo-client";
+import { ApolloProvider } from "react-apollo";
+import { createHttpLink } from "apollo-link-http";
+import { setContext } from "apollo-link-context";
+import { InMemoryCache } from "apollo-cache-inmemory";
 
 const link = createHttpLink({
-  uri: 'http://localhost:3090/graphql'
-  // uri: "https://blogplusminus.com/graphql/"
+  //uri: 'http://localhost:3090/graphql'
+  uri: "https://blogplusminus.com/graphql/"
 });
 
 const cache = new InMemoryCache({ dataIdFromObject: obj => obj.id });
 
 const authLink = setContext((_, { headers }) => {
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem("token");
 
   let refreshToken = null;
   const now = new Date();
 
-  if (now > new Date(localStorage.getItem('expires'))) {
-    refreshToken = localStorage.getItem('refreshToken');
+  if (now > new Date(localStorage.getItem("expires"))) {
+    refreshToken = localStorage.getItem("refreshToken");
   } else {
-    console.log('not expired');
+    console.log("not expired");
   }
   return {
     headers: {
       ...headers,
-      authorization: token ? `Bearer ${token}` : '',
-      authrefresh: refreshToken ? refreshToken : ''
+      authorization: token ? `Bearer ${token}` : "",
+      authrefresh: refreshToken ? refreshToken : ""
     }
   };
 });
