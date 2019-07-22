@@ -63,8 +63,8 @@ const postCard = props => {
 
   const style = {
     background: theme.palette.paper.main,
-    margin: '0px auto',
-    width: isDesktop ? '60%' : '90%'
+    margin: props.frontPage ? '0px auto' : null,
+    width: isDesktop ? '60%' : '100%'
   };
 
   if (!username) {

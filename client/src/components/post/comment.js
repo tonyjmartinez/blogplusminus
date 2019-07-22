@@ -1,38 +1,38 @@
-import React, { useState, useRef, useEffect } from "react";
-import { makeStyles, useTheme } from "@material-ui/core/styles";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemText from "@material-ui/core/ListItemText";
-import ReplyIcon from "@material-ui/icons/Reply";
-import CancelIcon from "@material-ui/icons/Cancel";
-import Collapse from "@material-ui/core/Collapse";
-import ExpandLess from "@material-ui/icons/ExpandLess";
-import TextField from "@material-ui/core/TextField";
-import ExpandMore from "@material-ui/icons/ExpandMore";
-import ListItemAvatar from "@material-ui/core/ListItemAvatar";
-import Typography from "@material-ui/core/Typography";
-import UserAvatar from "../ui/UserAvatar";
-import { graphql } from "react-apollo";
-import query from "../../queries/comment";
-import Comments from "./comments.js";
-import mutation from "../../mutations/newComment.js";
-import withAppContext from "../../context/withAppContext";
-import Divider from "@material-ui/core/Divider";
-import Fade from "../hoc/Fade";
+import React, { useState, useRef, useEffect } from 'react';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
+import ReplyIcon from '@material-ui/icons/Reply';
+import CancelIcon from '@material-ui/icons/Cancel';
+import Collapse from '@material-ui/core/Collapse';
+import ExpandLess from '@material-ui/icons/ExpandLess';
+import TextField from '@material-ui/core/TextField';
+import ExpandMore from '@material-ui/icons/ExpandMore';
+import ListItemAvatar from '@material-ui/core/ListItemAvatar';
+import Typography from '@material-ui/core/Typography';
+import UserAvatar from '../ui/UserAvatar';
+import { graphql } from 'react-apollo';
+import query from '../../queries/comment';
+import Comments from './comments.js';
+import mutation from '../../mutations/newComment.js';
+import withAppContext from '../../context/withAppContext';
+import Divider from '@material-ui/core/Divider';
+import Fade from '../hoc/Fade';
 
 const useStyles = makeStyles(theme => ({
   root: {
-    width: "100%",
+    width: '100%',
     maxWidth: 360,
     backgroundColor: theme.palette.background.paper,
-    borderRadius: "5px",
-    marginTop: "0.5em"
+    borderRadius: '5px',
+    marginTop: '0.5em'
   },
   nested: {
     paddingLeft: theme.spacing(4)
   },
   inline: {
-    display: "inline"
+    display: 'inline'
   }
 }));
 
@@ -47,7 +47,7 @@ const comment = props => {
   const [open, setOpen] = useState(true);
   const [fade, setFade] = useState(1);
   const [replyOpen, setReplyOpen] = useState(false);
-  const [reply, setReply] = useState("");
+  const [reply, setReply] = useState('');
 
   const { darkMode, comment } = props;
   const { username, content } = comment;
@@ -75,28 +75,22 @@ const comment = props => {
     }
   };
 
-  useEffect(
-    () => {
-      if (replyOpen) {
-        commentField.current.focus();
-      }
-    },
-    [replyOpen]
-  );
+  useEffect(() => {
+    if (replyOpen) {
+      commentField.current.focus();
+    }
+  }, [replyOpen]);
 
   const commentField = useRef(null);
   const duration = 200;
 
-  useEffect(
-    () => {
-      if (fade === 0) {
-        setTimeout(() => {
-          setOpen(false);
-        }, duration);
-      }
-    },
-    [fade]
-  );
+  useEffect(() => {
+    if (fade === 0) {
+      setTimeout(() => {
+        setOpen(false);
+      }, duration);
+    }
+  }, [fade]);
 
   /**
    * Toggles nested comment visibility
@@ -113,11 +107,11 @@ const comment = props => {
   const expandBtn = () => {
     if (open && commentsAvailable) {
       return (
-        <ExpandLess style={{ color: "white" }} onClick={e => handleClick()} />
+        <ExpandLess style={{ color: 'white' }} onClick={e => handleClick()} />
       );
     } else {
       return (
-        <ExpandMore style={{ color: "white" }} onClick={e => handleClick()} />
+        <ExpandMore style={{ color: 'white' }} onClick={e => handleClick()} />
       );
     }
   };
@@ -137,10 +131,10 @@ const comment = props => {
     }
 
     props.context
-      .newComment(myUserId, reply, myUsername, myToken, "comment", comment.id)
+      .newComment(myUserId, reply, myUsername, myToken, 'comment', comment.id)
       .then(res => {
         props.data.refetch();
-        setReply("");
+        setReply('');
         setReplyOpen(false);
       });
   };
@@ -151,14 +145,14 @@ const comment = props => {
         return (
           <CancelIcon
             onClick={handleReplyOpen}
-            style={{ color: "white", display: "block" }}
+            style={{ color: 'white', display: 'block' }}
           />
         );
       } else {
         return (
           <ReplyIcon
             onClick={handleReplyOpen}
-            style={{ color: "white", display: "block" }}
+            style={{ color: 'white', display: 'block' }}
           />
         );
       }
@@ -168,14 +162,14 @@ const comment = props => {
   };
 
   return (
-    <div style={{ marginLeft: "" + 10 * props.leftMargin + "px" }}>
+    <div style={{ marginLeft: '' + 10 * props.leftMargin + 'px' }}>
       <List
-        component="nav"
-        aria-labelledby="nested-list-subheader"
+        component='nav'
+        aria-labelledby='nested-list-subheader'
         className={classes.root}
         style={style}
       >
-        <ListItem alignItems="flex-start">
+        <ListItem alignItems='flex-start'>
           <ListItemAvatar>
             <UserAvatar username={username} darkMode={darkMode} />
           </ListItemAvatar>
@@ -183,38 +177,37 @@ const comment = props => {
             secondary={
               <React.Fragment>
                 <Typography
-                  component="span"
-                  variant="body2"
+                  component='span'
+                  variant='body2'
                   className={classes.inline}
-                  color="textSecondary"
+                  color='textSecondary'
                 >
                   {username}
                 </Typography>
                 <Typography
-                  component="span"
-                  variant="body2"
+                  component='span'
+                  variant='body2'
                   className={classes.inline}
-                  color="textPrimary"
+                  color='textPrimary'
                 >
-                  {" — " + content}
+                  {' — ' + content}
                 </Typography>
               </React.Fragment>
             }
           />
           <ReplyActions />
-
           {commentsAvailable ? expandBtn() : null}
         </ListItem>
-        <Collapse in={replyOpen} timeout="auto" unmountOnExit>
-          <Divider variant="middle" />
-          <List component="div" disablePadding>
+        <Collapse in={replyOpen} timeout='auto' unmountOnExit>
+          <Divider variant='middle' />
+          <List component='div' disablePadding>
             <ListItem>
               <form onSubmit={handleSubmit}>
                 <TextField
-                  label="Reply"
-                  placeholder="Press Enter to Submit"
-                  margin="normal"
-                  variant="outlined"
+                  label='Reply'
+                  placeholder='Press Enter to Submit'
+                  margin='normal'
+                  variant='outlined'
                   fullWidth
                   value={reply}
                   onChange={handleReplyChange}
