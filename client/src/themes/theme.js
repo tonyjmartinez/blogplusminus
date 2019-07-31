@@ -1,17 +1,17 @@
-import { createMuiTheme } from "@material-ui/core/styles";
-import green from "@material-ui/core/colors/green";
-import grey from "@material-ui/core/colors/grey";
+import { createMuiTheme } from '@material-ui/core/styles';
+import green from '@material-ui/core/colors/green';
+import grey from '@material-ui/core/colors/grey';
 
-const theme = dark => {
+const theme = () => {
   return createMuiTheme({
     palette: {
-      primary: { main: green["A100"] },
-      secondary: { main: grey[300] },
-      type: "light",
-      paper: { main: grey[300] },
+      secondary: { main: green['A100'] },
+      primary: { main: grey[300] },
+      type: 'light',
+      paper: { main: green['A100'] },
       text: {
-        primary: "#000000",
-        secondary: "#009688"
+        primary: '#000000',
+        secondary: '#616161'
       }
     },
     typography: { useNextVariants: true }
