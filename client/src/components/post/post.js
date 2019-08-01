@@ -1,10 +1,11 @@
-import React from "react";
-import { graphql } from "react-apollo";
-import query from "../../queries/post";
-import PostCard from "../frontPage/PostCard";
-import Comment from "./comment";
-import Comments from "./comments";
-import withAppContext from "../../context/withAppContext";
+import React from 'react';
+import { graphql } from 'react-apollo';
+import query from '../../queries/post';
+import PostCard from '../frontPage/PostCard';
+import Comment from './comment';
+import Comments from './comments';
+import withAppContext from '../../context/withAppContext';
+import { useMediaQuery } from 'react-responsive';
 
 const post = props => {
   const ctxProps = props.context;
@@ -37,7 +38,7 @@ const post = props => {
   const newComment = reply => {
     return new Promise((resolve, reject) => {
       if (!props.context.auth) {
-        resolve("Not authorized");
+        resolve('Not authorized');
       }
       props.context
         .newComment(
@@ -45,7 +46,7 @@ const post = props => {
           reply,
           myUsername,
           myToken,
-          "post",
+          'post',
           props.data.post.id
         )
         .then(res => {
@@ -61,6 +62,12 @@ const post = props => {
     return null;
   }
 
+  const isDesktop = useMediaQuery({ query: '(min-width: 850px)' });
+  const commentsStyle = {
+    width: isDesktop ? '80%' : '100%',
+    margin: '0px auto'
+  };
+
   return (
     <React.Fragment>
       <PostCard
@@ -70,7 +77,9 @@ const post = props => {
         darkMode={darkMode}
         authorized={user !== null}
       />
-      <GenComments />
+      <div style={commentsStyle}>
+        <GenComments />
+      </div>
     </React.Fragment>
   );
 };

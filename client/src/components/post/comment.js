@@ -161,8 +161,12 @@ const comment = props => {
     }
   };
 
+  const commentStyle = {
+    marginLeft: '' + 10 * props.leftMargin + 'px'
+  };
+
   return (
-    <div style={{ marginLeft: '' + 10 * props.leftMargin + 'px' }}>
+    <div style={commentStyle}>
       <List
         component='nav'
         aria-labelledby='nested-list-subheader'
