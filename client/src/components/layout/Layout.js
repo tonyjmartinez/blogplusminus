@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import Header from "../ui/Header.js";
-import PostDialog from "../ui/PostDialog";
-const layout = props => {
+import React, { useState } from 'react';
+import Header from '../ui/Header.js';
+import PostDialog from '../ui/PostDialog';
+const Layout = props => {
   const [dlgOpen, setDlgOpen] = useState(false);
 
   const onClose = () => {
@@ -21,4 +21,4 @@ const layout = props => {
   );
 };
 
-export default layout;
+export default Layout;

@@ -1,33 +1,33 @@
-import React, { useState } from "react";
-import { makeStyles } from "@material-ui/styles";
-import InfiniteScroll from "react-infinite-scroller";
-import query from "../../queries/recentPosts";
-import { graphql } from "react-apollo";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import PostCard from "./PostCard";
-import withAppContext from "../../context/withAppContext.js";
+import React, { useState } from 'react';
+import { makeStyles } from '@material-ui/styles';
+import InfiniteScroll from 'react-infinite-scroller';
+import query from '../../queries/recentPosts';
+import { graphql } from 'react-apollo';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import PostCard from './PostCard';
+import withAppContext from '../../context/withAppContext.js';
 
 const useStyles = makeStyles({
   post: {
-    padding: "2em",
-    marginTop: "1em",
-    marginLeft: "auto",
-    marginRight: "auto",
-    width: "70%"
+    padding: '2em',
+    marginTop: '1em',
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    width: '70%'
   },
   loader: {
-    marginLeft: "0px auto",
-    marginRight: "0px auto",
-    marginTop: "1em"
+    marginLeft: '0px auto',
+    marginRight: '0px auto',
+    marginTop: '1em'
   },
   circle: {
-    margin: "0px auto",
-    width: "10%",
-    paddingTop: "10px"
+    margin: '0px auto',
+    width: '10%',
+    paddingTop: '10px'
   }
 });
 
-const frontPage = props => {
+const FrontPage = props => {
   const classes = useStyles();
 
   const [pagination, setPagination] = useState({
@@ -73,9 +73,7 @@ const frontPage = props => {
     const postCards = posts.map((post, idx) => {
       return (
         <div key={idx} className={classes.loader}>
-          <PostCard
-            darkMode={props.context.darkMode}
-            frontPage post={post} />
+          <PostCard darkMode={props.context.darkMode} frontPage post={post} />
         </div>
       );
     });
@@ -90,18 +88,18 @@ const frontPage = props => {
         hasMore={pagination.morePosts}
         loader={
           <div key={1} className={classes.circle}>
-            <CircularProgress className={classes.progress} color="secondary" />
+            <CircularProgress className={classes.progress} color='secondary' />
           </div>
         }
       >
         {props.data.recentPosts !== undefined ? (
           <Posts {...props} />
         ) : (
-            <div>Loading...</div>
-          )}
+          <div>Loading...</div>
+        )}
       </InfiniteScroll>
     </div>
   );
 };
 
-export default graphql(query)(withAppContext(frontPage));
+export default graphql(query)(withAppContext(FrontPage));

@@ -1,9 +1,9 @@
-import React from "react";
-import Comment from "./comment";
+import React from 'react';
+import Comment from './Comment';
 
 // TODO: Recursively render comments
 // https://stackoverflow.com/questions/27193722/nested-comments-in-reactjs
-const comments = props => {
+const Comments = props => {
   const { darkMode, comments, leftMargin } = props;
 
   return comments.map((cmt, idx) => {
@@ -18,4 +18,4 @@ const comments = props => {
   });
 };
 
-export default comments;
+export default Comments;

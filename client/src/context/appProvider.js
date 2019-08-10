@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import AppContext from './appContext';
-import { graphql, compose } from 'react-apollo';
+import { graphql } from 'react-apollo';
+import * as compose from 'lodash.flowright';
 import loginMutation from '../mutations/login';
 import signupMutation from '../mutations/signup';
 import newPostMutation from '../mutations/newPost';
@@ -11,7 +12,7 @@ import { MuiThemeProvider } from '@material-ui/core/styles';
 import darkTheme from '../themes/dark-theme';
 import theme from '../themes/theme';
 
-const appProvider = props => {
+const AppProvider = props => {
   let currentUser = null;
   let authorized = false;
   const userToken = null;
@@ -178,4 +179,4 @@ export default compose(
   graphql(loginMutation, { name: 'login' }),
   graphql(newPostMutation, { name: 'newPost' }),
   graphql(newCommentMutation, { name: 'newComment' })
-)(appProvider);
+)(AppProvider);

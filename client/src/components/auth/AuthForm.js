@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import TextField from '@material-ui/core/TextField';
 import withAppContext from '../../context/withAppContext';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -6,19 +6,19 @@ import DialogActions from '@material-ui/core/DialogActions';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 
-const authForm = props => {
+const AuthForm = props => {
   const [inputValidators, setInputValidators] = useState({
     email: true,
     password: true,
     verifyPassword: true,
-    username: true,
+    username: true
   });
 
   const [inputValues, setInputValues] = useState({
     email: '',
     password: '',
     verifyPassword: '',
-    username: '',
+    username: ''
   });
 
   const [errorMessage, setErrorMessage] = useState('');
@@ -27,38 +27,38 @@ const authForm = props => {
     const email = event.target.value;
     setInputValidators({
       ...inputValidators,
-      email: emailValidator(email),
+      email: emailValidator(email)
     });
-    setInputValues({...inputValues, email: email});
+    setInputValues({ ...inputValues, email: email });
   };
 
   const usernameHandler = event => {
     const username = event.target.value;
     setInputValidators({
       ...inputValidators,
-      username: usernameValidator(username),
+      username: usernameValidator(username)
     });
-    setInputValues({...inputValues, username: username});
+    setInputValues({ ...inputValues, username: username });
   };
 
   const passwordHandler = event => {
     const password = event.target.value;
     setInputValidators({
       ...inputValidators,
-      password: passwordValidator(password),
+      password: passwordValidator(password)
     });
 
-    setInputValues({...inputValues, password: password});
+    setInputValues({ ...inputValues, password: password });
   };
 
   const verifyPasswordHandler = event => {
     const password = event.target.value;
     setInputValidators({
       ...inputValidators,
-      verifyPassword: verifyPasswordValidator(password),
+      verifyPassword: verifyPasswordValidator(password)
     });
 
-    setInputValues({...inputValues, verifyPassword: password});
+    setInputValues({ ...inputValues, verifyPassword: password });
   };
   const emailValidator = email => {
     // eslint-disable-next-line max-len
@@ -94,7 +94,7 @@ const authForm = props => {
       return false;
     }
     if (password !== inputValues.password) {
-      setErrorMessage('Passwords don\'t match');
+      setErrorMessage("Passwords don't match");
       return false;
     }
     setErrorMessage('');
@@ -104,8 +104,8 @@ const authForm = props => {
   const handleSignIn = async e => {
     e.preventDefault();
     const res = await props.context.signin(
-        inputValues.email,
-        inputValues.password
+      inputValues.email,
+      inputValues.password
     );
 
     if (res !== null) {
@@ -118,9 +118,9 @@ const authForm = props => {
     e.preventDefault();
     console.log(props.type);
     const res = await props.context.signup(
-        inputValues.email,
-        inputValues.password,
-        inputValues.username
+      inputValues.email,
+      inputValues.password,
+      inputValues.username
     );
     if (res !== null) {
       console.log(res);
@@ -133,10 +133,10 @@ const authForm = props => {
   if (props.type === 'signup') {
     verifyPassword = (
       <TextField
-        margin="dense"
-        id="verify-password"
-        label="Verify Password"
-        type="password"
+        margin='dense'
+        id='verify-password'
+        label='Verify Password'
+        type='password'
         onChange={verifyPasswordHandler}
         value={inputValues.verifyPassword}
         fullWidth
@@ -145,10 +145,10 @@ const authForm = props => {
     );
     username = (
       <TextField
-        margin="dense"
-        id="username"
-        label="Username"
-        type="text"
+        margin='dense'
+        id='username'
+        label='Username'
+        type='text'
         onChange={usernameHandler}
         value={inputValues.username}
         fullWidth
@@ -163,10 +163,10 @@ const authForm = props => {
         <DialogContent>
           <TextField
             autoFocus
-            margin="dense"
-            id="email"
-            label="Email Address"
-            type="email"
+            margin='dense'
+            id='email'
+            label='Email Address'
+            type='email'
             onChange={emailHandler}
             value={inputValues.email}
             fullWidth
@@ -174,25 +174,25 @@ const authForm = props => {
           />
           {username}
           <TextField
-            margin="dense"
-            id="password"
-            label="Password"
-            type="password"
+            margin='dense'
+            id='password'
+            label='Password'
+            type='password'
             onChange={passwordHandler}
             value={inputValues.password}
             fullWidth
             error={inputValidators.password ? false : true}
           />
           {verifyPassword}
-          <p style={{color: 'red'}}>{errorMessage}</p>
+          <p style={{ color: 'red' }}>{errorMessage}</p>
         </DialogContent>
 
         <DialogActions>
-          <Button type="button" onClick={props.close} color="primary">
+          <Button type='button' onClick={props.close} color='primary'>
             Cancel
           </Button>
 
-          <Button type="submit" color="primary">
+          <Button type='submit' color='primary'>
             Submit
           </Button>
         </DialogActions>
@@ -201,4 +201,4 @@ const authForm = props => {
   );
 };
 
-export default withAppContext(authForm);
+export default withAppContext(AuthForm);

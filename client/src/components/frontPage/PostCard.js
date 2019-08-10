@@ -40,7 +40,7 @@ const useStyles = makeStyles({
   }
 });
 
-const postCard = props => {
+const PostCard = props => {
   const classes = useStyles();
   const theme = useTheme();
   const { title, username, content, dateTime, id } = props.post;
@@ -157,4 +157,4 @@ const postCard = props => {
   );
 };
 
-export default postCard;
+export default PostCard;

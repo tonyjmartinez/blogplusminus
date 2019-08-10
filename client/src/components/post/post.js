@@ -2,12 +2,12 @@ import React from 'react';
 import { graphql } from 'react-apollo';
 import query from '../../queries/post';
 import PostCard from '../frontPage/PostCard';
-import Comment from './comment';
-import Comments from './comments';
+import Comment from './Comment';
+import Comments from './Comments';
 import withAppContext from '../../context/withAppContext';
 import { useMediaQuery } from 'react-responsive';
 
-const post = props => {
+const Post = props => {
   const ctxProps = props.context;
   const username = !props.data.loading ? props.data.post.username : null;
   const gqlProps = props.data;
@@ -58,15 +58,15 @@ const post = props => {
         });
     });
   };
-  if (props.data.loading) {
-    return null;
-  }
-
   const isDesktop = useMediaQuery({ query: '(min-width: 850px)' });
   const commentsStyle = {
     width: isDesktop ? '80%' : '100%',
     margin: '0px auto'
   };
+
+  if (props.data.loading) {
+    return null;
+  }
 
   return (
     <React.Fragment>
@@ -86,4 +86,4 @@ const post = props => {
 
 export default graphql(query, {
   options: props => ({ variables: { postId: props.match.params.id } })
-})(withAppContext(post));
+})(withAppContext(Post));

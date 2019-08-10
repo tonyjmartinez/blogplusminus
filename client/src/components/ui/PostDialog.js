@@ -9,7 +9,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction='up' ref={ref} {...props} />;
 });
 
-const postDialog = props => {
+const PostDialog = props => {
   console.log(props);
   const handleNewPost = async (title, content) => {
     const newPost = await props.context.newPost(
@@ -43,4 +43,4 @@ const postDialog = props => {
   );
 };
 
-export default withAppContext(postDialog);
+export default withAppContext(PostDialog);

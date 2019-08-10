@@ -1,19 +1,19 @@
-import React, { useState } from "react";
-import { makeStyles } from "@material-ui/styles";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
-import Button from "@material-ui/core/Button";
-import withAppContext from "../../context/withAppContext.js";
-import AuthDialog from "./AuthDialog";
-import { Link } from "react-router-dom";
-import Fab from "@material-ui/core/Fab";
-import AddIcon from "@material-ui/icons/Add";
-import MediaQuery from "react-responsive";
-import Avatar from "@material-ui/core/Avatar";
-import MoonIcon from "@material-ui/icons/Brightness3";
-import MoonIconOutlined from "@material-ui/icons/Brightness3Outlined";
-import UserAvatar from "./UserAvatar";
+import React, { useState } from 'react';
+import { makeStyles } from '@material-ui/styles';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
+import withAppContext from '../../context/withAppContext.js';
+import AuthDialog from './AuthDialog';
+import { Link } from 'react-router-dom';
+import Fab from '@material-ui/core/Fab';
+import AddIcon from '@material-ui/icons/Add';
+import MediaQuery from 'react-responsive';
+import Avatar from '@material-ui/core/Avatar';
+import MoonIcon from '@material-ui/icons/Brightness3';
+import MoonIconOutlined from '@material-ui/icons/Brightness3Outlined';
+import UserAvatar from './UserAvatar';
 
 const useStyles = makeStyles({
   root: {
@@ -27,38 +27,38 @@ const useStyles = makeStyles({
     marginRight: 20
   },
   link: {
-    textDecoration: "none",
-    color: "black"
+    textDecoration: 'none',
+    color: 'black'
   },
   topFab: {
-    marginRight: "20px"
+    marginRight: '20px'
   },
   fab: {
     margin: 0,
-    top: "auto",
+    top: 'auto',
     right: 20,
     bottom: 20,
-    left: "auto",
-    position: "fixed",
+    left: 'auto',
+    position: 'fixed',
     zIndex: 5
   },
   extendedIcon: {
-    marginRight: "5px"
+    marginRight: '5px'
   },
   fabText: {
-    marginRight: "10px"
+    marginRight: '10px'
   },
   avatarDiv: {
-    display: "inline-block",
-    marginRight: "10px"
+    display: 'inline-block',
+    marginRight: '10px'
   },
   moonIcon: {
-    marginRight: "10px",
-    marginTop: "5px"
+    marginRight: '10px',
+    marginTop: '5px'
   }
 });
 
-const header = props => {
+const Header = props => {
   const auth = props.context.auth;
   const user = props.context.user;
   console.log(user);
@@ -66,7 +66,7 @@ const header = props => {
   const darkMode = props.context.darkMode;
 
   const [dialogOpen, setDialogOpen] = useState(false);
-  const [authType, setAuthType] = useState("login");
+  const [authType, setAuthType] = useState('login');
 
   const classes = useStyles();
   const openDialog = type => {
@@ -91,11 +91,11 @@ const header = props => {
         <div>
           <MediaQuery minWidth={560}>
             <Fab
-              variant="extended"
-              color="secondary"
-              size="small"
+              variant='extended'
+              color='secondary'
+              size='small'
               className={classes.topFab}
-              aria-label="New"
+              aria-label='New'
               onClick={props.onOpen}
             >
               <AddIcon className={classes.extendedIcon} />
@@ -108,7 +108,7 @@ const header = props => {
               darkMode={darkMode}
             />
           </div>
-          <Button onClick={handleSignOut} color="inherit">
+          <Button onClick={handleSignOut} color='inherit'>
             Sign Out
           </Button>
         </div>
@@ -117,11 +117,11 @@ const header = props => {
       newPostButton = (
         <MediaQuery maxWidth={559}>
           <Fab
-            variant="extended"
-            color="secondary"
-            size="small"
+            variant='extended'
+            color='secondary'
+            size='small'
             className={classes.fab}
-            aria-label="New"
+            aria-label='New'
             onClick={props.onOpen}
           >
             <AddIcon className={classes.extendedIcon} />
@@ -139,10 +139,10 @@ const header = props => {
           onClickClose={closeDialog}
           type={authType}
         />
-        <Button onClick={() => openDialog("login")} color="inherit">
+        <Button onClick={() => openDialog('login')} color='inherit'>
           Log In
         </Button>
-        <Button onClick={() => openDialog("signup")} color="inherit">
+        <Button onClick={() => openDialog('signup')} color='inherit'>
           Sign Up
         </Button>
       </div>
@@ -164,11 +164,11 @@ const header = props => {
 
   return (
     <div className={classes.root}>
-      <AppBar color="primary" position="fixed">
+      <AppBar color='primary' position='fixed'>
         <Toolbar>
-          <Typography variant="h6" color="inherit" className={classes.grow}>
-            <Link to="/" className={classes.link}>
-              Blog {"+/-"}
+          <Typography variant='h6' color='inherit' className={classes.grow}>
+            <Link to='/' className={classes.link}>
+              Blog {'+/-'}
             </Link>
           </Typography>
           <Moon />
@@ -180,4 +180,4 @@ const header = props => {
   );
 };
 
-export default withAppContext(header);
+export default withAppContext(Header);

@@ -14,7 +14,7 @@ import Typography from '@material-ui/core/Typography';
 import UserAvatar from '../ui/UserAvatar';
 import { graphql } from 'react-apollo';
 import query from '../../queries/comment';
-import Comments from './comments.js';
+import Comments from './Comments.js';
 import mutation from '../../mutations/newComment.js';
 import withAppContext from '../../context/withAppContext';
 import Divider from '@material-ui/core/Divider';
@@ -36,7 +36,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const comment = props => {
+const Comment = props => {
   const classes = useStyles();
   const theme = useTheme();
 
@@ -236,4 +236,4 @@ const comment = props => {
 
 export default graphql(query, {
   options: props => ({ variables: { commentId: props.comment.id } })
-})(withAppContext(comment));
+})(withAppContext(Comment));

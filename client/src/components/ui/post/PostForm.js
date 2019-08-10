@@ -1,59 +1,59 @@
-import React, { useState, useRef, useEffect } from "react";
-import TextField from "@material-ui/core/TextField";
-import Fab from "@material-ui/core/Fab";
-import AddIcon from "@material-ui/icons/Add";
-import { makeStyles } from "@material-ui/styles";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import IconButton from "@material-ui/core/IconButton";
-import Typography from "@material-ui/core/Typography";
-import CloseIcon from "@material-ui/icons/Close";
-import Button from "@material-ui/core/Button";
+import React, { useState, useRef, useEffect } from 'react';
+import TextField from '@material-ui/core/TextField';
+import Fab from '@material-ui/core/Fab';
+import AddIcon from '@material-ui/icons/Add';
+import { makeStyles } from '@material-ui/styles';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import IconButton from '@material-ui/core/IconButton';
+import Typography from '@material-ui/core/Typography';
+import CloseIcon from '@material-ui/icons/Close';
+import Button from '@material-ui/core/Button';
 
 const useStyles = makeStyles({
   textFieldDiv: {
-    margin: "0px auto",
-    width: "100%"
+    margin: '0px auto',
+    width: '100%'
   },
   form: {
-    display: "flex",
-    flexWrap: "wrap"
+    display: 'flex',
+    flexWrap: 'wrap'
   },
   formDesktop: {
-    margin: "0px auto",
-    width: "60%"
+    margin: '0px auto',
+    width: '60%'
   },
   formMobile: {
-    margin: "0px auto",
-    width: "80%"
+    margin: '0px auto',
+    width: '80%'
   },
 
   fabDiv: {
-    margin: "0px auto",
-    marginTop: "20px"
+    margin: '0px auto',
+    marginTop: '20px'
   },
   fabText: {
-    marginRight: "10px"
+    marginRight: '10px'
   },
   appBar: {
-    position: "relative"
+    position: 'relative'
   },
   flex: {
     flex: 1
   },
   submitButton: {
-    background: "none",
-    border: "none",
-    color: "inherit"
+    background: 'none',
+    border: 'none',
+    color: 'inherit'
   }
 });
 
-const postForm = props => {
+const PostForm = props => {
   const classes = useStyles();
 
   const [postFields, setPostFields] = useState({
-    title: "",
-    content: ""
+    title: '',
+    content: ''
   });
 
   const titleField = useRef(null);
@@ -88,16 +88,16 @@ const postForm = props => {
       <AppBar className={classes.appBar}>
         <Toolbar>
           <IconButton
-            color="inherit"
+            color='inherit'
             onClick={props.onClose}
-            aria-label="Close"
+            aria-label='Close'
           >
             <CloseIcon />
           </IconButton>
-          <Typography variant="h6" color="inherit" className={classes.flex}>
+          <Typography variant='h6' color='inherit' className={classes.flex}>
             New Post
           </Typography>
-          <Button color="inherit" onClick={handleNewPost}>
+          <Button color='inherit' onClick={handleNewPost}>
             Save
           </Button>
         </Toolbar>
@@ -106,10 +106,10 @@ const postForm = props => {
         <form onSubmit={handleNewPost} className={classes.form}>
           <div className={classes.textFieldDiv}>
             <TextField
-              label="Title"
-              placeholder="Title"
-              margin="normal"
-              variant="outlined"
+              label='Title'
+              placeholder='Title'
+              margin='normal'
+              variant='outlined'
               fullWidth
               value={postFields.title}
               onChange={handleTitleChange}
@@ -118,10 +118,10 @@ const postForm = props => {
           </div>
           <div className={classes.textFieldDiv}>
             <TextField
-              label="Content"
-              placeholder="Content"
-              margin="normal"
-              variant="outlined"
+              label='Content'
+              placeholder='Content'
+              margin='normal'
+              variant='outlined'
               fullWidth
               multiline
               value={postFields.content}
@@ -130,15 +130,15 @@ const postForm = props => {
           </div>
           <div className={classes.fabDiv}>
             <Fab
-              variant="extended"
-              color="secondary"
-              size="small"
-              aria-label="New"
+              variant='extended'
+              color='secondary'
+              size='small'
+              aria-label='New'
               onClick={props.onOpen}
-              type="submit"
+              type='submit'
             >
               <AddIcon className={classes.extendedIcon} />
-              <span type="submit" className={classes.fabText}>
+              <span type='submit' className={classes.fabText}>
                 Save
               </span>
             </Fab>
@@ -149,4 +149,4 @@ const postForm = props => {
   );
 };
 
-export default postForm;
+export default PostForm;
