@@ -4,7 +4,7 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
-import withAppContext from '../../context/withAppContext.js';
+import withAppContext from '../../context/withAppContext';
 import AuthDialog from './AuthDialog';
 import { Link } from 'react-router-dom';
 import Fab from '@material-ui/core/Fab';

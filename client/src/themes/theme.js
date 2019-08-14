@@ -2,6 +2,7 @@ import { createMuiTheme } from '@material-ui/core/styles';
 import green from '@material-ui/core/colors/green';
 import grey from '@material-ui/core/colors/grey';
 
+// TODO: Convert to TS just like dark theme
 const theme = () => {
   return createMuiTheme({
     palette: {

@@ -15,7 +15,7 @@ import UserAvatar from '../ui/UserAvatar';
 import { graphql } from 'react-apollo';
 import query from '../../queries/comment';
 import Comments from './Comments.js';
-import mutation from '../../mutations/newComment.js';
+import mutation from '../../mutations/newComment';
 import withAppContext from '../../context/withAppContext';
 import Divider from '@material-ui/core/Divider';
 import Fade from '../hoc/Fade';

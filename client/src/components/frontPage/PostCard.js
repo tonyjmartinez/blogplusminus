@@ -62,7 +62,8 @@ const PostCard = props => {
   const isDesktop = useMediaQuery({ query: '(min-width: 850px)' });
 
   const style = {
-    background: theme.palette.paper.main,
+		// background: theme.palette.paper.main,
+		background: theme.overrides.MuiPaper.root,
     // margin: props.frontPage ? '0px auto' : null,
     margin: '0px auto',
     width: isDesktop ? '80%' : '100%'

@@ -5,7 +5,7 @@ import query from '../../queries/recentPosts';
 import { graphql } from 'react-apollo';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import PostCard from './PostCard';
-import withAppContext from '../../context/withAppContext.js';
+import withAppContext from '../../context/withAppContext';
 
 const useStyles = makeStyles({
   post: {

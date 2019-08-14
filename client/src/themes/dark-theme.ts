@@ -2,6 +2,7 @@ import { createMuiTheme } from '@material-ui/core/styles';
 
 import green from '@material-ui/core/colors/green';
 import grey from '@material-ui/core/colors/grey';
+import { Typography } from '@material-ui/core';
 
 const theme = () => {
   return createMuiTheme({
@@ -13,11 +14,14 @@ const theme = () => {
         primary: '#FFFFFF',
         secondary: '#c8e6c9'
       },
-      paper: { main: grey[800] }
-    },
-    typography: {
-      useNextVariants: true
-    }
+		},
+		overrides: {
+      MuiPaper: {
+				root: {
+					main: grey[800]
+				}
+			},
+		},
   });
 };
 
