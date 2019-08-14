@@ -1,7 +1,7 @@
-import React, { useState, ReactNode } from 'react';
+import React, { useState, ReactNode, PropsWithChildren } from 'react';
 import { AppContext } from './AppContext';
-import { graphql } from 'react-apollo';
-import compose from 'lodash.flowRight';
+import { graphql, useQuery, useMutation } from 'react-apollo';
+import compose from 'lodash.flowright';
 import loginMutation from '../mutations/login';
 import signupMutation from '../mutations/signup';
 import newPostMutation from '../mutations/newPost';
@@ -13,23 +13,25 @@ import darkTheme from '../themes/dark-theme';
 import theme from '../themes/theme';
 
 export interface Props {
-  getUser: {
-    loading: boolean;
-    user: {
-      token: string | null;
-      expires: string;
-    };
-  };
-  signup: Function;
-  resetStore: Function;
-  newPost: Function;
-  newComment: Function;
-  recentPosts: {
-    refetch: Function;
-  };
-  login: Function;
+  // getUser: {
+  //   loading: boolean;
+  //   user: {
+  //     token: string | null;
+  //     expires: string;
+  //   };
+  // };
+  // signup: Function;
+	resetStore: Function | null;
+	clearStore: Function | null;
+  // newPost: Function;
+  // newComment: Function;
+  // recentPosts: {
+  //   refetch: Function;
+  // };
+  // login: Function;
   children: ReactNode;
 }
+
 
 export interface Creds {
   email: string;
@@ -40,14 +42,39 @@ export interface Creds {
 const AppProvider = (props: Props) => {
   let currentUser = null;
   let authorized = false;
-  const userToken = null;
+	const userToken = null;
+	const [darkMode, setDarkMode] = useState(true);
+	
+	/*
+  graphql(query, { name: 'getUser' }),
+  graphql(recentPosts, { name: 'recentPosts' }),
+  graphql(signupMutation, { name: 'signup' }),
+  graphql(loginMutation, { name: 'login' }),
+  graphql(newPostMutation, { name: 'newPost' }),
+	graphql(newCommentMutation, { name: 'newComment' }
+	*/
+	
+	const getUser = useQuery(query);
+	const userLoading = getUser.loading;
+	const recentPostsFound = useQuery(recentPosts);
+	console.log(getUser);
+	const [signup] = useMutation(signupMutation);
+	const [login] = useMutation(loginMutation);
+	const [newPost] = useMutation(newPostMutation);
+	const [newComment] = useMutation(newCommentMutation);
+	
 
-  const [darkMode, setDarkMode] = useState(true);
+
 
   // document.body.style = `background: ${darkMode ? 'grey' : 'white'}`;
 
-  if (!props.getUser.loading) {
-    currentUser = props.getUser.user;
+
+	if (userLoading) {
+		return null;
+	}
+  if (!userLoading && getUser.data) {
+		console.log(getUser);
+    currentUser = getUser.data.user;
 
     if (currentUser !== undefined && currentUser !== null) {
       if (currentUser.token !== null) {
@@ -68,11 +95,11 @@ const AppProvider = (props: Props) => {
     username: string
   ) => {
     try {
-      const newUser = await props.signup({
+      const newUser = await signup({
         variables: { email, password, username }
       });
 
-      if (newUser.data !== undefined) {
+      if (newUser && newUser.data !== undefined) {
         let tokens = null;
         try {
           tokens = JSON.parse(newUser.data.signup);
@@ -82,8 +109,8 @@ const AppProvider = (props: Props) => {
 
         const token = tokens.jwt;
         const refToken = tokens.refreshToken;
-        const expires = tokens.expires;
-        props.resetStore();
+				const expires = tokens.expires;
+        props.resetStore && props.resetStore();
         localStorage.setItem('token', token);
         localStorage.setItem('refreshToken', refToken);
         localStorage.setItem('expires', expires);
@@ -96,11 +123,11 @@ const AppProvider = (props: Props) => {
 
   const attemptLogin = async (email: string, password: string) => {
     try {
-      const user = await props.login({
+      const user = await login({
         variables: { email, password }
       });
 
-      if (user.data !== undefined) {
+      if (user && user.data !== undefined) {
         let tokens = null;
 
         try {
@@ -113,7 +140,7 @@ const AppProvider = (props: Props) => {
         const refToken = tokens.refreshToken;
         const expires = tokens.expires;
 
-        props.resetStore();
+        props.resetStore && props.resetStore();
         localStorage.setItem('token', token);
         localStorage.setItem('refreshToken', refToken);
         localStorage.setItem('expires', expires);
@@ -124,15 +151,15 @@ const AppProvider = (props: Props) => {
     }
   };
 
-  const newPost = async (
+  const sendNewPost = async (
     userId: string,
     title: string,
     content: string,
     username: string,
     token: string
   ) => {
-    await props
-      .newPost({
+    await 
+      newPost({
         variables: {
           postInput: {
             userId,
@@ -144,11 +171,11 @@ const AppProvider = (props: Props) => {
         }
       })
       .then(() => {
-        props.recentPosts.refetch();
+        recentPostsFound.refetch();
       });
   };
 
-  const newComment = async (
+  const sendNewComment = async (
     userId: string,
     content: string,
     username: string,
@@ -158,8 +185,7 @@ const AppProvider = (props: Props) => {
   ) => {
     return new Promise((resolve, reject) => {
       console.log('inside new comment');
-      props
-        .newComment({
+        newComment({
           variables: {
             commentInput: {
               userId,
@@ -181,7 +207,7 @@ const AppProvider = (props: Props) => {
   };
 
   const signOut = () => {
-    props.resetStore();
+    props.resetStore && props.resetStore();
     localStorage.removeItem('token');
   };
 
@@ -191,13 +217,13 @@ const AppProvider = (props: Props) => {
         value={{
           auth: authorized,
           signin: attemptLogin,
-          user: props.getUser.user,
+          user: getUser.data.user,
           signOut: signOut,
           signup: attemptSignup,
-          newPost,
+          newPost: sendNewPost,
           setDarkMode,
           darkMode,
-          newComment
+          newComment: sendNewComment
         }}
       >
         {props.children}
@@ -206,12 +232,14 @@ const AppProvider = (props: Props) => {
   );
 };
 
+export default AppProvider;
+
 // export default graphql(query)(graphql(mutation)(appProvider));
-export default compose(
-  graphql(query, { name: 'getUser' }),
-  graphql(recentPosts, { name: 'recentPosts' }),
-  graphql(signupMutation, { name: 'signup' }),
-  graphql(loginMutation, { name: 'login' }),
-  graphql(newPostMutation, { name: 'newPost' }),
-  graphql(newCommentMutation, { name: 'newComment' })
-)(AppProvider);
+// export default compose(
+//   // graphql(query, { name: 'getUser' }),
+//   // graphql(recentPosts, { name: 'recentPosts' }),
+//   graphql(signupMutation, { name: 'signup' }),
+//   graphql(loginMutation, { name: 'login' }),
+//   graphql(newPostMutation, { name: 'newPost' }),
+//   graphql(newCommentMutation, { name: 'newComment' })
+// )(AppProvider);

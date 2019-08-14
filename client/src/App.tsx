@@ -1,5 +1,5 @@
 import React from 'react';
-import AppProvider from './context/appProvider';
+import AppProvider from './context/AppProvider';
 import { BrowserRouter } from 'react-router-dom';
 import Router from './components/router';
 import { ApolloClient } from 'apollo-client';
