@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import AppContext from './appContext';
+import React, { useState, ReactNode } from 'react';
+import { AppContext } from './AppContext';
 import { graphql } from 'react-apollo';
-import * as compose from 'lodash.flowright';
+import compose from 'lodash.flowRight';
 import loginMutation from '../mutations/login';
 import signupMutation from '../mutations/signup';
 import newPostMutation from '../mutations/newPost';
@@ -12,14 +12,39 @@ import { MuiThemeProvider } from '@material-ui/core/styles';
 import darkTheme from '../themes/dark-theme';
 import theme from '../themes/theme';
 
-const AppProvider = props => {
+export interface Props {
+  getUser: {
+    loading: boolean;
+    user: {
+      token: string | null;
+      expires: string;
+    };
+  };
+  signup: Function;
+  resetStore: Function;
+  newPost: Function;
+  newComment: Function;
+  recentPosts: {
+    refetch: Function;
+  };
+  login: Function;
+  children: ReactNode;
+}
+
+export interface Creds {
+  email: string;
+  password: string;
+  username: string;
+}
+
+const AppProvider = (props: Props) => {
   let currentUser = null;
   let authorized = false;
   const userToken = null;
 
   const [darkMode, setDarkMode] = useState(true);
 
-  document.body.style = `background: ${darkMode ? 'grey' : 'white'}`;
+  // document.body.style = `background: ${darkMode ? 'grey' : 'white'}`;
 
   if (!props.getUser.loading) {
     currentUser = props.getUser.user;
@@ -37,7 +62,11 @@ const AppProvider = props => {
     }
   }
 
-  const attemptSignup = async (email, password, username) => {
+  const attemptSignup = async (
+    email: string,
+    password: string,
+    username: string
+  ) => {
     try {
       const newUser = await props.signup({
         variables: { email, password, username }
@@ -65,7 +94,7 @@ const AppProvider = props => {
     }
   };
 
-  const attemptLogin = async (email, password) => {
+  const attemptLogin = async (email: string, password: string) => {
     try {
       const user = await props.login({
         variables: { email, password }
@@ -95,7 +124,13 @@ const AppProvider = props => {
     }
   };
 
-  const newPost = async (userId, title, content, username, token) => {
+  const newPost = async (
+    userId: string,
+    title: string,
+    content: string,
+    username: string,
+    token: string
+  ) => {
     await props
       .newPost({
         variables: {
@@ -108,18 +143,18 @@ const AppProvider = props => {
           }
         }
       })
-      .then(res => {
+      .then(() => {
         props.recentPosts.refetch();
       });
   };
 
   const newComment = async (
-    userId,
-    content,
-    username,
-    token,
-    parentType,
-    parentId
+    userId: string,
+    content: string,
+    username: string,
+    token: string,
+    parentType: string,
+    parentId: string
   ) => {
     return new Promise((resolve, reject) => {
       console.log('inside new comment');
@@ -136,10 +171,10 @@ const AppProvider = props => {
             }
           }
         })
-        .then(res => {
+        .then(() => {
           resolve('Success');
         })
-        .catch(err => {
+        .catch((err: any) => {
           reject(err);
         });
     });

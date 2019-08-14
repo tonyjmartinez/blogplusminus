@@ -1,5 +1,5 @@
-import React from "react";
-import AppContext from "./appContext.js";
+import React from 'react';
+import { AppContext } from './AppContext';
 
 const withAppContext = Component => {
   const WrapperComponent = props => {
