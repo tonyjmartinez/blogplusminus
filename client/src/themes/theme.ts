@@ -1,35 +1,35 @@
 import { createMuiTheme } from '@material-ui/core/styles';
-
 import green from '@material-ui/core/colors/green';
 import grey from '@material-ui/core/colors/grey';
-import { Typography } from '@material-ui/core';
 import colors from './colors';
-const { mintGreen } = colors;
+const { black, white } = colors;
+
+// TODO: Convert to TS just like dark theme
 const theme = () => {
   return createMuiTheme({
     palette: {
       primary: { main: green['A100'] },
       secondary: { main: grey[400] },
-      type: 'dark',
+      type: 'light',
       text: {
-        primary: '#FFFFFF',
-        secondary: '#c8e6c9'
+        primary: '#000000',
+        secondary: '#616161'
       }
     },
     overrides: {
       MuiPaper: {
         root: {
-          backgroundColor: '#424242'
+          backgroundColor: white
         }
       },
       MuiList: {
         padding: {
-          backgroundColor: '#424242'
+          backgroundColor: white
         }
       },
       MuiSvgIcon: {
         root: {
-          color: mintGreen
+          color: black
         }
       }
     }

@@ -1,7 +1,6 @@
 import React, { useState, ReactNode, PropsWithChildren } from 'react';
 import { AppContext } from './AppContext';
 import { graphql, useQuery, useMutation } from 'react-apollo';
-import compose from 'lodash.flowright';
 import loginMutation from '../mutations/login';
 import signupMutation from '../mutations/signup';
 import newPostMutation from '../mutations/newPost';
@@ -11,27 +10,15 @@ import recentPosts from '../queries/recentPosts';
 import { MuiThemeProvider } from '@material-ui/core/styles';
 import darkTheme from '../themes/dark-theme';
 import theme from '../themes/theme';
+import { Helmet } from 'react-helmet';
+import colors from '../themes/colors';
+const { grey, lightGrey, mintGreen } = colors;
 
 export interface Props {
-  // getUser: {
-  //   loading: boolean;
-  //   user: {
-  //     token: string | null;
-  //     expires: string;
-  //   };
-  // };
-  // signup: Function;
-	resetStore: Function | null;
-	clearStore: Function | null;
-  // newPost: Function;
-  // newComment: Function;
-  // recentPosts: {
-  //   refetch: Function;
-  // };
-  // login: Function;
+  resetStore: Function | null;
+  clearStore: Function | null;
   children: ReactNode;
 }
-
 
 export interface Creds {
   email: string;
@@ -42,10 +29,10 @@ export interface Creds {
 const AppProvider = (props: Props) => {
   let currentUser = null;
   let authorized = false;
-	const userToken = null;
-	const [darkMode, setDarkMode] = useState(true);
-	
-	/*
+  const userToken = null;
+  const [darkMode, setDarkMode] = useState(true);
+
+  /*
   graphql(query, { name: 'getUser' }),
   graphql(recentPosts, { name: 'recentPosts' }),
   graphql(signupMutation, { name: 'signup' }),
@@ -53,27 +40,21 @@ const AppProvider = (props: Props) => {
   graphql(newPostMutation, { name: 'newPost' }),
 	graphql(newCommentMutation, { name: 'newComment' }
 	*/
-	
-	const getUser = useQuery(query);
-	const userLoading = getUser.loading;
-	const recentPostsFound = useQuery(recentPosts);
-	console.log(getUser);
-	const [signup] = useMutation(signupMutation);
-	const [login] = useMutation(loginMutation);
-	const [newPost] = useMutation(newPostMutation);
-	const [newComment] = useMutation(newCommentMutation);
-	
 
+  const getUser = useQuery(query);
+  const userLoading = getUser.loading;
+  const recentPostsFound = useQuery(recentPosts);
+  console.log(getUser);
+  const [signup] = useMutation(signupMutation);
+  const [login] = useMutation(loginMutation);
+  const [newPost] = useMutation(newPostMutation);
+  const [newComment] = useMutation(newCommentMutation);
 
-
-  // document.body.style = `background: ${darkMode ? 'grey' : 'white'}`;
-
-
-	if (userLoading) {
-		return null;
-	}
+  if (userLoading) {
+    return null;
+  }
   if (!userLoading && getUser.data) {
-		console.log(getUser);
+    console.log(getUser);
     currentUser = getUser.data.user;
 
     if (currentUser !== undefined && currentUser !== null) {
@@ -109,7 +90,7 @@ const AppProvider = (props: Props) => {
 
         const token = tokens.jwt;
         const refToken = tokens.refreshToken;
-				const expires = tokens.expires;
+        const expires = tokens.expires;
         props.resetStore && props.resetStore();
         localStorage.setItem('token', token);
         localStorage.setItem('refreshToken', refToken);
@@ -158,21 +139,19 @@ const AppProvider = (props: Props) => {
     username: string,
     token: string
   ) => {
-    await 
-      newPost({
-        variables: {
-          postInput: {
-            userId,
-            title,
-            content,
-            username,
-            token
-          }
+    await newPost({
+      variables: {
+        postInput: {
+          userId,
+          title,
+          content,
+          username,
+          token
         }
-      })
-      .then(() => {
-        recentPostsFound.refetch();
-      });
+      }
+    }).then(() => {
+      recentPostsFound.refetch();
+    });
   };
 
   const sendNewComment = async (
@@ -185,18 +164,18 @@ const AppProvider = (props: Props) => {
   ) => {
     return new Promise((resolve, reject) => {
       console.log('inside new comment');
-        newComment({
-          variables: {
-            commentInput: {
-              userId,
-              content,
-              username,
-              token,
-              parentType,
-              parentId
-            }
+      newComment({
+        variables: {
+          commentInput: {
+            userId,
+            content,
+            username,
+            token,
+            parentType,
+            parentId
           }
-        })
+        }
+      })
         .then(() => {
           resolve('Success');
         })
@@ -210,6 +189,8 @@ const AppProvider = (props: Props) => {
     props.resetStore && props.resetStore();
     localStorage.removeItem('token');
   };
+
+  const bgColor = darkMode ? grey : lightGrey;
 
   return (
     <MuiThemeProvider theme={darkMode ? darkTheme() : theme()}>
@@ -226,6 +207,9 @@ const AppProvider = (props: Props) => {
           newComment: sendNewComment
         }}
       >
+        <Helmet>
+          <style>{`body { background-color: ${bgColor};}`}</style>
+        </Helmet>
         {props.children}
       </AppContext.Provider>
     </MuiThemeProvider>

@@ -24,7 +24,7 @@ const useStyles = makeStyles(theme => ({
   root: {
     width: '100%',
     maxWidth: 360,
-    backgroundColor: theme.palette.background.paper,
+    // backgroundColor: theme.overrides.MuiPaper.root,
     borderRadius: '5px',
     marginTop: '0.5em'
   },
@@ -41,7 +41,7 @@ const Comment = props => {
   const theme = useTheme();
 
   const style = {
-    background: theme.palette.paper.main
+    // background: theme.overrides.MuiPaper.root
   };
 
   const [open, setOpen] = useState(true);
@@ -106,13 +106,9 @@ const Comment = props => {
 
   const expandBtn = () => {
     if (open && commentsAvailable) {
-      return (
-        <ExpandLess style={{ color: 'white' }} onClick={e => handleClick()} />
-      );
+      return <ExpandLess onClick={e => handleClick()} />;
     } else {
-      return (
-        <ExpandMore style={{ color: 'white' }} onClick={e => handleClick()} />
-      );
+      return <ExpandMore onClick={e => handleClick()} />;
     }
   };
 
@@ -143,17 +139,11 @@ const Comment = props => {
     if (authorized) {
       if (replyOpen) {
         return (
-          <CancelIcon
-            onClick={handleReplyOpen}
-            style={{ color: 'white', display: 'block' }}
-          />
+          <CancelIcon onClick={handleReplyOpen} style={{ display: 'block' }} />
         );
       } else {
         return (
-          <ReplyIcon
-            onClick={handleReplyOpen}
-            style={{ color: 'white', display: 'block' }}
-          />
+          <ReplyIcon onClick={handleReplyOpen} style={{ display: 'block' }} />
         );
       }
     } else {

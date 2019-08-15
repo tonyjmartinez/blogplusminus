@@ -62,8 +62,8 @@ const PostCard = props => {
   const isDesktop = useMediaQuery({ query: '(min-width: 850px)' });
 
   const style = {
-		// background: theme.palette.paper.main,
-		background: theme.overrides.MuiPaper.root,
+    // background: theme.palette.paper.main,
+    // background: theme.overrides.MuiPaper.root,
     // margin: props.frontPage ? '0px auto' : null,
     margin: '0px auto',
     width: isDesktop ? '80%' : '100%'
@@ -94,15 +94,13 @@ const PostCard = props => {
     }
   };
 
-  const iconColor = darkMode ? 'white' : 'black';
-
   const DetailButtons = props => {
     const link = `/post/${id}`;
     return (
       <CardActions>
         {props.frontPage ? (
           <Link style={{ textDecoration: 'none' }} to={link}>
-            <MoreIcon style={{ color: iconColor }} />
+            <MoreIcon />
           </Link>
         ) : null}
         {props.postDetail && props.authorized ? <ReplyToggle /> : null}

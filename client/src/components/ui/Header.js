@@ -43,7 +43,8 @@ const useStyles = makeStyles({
     zIndex: 5
   },
   extendedIcon: {
-    marginRight: '5px'
+    marginRight: '5px',
+    color: 'black'
   },
   fabText: {
     marginRight: '10px'
@@ -54,7 +55,8 @@ const useStyles = makeStyles({
   },
   moonIcon: {
     marginRight: '10px',
-    marginTop: '5px'
+    marginTop: '5px',
+    color: 'black'
   }
 });
 
@@ -151,12 +153,12 @@ const Header = props => {
 
   const Moon = props =>
     darkMode ? (
-      <MoonIcon
+      <MoonIconOutlined
         className={classes.moonIcon}
         onClick={() => setDarkMode(!darkMode)}
       />
     ) : (
-      <MoonIconOutlined
+      <MoonIcon
         className={classes.moonIcon}
         onClick={() => setDarkMode(!darkMode)}
       />
