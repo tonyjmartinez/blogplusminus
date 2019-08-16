@@ -1,16 +1,16 @@
-import React from "react";
-import Dialog from "@material-ui/core/Dialog";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import AuthForm from "../auth/AuthForm";
+import React from 'react';
+import Dialog from '@material-ui/core/Dialog';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import AuthForm from '../auth/AuthForm';
 
 const AuthDialog = props => {
   let title;
-  if (props.type === "login") {
-    title = "Log In";
-  } else if (props.type === "signup") {
-    title = "Sign Up";
+  if (props.type === 'login') {
+    title = 'Log In';
+  } else if (props.type === 'signup') {
+    title = 'Sign Up';
   } else {
-    title = "Error";
+    title = 'Error';
   }
 
   return (

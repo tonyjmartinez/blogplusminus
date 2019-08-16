@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, ReactElement } from 'react';
 import TextField from '@material-ui/core/TextField';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
@@ -9,6 +9,17 @@ import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import CloseIcon from '@material-ui/icons/Close';
 import Button from '@material-ui/core/Button';
+import colors from '../../../themes/colors';
+import { FormControl } from '@material-ui/core';
+
+const { black } = colors;
+
+interface Props {
+  newPost: Function;
+  onClose: Function;
+  desktop: boolean;
+  onOpen: Function;
+}
 
 const useStyles = makeStyles({
   textFieldDiv: {
@@ -27,7 +38,9 @@ const useStyles = makeStyles({
     margin: '0px auto',
     width: '80%'
   },
-
+  extendedIcon: {
+    color: black
+  },
   fabDiv: {
     margin: '0px auto',
     marginTop: '20px'
@@ -45,10 +58,13 @@ const useStyles = makeStyles({
     background: 'none',
     border: 'none',
     color: 'inherit'
+  },
+  closeIcon: {
+    color: black
   }
 });
 
-const PostForm = props => {
+const PostForm = (props: Props) => {
   const classes = useStyles();
 
   const [postFields, setPostFields] = useState({
@@ -56,30 +72,37 @@ const PostForm = props => {
     content: ''
   });
 
-  const titleField = useRef(null);
+  const titleField = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    titleField.current.focus();
+    if (titleField && titleField.current) {
+      titleField.current.focus();
+    }
   }, []);
 
-  const handleTitleChange = e => {
-    const title = e.target.value;
+  const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const title = e.currentTarget.value;
     setPostFields({
       ...postFields,
       title
     });
   };
 
-  const handleContentChange = e => {
-    const content = e.target.value;
+  const handleContentChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const content = e.currentTarget.value;
     setPostFields({
       ...postFields,
       content
     });
   };
 
-  const handleNewPost = e => {
-    e.preventDefault();
+  const handleNewPost = (
+    e:
+      | React.MouseEvent<HTMLButtonElement>
+      | React.FormEvent<HTMLFormElement>
+      | null
+  ) => {
+    e && e.preventDefault();
     props.newPost(postFields.title, postFields.content);
   };
 
@@ -88,28 +111,28 @@ const PostForm = props => {
       <AppBar className={classes.appBar}>
         <Toolbar>
           <IconButton
-            color='inherit'
-            onClick={props.onClose}
-            aria-label='Close'
+            color="inherit"
+            onClick={() => props.onClose()}
+            aria-label="Close"
           >
-            <CloseIcon />
+            <CloseIcon className={classes.closeIcon} />
           </IconButton>
-          <Typography variant='h6' color='inherit' className={classes.flex}>
+          <Typography variant="h6" color="inherit" className={classes.flex}>
             New Post
           </Typography>
-          <Button color='inherit' onClick={handleNewPost}>
+          <Button color="inherit" onClick={e => handleNewPost(e)}>
             Save
           </Button>
         </Toolbar>
       </AppBar>
       <div className={props.desktop ? classes.formDesktop : classes.formMobile}>
-        <form onSubmit={handleNewPost} className={classes.form}>
+        <form onSubmit={e => handleNewPost(e)} className={classes.form}>
           <div className={classes.textFieldDiv}>
             <TextField
-              label='Title'
-              placeholder='Title'
-              margin='normal'
-              variant='outlined'
+              label="Title"
+              placeholder="Title"
+              margin="normal"
+              variant="outlined"
               fullWidth
               value={postFields.title}
               onChange={handleTitleChange}
@@ -118,10 +141,10 @@ const PostForm = props => {
           </div>
           <div className={classes.textFieldDiv}>
             <TextField
-              label='Content'
-              placeholder='Content'
-              margin='normal'
-              variant='outlined'
+              label="Content"
+              placeholder="Content"
+              margin="normal"
+              variant="outlined"
               fullWidth
               multiline
               value={postFields.content}
@@ -130,17 +153,15 @@ const PostForm = props => {
           </div>
           <div className={classes.fabDiv}>
             <Fab
-              variant='extended'
-              color='secondary'
-              size='small'
-              aria-label='New'
-              onClick={props.onOpen}
-              type='submit'
+              variant="extended"
+              color="secondary"
+              size="small"
+              aria-label="New"
+              onClick={() => props.onOpen()}
+              type="submit"
             >
               <AddIcon className={classes.extendedIcon} />
-              <span type='submit' className={classes.fabText}>
-                Save
-              </span>
+              <span className={classes.fabText}>Save</span>
             </Fab>
           </div>
         </form>

@@ -14,6 +14,7 @@
     "@types/react": "^16.9.1",
     "@types/react-dom": "^16.8.5",
     "@types/react-helmet": "^5.0.9",
+    "@types/react-infinite-scroller": "^1.2.1",
     "@types/react-responsive": "^3.0.3",
     "@types/react-router-dom": "^4.3.4",
     "apollo-cache-inmemory": "^1.6.2",

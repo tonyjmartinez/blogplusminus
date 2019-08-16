@@ -17,7 +17,7 @@ const Layout: React.StatelessComponent<Props> = props => {
 
   return (
     <React.Fragment>
-      <Header onOpen={onOpen} />
+      <Header onOpen={() => onOpen()} />
       <PostDialog open={dlgOpen} onClose={onClose} />
     </React.Fragment>
   );

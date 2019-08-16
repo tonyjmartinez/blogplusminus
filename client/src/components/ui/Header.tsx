@@ -25,7 +25,7 @@ interface Props {
     darkMode: boolean;
     signOut: Function;
   };
-  onOpen?: Function;
+  onOpen: Function;
 }
 
 const useStyles = makeStyles({
@@ -137,7 +137,7 @@ const Header = (props: Props) => {
             size='small'
             className={classes.fab}
             aria-label='New'
-            onClick={() => props.onOpen}
+            onClick={() => props.onOpen()}
           >
             <AddIcon className={classes.extendedIcon} />
             <span className={classes.fabText}>New Post</span>

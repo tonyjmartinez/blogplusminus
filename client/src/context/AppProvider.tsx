@@ -32,15 +32,6 @@ const AppProvider = (props: Props) => {
   const userToken = null;
   const [darkMode, setDarkMode] = useState(true);
 
-  /*
-  graphql(query, { name: 'getUser' }),
-  graphql(recentPosts, { name: 'recentPosts' }),
-  graphql(signupMutation, { name: 'signup' }),
-  graphql(loginMutation, { name: 'login' }),
-  graphql(newPostMutation, { name: 'newPost' }),
-	graphql(newCommentMutation, { name: 'newComment' }
-	*/
-
   const getUser = useQuery(query);
   const userLoading = getUser.loading;
   const recentPostsFound = useQuery(recentPosts);
@@ -190,15 +181,17 @@ const AppProvider = (props: Props) => {
     localStorage.removeItem('token');
   };
 
-  const bgColor = darkMode ? grey : lightGrey;
+	const bgColor = darkMode ? grey : lightGrey;
+	
+	const user = getUser.data ? getUser.data.user : null;
 
   return (
     <MuiThemeProvider theme={darkMode ? darkTheme() : theme()}>
       <AppContext.Provider
         value={{
           auth: authorized,
-          signin: attemptLogin,
-          user: getUser.data.user,
+					signin: attemptLogin,
+					user,
           signOut: signOut,
           signup: attemptSignup,
           newPost: sendNewPost,

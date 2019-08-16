@@ -1,11 +1,33 @@
-import React, { useState } from 'react';
+import React, {
+  useState,
+  PropsWithChildren,
+  ComponentProps,
+  StatelessComponent,
+  ReactElement
+} from 'react';
 import { makeStyles } from '@material-ui/styles';
 import InfiniteScroll from 'react-infinite-scroller';
 import query from '../../queries/recentPosts';
-import { graphql } from 'react-apollo';
+import { graphql, useQuery } from 'react-apollo';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import PostCard from './PostCard';
 import withAppContext from '../../context/withAppContext';
+
+interface Props {
+  data: {
+    loading: boolean;
+    fetchMore: Function;
+    recentPosts: [];
+  };
+  context: {
+    darkMode: boolean;
+  };
+}
+
+interface fetchResult {
+  fetchMoreResult?: any;
+  variables?: { skip: number } | undefined;
+}
 
 const useStyles = makeStyles({
   post: {
@@ -27,7 +49,7 @@ const useStyles = makeStyles({
   }
 });
 
-const FrontPage = props => {
+const FrontPage = (props: Props) => {
   const classes = useStyles();
 
   const [pagination, setPagination] = useState({
@@ -35,16 +57,20 @@ const FrontPage = props => {
     morePosts: true
   });
 
+  const posts = useQuery(query);
+
   const fetchMorePosts = async () => {
-    if (props.data.loading) {
+    if (posts.data.loading) {
       return;
     }
     if (pagination.morePosts) {
-      await props.data.fetchMore({
+      console.log(posts);
+      await posts.fetchMore({
         variables: {
           skip: pagination.page + 10
         },
-        updateQuery: (prev, { fetchMoreResult }) => {
+
+        updateQuery: (prev: any, { fetchMoreResult }: fetchResult) => {
           if (!fetchMoreResult || fetchMoreResult.recentPosts.length === 0) {
             setPagination({
               ...pagination,
@@ -67,17 +93,17 @@ const FrontPage = props => {
     }
   };
 
-  const Posts = props => {
+  const Posts: StatelessComponent<Props> = props => {
     //  if (!props.data.loading && props.data.recentPosts !== undefined) {
-    const posts = props.data.recentPosts;
-    const postCards = posts.map((post, idx) => {
+    const newPosts = posts.data.recentPosts;
+    const postCards = newPosts.map((post: any, idx: number) => {
       return (
         <div key={idx} className={classes.loader}>
           <PostCard darkMode={props.context.darkMode} frontPage post={post} />
         </div>
       );
     });
-    return postCards;
+    return <>{postCards}</>;
   };
 
   return (
@@ -88,11 +114,11 @@ const FrontPage = props => {
         hasMore={pagination.morePosts}
         loader={
           <div key={1} className={classes.circle}>
-            <CircularProgress className={classes.progress} color='secondary' />
+            <CircularProgress color="secondary" />
           </div>
         }
       >
-        {props.data.recentPosts !== undefined ? (
+        {posts.data.recentPosts !== undefined ? (
           <Posts {...props} />
         ) : (
           <div>Loading...</div>
@@ -102,4 +128,4 @@ const FrontPage = props => {
   );
 };
 
-export default graphql(query)(withAppContext(FrontPage));
+export default withAppContext(FrontPage);
