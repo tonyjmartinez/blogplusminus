@@ -1,7 +1,10 @@
-import React, { useState } from 'react';
-import Header from '../ui/Header.js';
+import React, { useState, ReactChildren } from 'react';
+import Header from '../ui/Header';
 import PostDialog from '../ui/PostDialog';
-const Layout = props => {
+
+interface Props {}
+
+const Layout: React.StatelessComponent<Props> = props => {
   const [dlgOpen, setDlgOpen] = useState(false);
 
   const onClose = () => {
@@ -16,7 +19,6 @@ const Layout = props => {
     <React.Fragment>
       <Header onOpen={onOpen} />
       <PostDialog open={dlgOpen} onClose={onClose} />
-      {props.children}
     </React.Fragment>
   );
 };

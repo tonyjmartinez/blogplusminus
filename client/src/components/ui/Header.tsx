@@ -15,6 +15,19 @@ import MoonIcon from '@material-ui/icons/Brightness3';
 import MoonIconOutlined from '@material-ui/icons/Brightness3Outlined';
 import UserAvatar from './UserAvatar';
 
+interface Props {
+  context: {
+    auth: boolean;
+    user: {
+      username: string;
+    };
+    setDarkMode: Function;
+    darkMode: boolean;
+    signOut: Function;
+  };
+  onOpen?: Function;
+}
+
 const useStyles = makeStyles({
   root: {
     flexGrow: 1
@@ -60,7 +73,7 @@ const useStyles = makeStyles({
   }
 });
 
-const Header = props => {
+const Header = (props: Props) => {
   const auth = props.context.auth;
   const user = props.context.user;
   console.log(user);
@@ -71,7 +84,7 @@ const Header = props => {
   const [authType, setAuthType] = useState('login');
 
   const classes = useStyles();
-  const openDialog = type => {
+  const openDialog = (type: string) => {
     setAuthType(type);
     setDialogOpen(true);
   };
@@ -80,7 +93,7 @@ const Header = props => {
     setDialogOpen(false);
   };
 
-  const handleSignOut = event => {
+  const handleSignOut = () => {
     props.context.signOut();
     closeDialog();
   };
@@ -98,7 +111,7 @@ const Header = props => {
               size='small'
               className={classes.topFab}
               aria-label='New'
-              onClick={props.onOpen}
+              onClick={() => props.onOpen}
             >
               <AddIcon className={classes.extendedIcon} />
               <span className={classes.fabText}>New Post</span>
@@ -124,7 +137,7 @@ const Header = props => {
             size='small'
             className={classes.fab}
             aria-label='New'
-            onClick={props.onOpen}
+            onClick={() => props.onOpen}
           >
             <AddIcon className={classes.extendedIcon} />
             <span className={classes.fabText}>New Post</span>
@@ -151,7 +164,7 @@ const Header = props => {
     );
   }
 
-  const Moon = props =>
+  const Moon = () =>
     darkMode ? (
       <MoonIconOutlined
         className={classes.moonIcon}

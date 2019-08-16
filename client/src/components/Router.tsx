@@ -12,7 +12,7 @@ const useStyles = makeStyles({
   }
 });
 
-const Router = props => {
+const Router = () => {
   const classes = useStyles();
   return (
     <React.Fragment>
