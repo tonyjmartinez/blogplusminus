@@ -78,9 +78,10 @@ const Comment: React.FunctionComponent<Props> = props => {
     // background: theme.overrides.MuiPaper.root
   };
 
-  const { loading, error, data } = useQuery(query, {
+  const { loading, error, data, refetch } = useQuery(query, {
     variables: { commentId: props.comment.id }
   });
+  console.log('Comment.tsx', data);
 
   const [open, setOpen] = useState(true);
   const [fade, setFade] = useState(1);
@@ -117,7 +118,6 @@ const Comment: React.FunctionComponent<Props> = props => {
   }
 
   const newMargin = '' + 10 * props.leftMargin + 'px';
-  console.log(props.leftMargin, newMargin);
 
   const commentStyle = {
     marginLeft: newMargin
@@ -202,7 +202,7 @@ const Comment: React.FunctionComponent<Props> = props => {
       .newComment(myUserId, reply, myUsername, myToken, 'comment', comment.id)
       .then(() => {
         // res =>
-        data.refetch();
+        refetch();
         setReply('');
         setReplyOpen(false);
       });

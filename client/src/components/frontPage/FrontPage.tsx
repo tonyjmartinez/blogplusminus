@@ -60,7 +60,7 @@ const FrontPage: React.FunctionComponent<Props> = props => {
   const posts = useQuery(query);
 
   const fetchMorePosts = async () => {
-    if (posts.data.loading) {
+    if (!posts.data || posts.data.loading) {
       return;
     }
     if (pagination.morePosts) {
@@ -71,7 +71,11 @@ const FrontPage: React.FunctionComponent<Props> = props => {
         },
 
         updateQuery: (prev: any, { fetchMoreResult }: fetchResult) => {
-          if (!fetchMoreResult || fetchMoreResult.recentPosts.length === 0) {
+          if (
+            !fetchMoreResult ||
+            !fetchMoreResult.recentPosts ||
+            fetchMoreResult.recentPosts.length === 0
+          ) {
             setPagination({
               ...pagination,
               morePosts: false
@@ -95,6 +99,7 @@ const FrontPage: React.FunctionComponent<Props> = props => {
 
   const Posts: StatelessComponent<Props> = props => {
     //  if (!props.data.loading && props.data.recentPosts !== undefined) {
+    if (!posts.data) return null;
     const newPosts = posts.data.recentPosts;
     const postCards = newPosts.map((post: any, idx: number) => {
       return (
@@ -118,7 +123,7 @@ const FrontPage: React.FunctionComponent<Props> = props => {
           </div>
         }
       >
-        {posts.data.recentPosts !== undefined ? (
+        {!posts.data || posts.data.recentPosts !== undefined ? (
           <Posts {...props} />
         ) : (
           <div>Loading...</div>

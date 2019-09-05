@@ -1,5 +1,5 @@
 # Blog Plus Minus
-### React/Redux NBA player stats comparator. Uses React-Vis to provide data visualization for player stats fetched from the MySportsFeeds API. Also utilizes Material-Ui components, React-Autocomplete, and React-Swipe.
+### Blog built with React/hooks, GraphQL, Express, and Mongoose/MongoDB.
 
 ## Installation
 ### Server

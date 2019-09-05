@@ -9,8 +9,8 @@ import { setContext } from 'apollo-link-context';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 
 const link = createHttpLink({
-  //uri: 'http://localhost:3090/graphql'
-  uri: 'https://blogplusminus.com/graphql/'
+  uri: 'http://localhost:3090/graphql/'
+  // uri: 'https://blogplusminus.com/graphql/'
 });
 
 const cache = new InMemoryCache({ dataIdFromObject: obj => obj.id });

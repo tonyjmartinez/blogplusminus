@@ -111,7 +111,7 @@ const Header = (props: Props) => {
               size='small'
               className={classes.topFab}
               aria-label='New'
-              onClick={() => props.onOpen}
+              onClick={() => props.onOpen()}
             >
               <AddIcon className={classes.extendedIcon} />
               <span className={classes.fabText}>New Post</span>

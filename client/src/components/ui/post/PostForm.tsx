@@ -18,7 +18,6 @@ interface Props {
   newPost: Function;
   onClose: Function;
   desktop: boolean;
-  onOpen: Function;
 }
 
 const useStyles = makeStyles({
@@ -157,7 +156,6 @@ const PostForm: React.FunctionComponent<Props> = props => {
               color='secondary'
               size='small'
               aria-label='New'
-              onClick={() => props.onOpen()}
               type='submit'
             >
               <AddIcon className={classes.extendedIcon} />

@@ -4,7 +4,9 @@ import withAppContext from '../../context/withAppContext';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
 import Button from '@material-ui/core/Button';
+import Colors from '../../themes/colors';
 import Typography from '@material-ui/core/Typography';
+const { error } = Colors;
 
 const AuthForm = props => {
   const [inputValidators, setInputValidators] = useState({
@@ -184,7 +186,13 @@ const AuthForm = props => {
             error={inputValidators.password ? false : true}
           />
           {verifyPassword}
-          <p style={{ color: 'red' }}>{errorMessage}</p>
+          <Typography
+            style={{ marginTop: '1em' }}
+            color='error'
+            variant='subtitle2'
+          >
+            {errorMessage}
+          </Typography>
         </DialogContent>
 
         <DialogActions>
