@@ -29,7 +29,11 @@ const Post = props => {
     if (comments === undefined || comments.length > 0) {
       console.log(comments);
       return (
-        <Comments leftMargin={1} darkMode={darkMode} comments={comments} />
+        <Comments
+          leftMargin={1}
+          darkMode={darkMode || true}
+          comments={comments}
+        />
       );
     }
     return null;

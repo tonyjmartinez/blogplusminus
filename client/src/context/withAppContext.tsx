@@ -7,14 +7,8 @@ import React, {
 import { AppContext } from './AppContext';
 import { Context } from 'react-apollo';
 
-interface Props {
-  onOpen?: Function;
-  open?: boolean;
-  onClose?: Function;
-}
-
 const withAppContext = (Component: React.ElementType) => {
-  const WrapperComponent: React.StatelessComponent<Props> = props => {
+  const WrapperComponent: React.FunctionComponent<any> = props => {
     return (
       <AppContext.Consumer>
         {context => <Component {...props} context={context} />}

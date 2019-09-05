@@ -2,7 +2,7 @@ import React from 'react';
 import Avatar from '@material-ui/core/Avatar';
 
 interface Props {
-  darkMode: boolean;
+  darkMode?: boolean;
   username: string | null;
 }
 

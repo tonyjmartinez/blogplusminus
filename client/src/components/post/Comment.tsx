@@ -20,20 +20,21 @@ import Typography from '@material-ui/core/Typography';
 import UserAvatar from '../ui/UserAvatar';
 import { graphql } from 'react-apollo';
 import query from '../../queries/comment';
-import Comments from './Comments.js';
+import Comments from './Comments';
 import mutation from '../../mutations/newComment';
 import withAppContext from '../../context/withAppContext';
 import Divider from '@material-ui/core/Divider';
-import Fade from '../hoc/Fade';
 import { useQuery } from 'react-apollo';
 
 interface Props {
   darkMode: boolean;
-  comment: {
-    username: string;
-    content: string;
-    id: string;
-  };
+  comment:
+    | {
+        username: string;
+        content: string;
+        id: string;
+      }
+    | never;
   context: {
     auth: boolean;
     user: {
@@ -43,6 +44,7 @@ interface Props {
     };
     newComment: Function;
   };
+  leftMargin: number;
   // data: {
   //   loading: boolean;
   //   comment: {
@@ -51,7 +53,6 @@ interface Props {
   //   };
   //   refetch: Function;
   // };
-  leftMargin: any;
 }
 
 const useStyles = makeStyles(theme => ({
@@ -70,7 +71,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Comment: React.FunctionComponent<Props> = props => {
+const Comment = (props: Props) => {
   const classes = useStyles();
   const theme = useTheme();
 
@@ -123,7 +124,7 @@ const Comment: React.FunctionComponent<Props> = props => {
     marginLeft: newMargin
   };
 
-  const NestedComments: React.FunctionComponent<NestedProps> = props => {
+  const NestedComments = (props: NestedProps) => {
     if (data !== undefined && commentsAvailable && open) {
       return (
         <Comments
