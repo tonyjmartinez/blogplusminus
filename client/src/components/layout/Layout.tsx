@@ -4,7 +4,7 @@ import PostDialog from '../ui/PostDialog';
 
 interface Props {}
 
-const Layout: React.StatelessComponent<Props> = props => {
+const Layout: React.FunctionComponent<Props> = props => {
   const [dlgOpen, setDlgOpen] = useState(false);
 
   const onClose = () => {

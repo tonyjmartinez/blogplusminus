@@ -1,4 +1,10 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, {
+  ChangeEvent,
+  MouseEvent,
+  useState,
+  useRef,
+  useEffect
+} from 'react';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -19,6 +25,34 @@ import mutation from '../../mutations/newComment';
 import withAppContext from '../../context/withAppContext';
 import Divider from '@material-ui/core/Divider';
 import Fade from '../hoc/Fade';
+import { useQuery } from 'react-apollo';
+
+interface Props {
+  darkMode: boolean;
+  comment: {
+    username: string;
+    content: string;
+    id: string;
+  };
+  context: {
+    auth: boolean;
+    user: {
+      id: string;
+      username: string;
+      token: string;
+    };
+    newComment: Function;
+  };
+  // data: {
+  //   loading: boolean;
+  //   comment: {
+  //     comments: string[];
+  //     loading: boolean;
+  //   };
+  //   refetch: Function;
+  // };
+  leftMargin: number;
+}
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -36,13 +70,17 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Comment = props => {
+const Comment: React.FunctionComponent<Props> = props => {
   const classes = useStyles();
   const theme = useTheme();
 
   const style = {
     // background: theme.overrides.MuiPaper.root
   };
+
+  const { loading, error, data } = useQuery(query, {
+    variables: { commentId: props.comment.id }
+  });
 
   const [open, setOpen] = useState(true);
   const [fade, setFade] = useState(1);
@@ -53,12 +91,11 @@ const Comment = props => {
   const { username, content } = comment;
   const authorized = props.context.auth;
 
-  const commentsAvailable =
-    !props.data.loading && props.data.comment.comments.length > 0;
+  const commentsAvailable = !data.loading && data.comment.comments.length > 0;
 
-  let myUserId = null;
-  let myUsername = null;
-  let myToken = null;
+  let myUserId: string | null = null;
+  let myUsername: string | null = null;
+  let myToken: string | null = null;
   if (props.context.auth) {
     const user = props.context.user;
     myUserId = user.id;
@@ -66,22 +103,37 @@ const Comment = props => {
     myToken = user.token;
   }
 
-  const NestedComments = props => {
-    if (props.data !== undefined && commentsAvailable && open) {
-      console.log(props.data);
-      return <Comments comments={props.data.comment.comments} {...props} />;
+  interface NestedProps {
+    data: {
+      loading: boolean;
+      comment: {
+        comments: string[];
+        loading: boolean;
+      };
+      refetch: Function;
+    };
+  }
+
+  const NestedComments: React.FunctionComponent<NestedProps> = props => {
+    if (data !== undefined && commentsAvailable && open) {
+      return <Comments comments={data.comment.comments} {...props} />;
     } else {
       return null;
     }
   };
 
+  const commentField = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     if (replyOpen) {
-      commentField.current.focus();
+      try {
+        commentField && commentField.current && commentField.current.focus();
+      } catch (err) {
+        console.log('useRef on comment field is null');
+      }
     }
   }, [replyOpen]);
 
-  const commentField = useRef(null);
   const duration = 200;
 
   useEffect(() => {
@@ -112,30 +164,36 @@ const Comment = props => {
     }
   };
 
-  const handleReplyChange = e => {
+  const handleReplyChange = (e: ChangeEvent<HTMLInputElement>) => {
     setReply(e.target.value);
   };
 
-  const handleReplyOpen = e => {
+  const handleReplyOpen = (e: MouseEvent<SVGSVGElement>) => {
     setReplyOpen(!replyOpen);
   };
 
-  const handleSubmit = e => {
-    e.preventDefault();
+  const handleSubmit = (
+    e:
+      | React.MouseEvent<HTMLButtonElement>
+      | React.FormEvent<HTMLFormElement>
+      | null
+  ) => {
+    e && e.preventDefault();
     if (!props.context.auth) {
       return;
     }
 
     props.context
       .newComment(myUserId, reply, myUsername, myToken, 'comment', comment.id)
-      .then(res => {
-        props.data.refetch();
+      .then(() => {
+        // res =>
+        data.refetch();
         setReply('');
         setReplyOpen(false);
       });
   };
 
-  const ReplyActions = props => {
+  const ReplyActions = (props: any) => {
     if (authorized) {
       if (replyOpen) {
         return (
@@ -218,12 +276,13 @@ const Comment = props => {
           transition: `opacity ${duration}ms ease-in-out`
         }}
       >
-        <NestedComments {...props} />
+        <NestedComments data={data} />
       </div>
     </div>
   );
 };
 
-export default graphql(query, {
-  options: props => ({ variables: { commentId: props.comment.id } })
-})(withAppContext(Comment));
+// export default graphql(query, {
+//   options: props => ({ variables: { commentId: props.comment.id } })
+// })(withAppContext(Comment));
+export default withAppContext(Comment);

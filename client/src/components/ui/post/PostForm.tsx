@@ -64,7 +64,7 @@ const useStyles = makeStyles({
   }
 });
 
-const PostForm = (props: Props) => {
+const PostForm: React.FunctionComponent<Props> = props => {
   const classes = useStyles();
 
   const [postFields, setPostFields] = useState({
@@ -111,16 +111,16 @@ const PostForm = (props: Props) => {
       <AppBar className={classes.appBar}>
         <Toolbar>
           <IconButton
-            color="inherit"
+            color='inherit'
             onClick={() => props.onClose()}
-            aria-label="Close"
+            aria-label='Close'
           >
             <CloseIcon className={classes.closeIcon} />
           </IconButton>
-          <Typography variant="h6" color="inherit" className={classes.flex}>
+          <Typography variant='h6' color='inherit' className={classes.flex}>
             New Post
           </Typography>
-          <Button color="inherit" onClick={e => handleNewPost(e)}>
+          <Button color='inherit' onClick={e => handleNewPost(e)}>
             Save
           </Button>
         </Toolbar>
@@ -129,10 +129,10 @@ const PostForm = (props: Props) => {
         <form onSubmit={e => handleNewPost(e)} className={classes.form}>
           <div className={classes.textFieldDiv}>
             <TextField
-              label="Title"
-              placeholder="Title"
-              margin="normal"
-              variant="outlined"
+              label='Title'
+              placeholder='Title'
+              margin='normal'
+              variant='outlined'
               fullWidth
               value={postFields.title}
               onChange={handleTitleChange}
@@ -141,10 +141,10 @@ const PostForm = (props: Props) => {
           </div>
           <div className={classes.textFieldDiv}>
             <TextField
-              label="Content"
-              placeholder="Content"
-              margin="normal"
-              variant="outlined"
+              label='Content'
+              placeholder='Content'
+              margin='normal'
+              variant='outlined'
               fullWidth
               multiline
               value={postFields.content}
@@ -153,12 +153,12 @@ const PostForm = (props: Props) => {
           </div>
           <div className={classes.fabDiv}>
             <Fab
-              variant="extended"
-              color="secondary"
-              size="small"
-              aria-label="New"
+              variant='extended'
+              color='secondary'
+              size='small'
+              aria-label='New'
               onClick={() => props.onOpen()}
-              type="submit"
+              type='submit'
             >
               <AddIcon className={classes.extendedIcon} />
               <span className={classes.fabText}>Save</span>

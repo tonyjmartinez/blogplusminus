@@ -49,7 +49,7 @@ const useStyles = makeStyles({
   }
 });
 
-const FrontPage = (props: Props) => {
+const FrontPage: React.FunctionComponent<Props> = props => {
   const classes = useStyles();
 
   const [pagination, setPagination] = useState({
@@ -114,7 +114,7 @@ const FrontPage = (props: Props) => {
         hasMore={pagination.morePosts}
         loader={
           <div key={1} className={classes.circle}>
-            <CircularProgress color="secondary" />
+            <CircularProgress color='secondary' />
           </div>
         }
       >
