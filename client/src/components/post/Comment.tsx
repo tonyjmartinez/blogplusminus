@@ -51,7 +51,7 @@ interface Props {
   //   };
   //   refetch: Function;
   // };
-  leftMargin: number;
+  leftMargin: any;
 }
 
 const useStyles = makeStyles(theme => ({
@@ -91,7 +91,8 @@ const Comment: React.FunctionComponent<Props> = props => {
   const { username, content } = comment;
   const authorized = props.context.auth;
 
-  const commentsAvailable = !data.loading && data.comment.comments.length > 0;
+  const commentsAvailable =
+    !data.loading && data.comment && data.comment.comments.length > 0;
 
   let myUserId: string | null = null;
   let myUsername: string | null = null;
@@ -112,11 +113,25 @@ const Comment: React.FunctionComponent<Props> = props => {
       };
       refetch: Function;
     };
+    leftMargin: number;
   }
+
+  const newMargin = '' + 10 * props.leftMargin + 'px';
+  console.log(props.leftMargin, newMargin);
+
+  const commentStyle = {
+    marginLeft: newMargin
+  };
 
   const NestedComments: React.FunctionComponent<NestedProps> = props => {
     if (data !== undefined && commentsAvailable && open) {
-      return <Comments comments={data.comment.comments} {...props} />;
+      return (
+        <Comments
+          leftMargin={props.leftMargin}
+          comments={data.comment.comments}
+          darkMode={darkMode}
+        />
+      );
     } else {
       return null;
     }
@@ -209,10 +224,6 @@ const Comment: React.FunctionComponent<Props> = props => {
     }
   };
 
-  const commentStyle = {
-    marginLeft: '' + 10 * props.leftMargin + 'px'
-  };
-
   return (
     <div style={commentStyle}>
       <List
@@ -276,7 +287,7 @@ const Comment: React.FunctionComponent<Props> = props => {
           transition: `opacity ${duration}ms ease-in-out`
         }}
       >
-        <NestedComments data={data} />
+        <NestedComments leftMargin={props.leftMargin} data={data} />
       </div>
     </div>
   );
