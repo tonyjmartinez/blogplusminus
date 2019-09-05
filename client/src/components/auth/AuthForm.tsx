@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, FunctionComponent, ChangeEvent } from 'react';
 import TextField from '@material-ui/core/TextField';
 import withAppContext from '../../context/withAppContext';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -8,7 +8,16 @@ import Colors from '../../themes/colors';
 import Typography from '@material-ui/core/Typography';
 const { error } = Colors;
 
-const AuthForm = props => {
+interface Props {
+  context: {
+    signin: Function;
+    signup: Function;
+  };
+  type: string;
+  close: Function;
+}
+
+const AuthForm: FunctionComponent<Props> = props => {
   const [inputValidators, setInputValidators] = useState({
     email: true,
     password: true,
@@ -25,8 +34,8 @@ const AuthForm = props => {
 
   const [errorMessage, setErrorMessage] = useState('');
 
-  const emailHandler = event => {
-    const email = event.target.value;
+  const emailHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    const email = e.currentTarget.value;
     setInputValidators({
       ...inputValidators,
       email: emailValidator(email)
@@ -34,8 +43,8 @@ const AuthForm = props => {
     setInputValues({ ...inputValues, email: email });
   };
 
-  const usernameHandler = event => {
-    const username = event.target.value;
+  const usernameHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    const username = e.currentTarget.value;
     setInputValidators({
       ...inputValidators,
       username: usernameValidator(username)
@@ -43,8 +52,8 @@ const AuthForm = props => {
     setInputValues({ ...inputValues, username: username });
   };
 
-  const passwordHandler = event => {
-    const password = event.target.value;
+  const passwordHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    const password = e.currentTarget.value;
     setInputValidators({
       ...inputValidators,
       password: passwordValidator(password)
@@ -53,8 +62,8 @@ const AuthForm = props => {
     setInputValues({ ...inputValues, password: password });
   };
 
-  const verifyPasswordHandler = event => {
-    const password = event.target.value;
+  const verifyPasswordHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    const password = e.currentTarget.value;
     setInputValidators({
       ...inputValidators,
       verifyPassword: verifyPasswordValidator(password)
@@ -62,13 +71,13 @@ const AuthForm = props => {
 
     setInputValues({ ...inputValues, verifyPassword: password });
   };
-  const emailValidator = email => {
+  const emailValidator = (email: string) => {
     // eslint-disable-next-line max-len
     const reg = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return reg.test(String(email).toLowerCase());
   };
 
-  const passwordValidator = password => {
+  const passwordValidator = (password: string) => {
     if (
       props.type === 'signup' &&
       password.trim().length < 5 &&
@@ -81,7 +90,7 @@ const AuthForm = props => {
     return true;
   };
 
-  const usernameValidator = username => {
+  const usernameValidator = (username: string) => {
     if (username.trim().length < 5 && username.trim().length !== 0) {
       setErrorMessage('Username must be 5 characters or longer');
       return false;
@@ -90,7 +99,7 @@ const AuthForm = props => {
     return true;
   };
 
-  const verifyPasswordValidator = password => {
+  const verifyPasswordValidator = (password: string) => {
     if (password.trim().length < 5 && password.trim().length !== 0) {
       setErrorMessage('Password must be 5 characters or longer');
       return false;
@@ -103,7 +112,13 @@ const AuthForm = props => {
     return true;
   };
 
-  const handleSignIn = async e => {
+  const handleSignIn = async (
+    e:
+      | React.MouseEvent<HTMLButtonElement>
+      | React.FormEvent<HTMLFormElement>
+      | null
+  ) => {
+    if (!e) return;
     e.preventDefault();
     const res = await props.context.signin(
       inputValues.email,
@@ -116,7 +131,13 @@ const AuthForm = props => {
     }
   };
 
-  const handleSignUp = async e => {
+  const handleSignUp = async (
+    e:
+      | React.MouseEvent<HTMLButtonElement>
+      | React.FormEvent<HTMLFormElement>
+      | null
+  ) => {
+    if (!e) return;
     e.preventDefault();
     console.log(props.type);
     const res = await props.context.signup(
@@ -196,7 +217,7 @@ const AuthForm = props => {
         </DialogContent>
 
         <DialogActions>
-          <Button type='button' onClick={props.close} color='primary'>
+          <Button type='button' onClick={() => props.close()} color='primary'>
             Cancel
           </Button>
 

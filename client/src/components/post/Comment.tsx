@@ -82,7 +82,6 @@ const Comment = (props: Props) => {
   const { loading, error, data, refetch } = useQuery(query, {
     variables: { commentId: props.comment.id }
   });
-  console.log('Comment.tsx', data);
 
   const [open, setOpen] = useState(true);
   const [fade, setFade] = useState(1);
