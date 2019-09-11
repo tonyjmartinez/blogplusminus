@@ -35,7 +35,6 @@ const AppProvider = (props: Props) => {
   const getUser = useQuery(query);
   const userLoading = getUser.loading;
   const recentPostsFound = useQuery(recentPosts);
-  console.log(getUser);
   const [signup] = useMutation(signupMutation);
   const [login] = useMutation(loginMutation);
   const [newPost] = useMutation(newPostMutation);
@@ -45,7 +44,6 @@ const AppProvider = (props: Props) => {
     return null;
   }
   if (!userLoading && getUser.data) {
-    console.log(getUser);
     currentUser = getUser.data.user;
 
     if (currentUser !== undefined && currentUser !== null) {
@@ -154,7 +152,6 @@ const AppProvider = (props: Props) => {
     parentId: string
   ) => {
     return new Promise((resolve, reject) => {
-      console.log('inside new comment');
       newComment({
         variables: {
           commentInput: {
@@ -181,17 +178,17 @@ const AppProvider = (props: Props) => {
     localStorage.removeItem('token');
   };
 
-	const bgColor = darkMode ? grey : lightGrey;
-	
-	const user = getUser.data ? getUser.data.user : null;
+  const bgColor = darkMode ? grey : lightGrey;
+
+  const user = getUser.data ? getUser.data.user : null;
 
   return (
     <MuiThemeProvider theme={darkMode ? darkTheme() : theme()}>
       <AppContext.Provider
         value={{
           auth: authorized,
-					signin: attemptLogin,
-					user,
+          signin: attemptLogin,
+          user,
           signOut: signOut,
           signup: attemptSignup,
           newPost: sendNewPost,

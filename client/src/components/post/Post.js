@@ -27,7 +27,6 @@ const Post = props => {
 
   const GenComments = props => {
     if (comments === undefined || comments.length > 0) {
-      console.log(comments);
       return (
         <Comments
           leftMargin={1}

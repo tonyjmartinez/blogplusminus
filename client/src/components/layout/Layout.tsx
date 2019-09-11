@@ -1,4 +1,4 @@
-import React, { useState, ReactChildren } from 'react';
+import React, { useState } from 'react';
 import Header from '../ui/Header';
 import PostDialog from '../ui/PostDialog';
 

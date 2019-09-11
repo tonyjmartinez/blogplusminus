@@ -17,7 +17,7 @@ const MONGO_URI = 'mongodb://localhost:27017/blogplusminus';
 mongoose.Promise = global.Promise;
 mongoose.connect(MONGO_URI);
 mongoose.connection
-  .once('open', () => console.log('Connected to Mlab'))
+  .once('open', () => console.log('Connected to MongoDB'))
   .on('error', error => console.log(error));
 
 app.use(morgan('combined'));

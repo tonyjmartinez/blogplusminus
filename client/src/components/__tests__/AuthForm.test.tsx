@@ -9,7 +9,7 @@ test('auth form shows correct fields depending on type', () => {
   );
   expect(getByLabelText('Email Address')).toBeInTheDocument();
   expect(getByLabelText('Password')).toBeInTheDocument();
-  // expect(queryByText('Username')).toBeUndefined();
+  expect(queryByText('Username')).toBeNull();
   rerender(<AuthForm type='signup' />);
   expect(getByLabelText('Email Address')).toBeInTheDocument();
   expect(getByLabelText('Password')).toBeInTheDocument();

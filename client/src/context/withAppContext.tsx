@@ -1,11 +1,5 @@
-import React, {
-  ReactComponentElement,
-  ComponentType,
-  ContextType,
-  ComponentProps
-} from 'react';
+import React from 'react';
 import { AppContext } from './AppContext';
-import { Context } from 'react-apollo';
 
 const withAppContext = (Component: React.ElementType) => {
   const WrapperComponent: React.FunctionComponent<any> = props => {

@@ -1,14 +1,8 @@
-import React, {
-  useState,
-  PropsWithChildren,
-  ComponentProps,
-  StatelessComponent,
-  ReactElement
-} from 'react';
+import React, { useState, StatelessComponent } from 'react';
 import { makeStyles } from '@material-ui/styles';
 import InfiniteScroll from 'react-infinite-scroller';
 import query from '../../queries/recentPosts';
-import { graphql, useQuery } from 'react-apollo';
+import { useQuery } from 'react-apollo';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import PostCard from './PostCard';
 import withAppContext from '../../context/withAppContext';

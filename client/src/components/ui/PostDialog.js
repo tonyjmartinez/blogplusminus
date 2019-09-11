@@ -10,9 +10,8 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 const PostDialog = props => {
-  console.log(props);
   const handleNewPost = async (title, content) => {
-    const newPost = await props.context.newPost(
+    await props.context.newPost(
       props.context.user.id,
       title,
       content,
@@ -20,11 +19,9 @@ const PostDialog = props => {
       props.context.user.token
     );
     props.onClose();
-    console.log(newPost);
   };
 
   const desktop = useMediaQuery({ query: '(min-width: 850px)' });
-  console.log('desktop', desktop);
 
   return (
     <Dialog

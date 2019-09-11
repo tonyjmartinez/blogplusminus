@@ -10,7 +10,6 @@ import { Link } from 'react-router-dom';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import MediaQuery from 'react-responsive';
-import Avatar from '@material-ui/core/Avatar';
 import MoonIcon from '@material-ui/icons/Brightness3';
 import MoonIconOutlined from '@material-ui/icons/Brightness3Outlined';
 import UserAvatar from './UserAvatar';
@@ -76,7 +75,6 @@ const useStyles = makeStyles({
 const Header = (props: Props) => {
   const auth = props.context.auth;
   const user = props.context.user;
-  console.log(user);
   const setDarkMode = props.context.setDarkMode;
   const darkMode = props.context.darkMode;
 

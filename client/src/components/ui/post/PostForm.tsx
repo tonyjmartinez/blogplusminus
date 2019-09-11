@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, ReactElement } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import TextField from '@material-ui/core/TextField';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
@@ -10,7 +10,6 @@ import Typography from '@material-ui/core/Typography';
 import CloseIcon from '@material-ui/icons/Close';
 import Button from '@material-ui/core/Button';
 import colors from '../../../themes/colors';
-import { FormControl } from '@material-ui/core';
 
 const { black } = colors;
 

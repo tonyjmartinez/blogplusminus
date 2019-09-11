@@ -11,17 +11,6 @@ export interface AppCtxInterface {
   darkMode: boolean;
   newComment: Function;
 }
-const initialState = {
-  auth: false,
-  signin: function() {},
-  user: {},
-  signOut: function() {},
-  signup: function() {},
-  newPost: function() {},
-  setDarkMode: function() {},
-  darkMode: true,
-  newComment: function() {}
-};
 
 interface IContext {
   auth: boolean;
